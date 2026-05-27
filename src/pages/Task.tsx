@@ -1,9 +1,5 @@
 function Tasks() {
-  return (
-    <div>
-      <h1>Tasks Page</h1>
-    </div>
-  );
+  return <div className="tasks-page" />;
 }
 
 export default Tasks;
