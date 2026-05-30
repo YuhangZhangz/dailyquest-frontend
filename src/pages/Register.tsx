@@ -40,6 +40,11 @@ function Register() {
       hasError = true;
     }
 
+    if (password && password.length < 8) {
+      setPasswordError("Password must be at least 8 characters.");
+      hasError = true;
+    }
+
     if (hasError) return;
     try {
       await api.post("/auth/register", {
@@ -48,9 +53,18 @@ function Register() {
         password,
       });
 
-      window.location.href = "/";
-    } catch (err) {
-      setError("Register failed");
+      window.location.href = "/tasks";
+    } catch (err: any) {
+      const rawMessage = err.response?.data?.message || "Register failed";
+
+      const cleanedMessage = rawMessage
+        .replace(/^\[/, "")
+        .replace(/\]$/, "")
+        .replace(/^password:\s*/i, "")
+        .replace(/^email:\s*/i, "")
+        .replace(/^username:\s*/i, "");
+
+      setError(cleanedMessage);
       console.error(err);
     }
   }
