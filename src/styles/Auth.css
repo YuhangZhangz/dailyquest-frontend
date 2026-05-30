@@ -152,11 +152,10 @@
 }
 
 .field-error {
-  min-height: 18px;
-  font-size: 13px;
-  color: #ef4444;
-  font-weight: 500;
-  margin-left: 4px;
+  margin-top: -4px;
+  margin-bottom: 6px;
+  color: red;
+  font-size: 14px;
 }
 
 .login-card input:focus {
