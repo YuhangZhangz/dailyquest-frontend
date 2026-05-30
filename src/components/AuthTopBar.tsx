@@ -1,5 +1,5 @@
 import logo from "../assets/logo.png";
-import "../styles/AuthTopBar.css";
+import "../styles/Auth.css";
 
 function AuthTopBar() {
   return (
