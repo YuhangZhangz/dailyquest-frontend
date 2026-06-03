@@ -146,7 +146,7 @@ function Tasks() {
               <button
                 className="add-task-btn"
                 type="button"
-                onClick={() => setShowAddForm(true)}
+                onClick={() => setShowAddForm((prev) => !prev)}
               >
                 + Add Quest
               </button>
