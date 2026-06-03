@@ -265,11 +265,12 @@
 .add-task-form input,
 .add-task-form textarea,
 .add-task-form select {
-  padding: 14px 16px;
+  padding: 14px 48px 14px 16px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
   font-size: 16px;
   background: white;
+  box-sizing: border-box;
 }
 
 .add-task-form textarea {

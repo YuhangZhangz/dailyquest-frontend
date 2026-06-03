@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import TopBar from "../components/AuthTopBar";
 import "../styles/Tasks.css";
+import TaskColumn from "../components/TaskColumn";
 
 type UserProfile = {
   id: number;
@@ -12,11 +13,14 @@ type UserProfile = {
   dailyStreak: number;
 };
 
+type TaskType = "HABIT" | "DAILY" | "TODO";
+
 type DailyTask = {
   id: number;
   title: string;
   description: string;
   difficulty: string;
+  taskType: TaskType;
   baseXp: number;
   active: boolean;
   createdAt: string;
@@ -31,6 +35,7 @@ function Tasks() {
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newDifficulty, setNewDifficulty] = useState("T2");
+  const [newTaskType, setNewTaskType] = useState<TaskType>("DAILY");
 
   async function loadData() {
     const userRes = await api.get("/auth/me");
@@ -54,12 +59,14 @@ function Tasks() {
         title: newTitle,
         description: newDescription,
         difficulty: newDifficulty,
+        taskType: newTaskType,
       });
 
       setNewTitle("");
       setNewDescription("");
       setNewDifficulty("T2");
       setShowAddForm(false);
+      setNewTaskType("DAILY");
 
       await loadData();
     } catch (err: any) {
@@ -94,7 +101,10 @@ function Tasks() {
   const visibleTasks = hideCompleted
     ? tasks.filter((task) => task.active)
     : tasks;
-
+  const habitTasks = visibleTasks.filter((task) => task.taskType === "HABIT");
+  const dailyTasks = visibleTasks.filter((task) => task.taskType === "DAILY");
+  const todoTasks = visibleTasks.filter((task) => task.taskType === "TODO");
+  
   return (
     <div className="tasks-page">
       <TopBar showLogout />
@@ -196,6 +206,18 @@ function Tasks() {
                 </select>
               </label>
 
+              <label>
+                Task Type
+                <select
+                  value={newTaskType}
+                  onChange={(e) => setNewTaskType(e.target.value as TaskType)}
+                >
+                  <option value="HABIT">🔁 Habit</option>
+                  <option value="DAILY">📅 Daily</option>
+                  <option value="TODO">✅ Todo</option>
+                </select>
+              </label>
+
               <div className="add-task-form-actions">
                 <button type="submit">Save Quest</button>
                 <button
@@ -209,64 +231,27 @@ function Tasks() {
             </form>
           )}
 
-          <div className="quest-list">
-            {visibleTasks.length === 0 && (
-              <div className="empty-state">No quests yet.</div>
-            )}
+          <div className="quest-columns">
+            <TaskColumn
+              title="💪 Habits"
+              tasks={habitTasks}
+              onComplete={handleCompleteTask}
+              onDelete={handleDeleteTask}
+            />
 
-            {visibleTasks.map((task) => (
-              <article
-                className={`quest-card ${
-                  !task.active ? "quest-card-completed" : ""
-                }`}
-                key={task.id}
-              >
-                <div className="quest-main">
-                  <span className="quest-dot" />
+            <TaskColumn
+              title="⚔️ Dailies"
+              tasks={dailyTasks}
+              onComplete={handleCompleteTask}
+              onDelete={handleDeleteTask}
+            />
 
-                  <div>
-                    <div className="quest-title-row">
-                      <h2>{task.title}</h2>
-                      <span className="difficulty-pill">
-                        {task.difficulty}
-                      </span>
-                    </div>
-
-                    {task.description && (
-                      <p className="quest-description">
-                        {task.description}
-                      </p>
-                    )}
-
-                    <p className="quest-xp">+{task.baseXp} XP</p>
-                  </div>
-                </div>
-
-                <div className="quest-buttons">
-                  {task.active ? (
-                    <>
-                      <button
-                        className="complete-btn"
-                        type="button"
-                        onClick={() => handleCompleteTask(task.id)}
-                      >
-                        Complete
-                      </button>
-
-                      <button
-                        className="delete-btn"
-                        type="button"
-                        onClick={() => handleDeleteTask(task.id)}
-                      >
-                        Delete
-                      </button>
-                    </>
-                  ) : (
-                    <span className="completed-label">Completed</span>
-                  )}
-                </div>
-              </article>
-            ))}
+            <TaskColumn
+              title="🎯 Todos"
+              tasks={todoTasks}
+              onComplete={handleCompleteTask}
+              onDelete={handleDeleteTask}
+            />
           </div>
         </section>
       </main>
