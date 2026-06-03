@@ -1,5 +1,277 @@
+import { useEffect, useState } from "react";
+import api from "../api/axios";
+import TopBar from "../components/AuthTopBar";
+import "../styles/Tasks.css";
+
+type UserProfile = {
+  id: number;
+  username: string;
+  email: string;
+  totalXp: number;
+  level: number;
+  dailyStreak: number;
+};
+
+type DailyTask = {
+  id: number;
+  title: string;
+  description: string;
+  difficulty: string;
+  baseXp: number;
+  active: boolean;
+  createdAt: string;
+};
+
 function Tasks() {
-  return <div className="tasks-page" />;
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [tasks, setTasks] = useState<DailyTask[]>([]);
+  const [hideCompleted, setHideCompleted] = useState(false);
+
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newDifficulty, setNewDifficulty] = useState("T2");
+
+  async function loadData() {
+    const userRes = await api.get("/auth/me");
+    const taskRes = await api.get("/daily-tasks");
+
+    setUser(userRes.data);
+    setTasks(taskRes.data);
+  }
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function handleCreateTask(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!newTitle.trim()) return;
+
+    try {
+      await api.post("/daily-tasks", {
+        title: newTitle,
+        description: newDescription,
+        difficulty: newDifficulty,
+      });
+
+      setNewTitle("");
+      setNewDescription("");
+      setNewDifficulty("T2");
+      setShowAddForm(false);
+
+      await loadData();
+    } catch (err: any) {
+      console.log("Create task error:", err.response?.data);
+    }
+  }
+
+  async function handleCompleteTask(id: number) {
+    try {
+      await api.patch(`/daily-tasks/${id}/complete`);
+      await loadData();
+    } catch (err: any) {
+      console.log("Complete task error:", err.response?.data);
+    }
+  }
+
+  async function handleDeleteTask(id: number) {
+    try {
+      await api.delete(`/daily-tasks/${id}`);
+      await loadData();
+    } catch (err: any) {
+      console.log("Delete task error:", err.response?.data);
+    }
+  }
+
+  const currentXp = user?.totalXp ?? 0;
+  const level = user?.level ?? 1;
+  const streak = user?.dailyStreak ?? 0;
+  const needNext = level * 100;
+  const xpPercent = Math.min((currentXp / needNext) * 100, 100);
+
+  const visibleTasks = hideCompleted
+    ? tasks.filter((task) => task.active)
+    : tasks;
+
+  return (
+    <div className="tasks-page">
+      <TopBar showLogout />
+
+      <main className="tasks-container">
+        <section className="player-panel">
+          <div className="player-grid">
+            <div className="player-stat level-card">
+              <span>PLAYER LEVEL</span>
+              <h1>Lv. {level}</h1>
+            </div>
+
+            <div className="player-stat">
+              <span>STREAK</span>
+              <h2>🔥 {streak} days</h2>
+            </div>
+
+            <div className="player-stat">
+              <span>CURRENT XP</span>
+              <h2>
+                {currentXp}/{needNext} XP
+              </h2>
+            </div>
+          </div>
+
+          <div className="xp-progress-section">
+            <div className="xp-row">
+              <span>Character Progress</span>
+              <strong>{Math.round(xpPercent)}%</strong>
+            </div>
+
+            <div className="xp-bar">
+              <div
+                className="xp-fill"
+                style={{ width: `${xpPercent}%` }}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="quest-board">
+          <div className="quest-header">
+            <div>
+              <span className="section-kicker">QUEST BOARD</span>
+              <h1>Today's Quests</h1>
+            </div>
+
+            <div className="quest-actions">
+              <button
+                className="add-task-btn"
+                type="button"
+                onClick={() => setShowAddForm(true)}
+              >
+                + Add Quest
+              </button>
+
+              <label className="hide-completed">
+                <input
+                  type="checkbox"
+                  checked={hideCompleted}
+                  onChange={(e) => setHideCompleted(e.target.checked)}
+                />
+                Hide Completed
+              </label>
+            </div>
+          </div>
+
+          {showAddForm && (
+            <form className="add-task-form" onSubmit={handleCreateTask}>
+              <label>
+                Task Name
+                <input
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  placeholder="Enter task name"
+                />
+              </label>
+
+              <label>
+                Description
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  placeholder="Optional description"
+                />
+              </label>
+
+              <label>
+                Difficulty
+                <select
+                  value={newDifficulty}
+                  onChange={(e) => setNewDifficulty(e.target.value)}
+                >
+                  <option value="T1">🟢 T1 - Easy</option>
+                  <option value="T2">🟡 T2 - Normal</option>
+                  <option value="T3">🔵 T3 - Hard</option>
+                  <option value="T4">🔴 T4 - Elite</option>
+                  <option value="BOSS">👑 Boss</option>
+                </select>
+              </label>
+
+              <div className="add-task-form-actions">
+                <button type="submit">Save Quest</button>
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={() => setShowAddForm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+
+          <div className="quest-list">
+            {visibleTasks.length === 0 && (
+              <div className="empty-state">No quests yet.</div>
+            )}
+
+            {visibleTasks.map((task) => (
+              <article
+                className={`quest-card ${
+                  !task.active ? "quest-card-completed" : ""
+                }`}
+                key={task.id}
+              >
+                <div className="quest-main">
+                  <span className="quest-dot" />
+
+                  <div>
+                    <div className="quest-title-row">
+                      <h2>{task.title}</h2>
+                      <span className="difficulty-pill">
+                        {task.difficulty}
+                      </span>
+                    </div>
+
+                    {task.description && (
+                      <p className="quest-description">
+                        {task.description}
+                      </p>
+                    )}
+
+                    <p className="quest-xp">+{task.baseXp} XP</p>
+                  </div>
+                </div>
+
+                <div className="quest-buttons">
+                  {task.active ? (
+                    <>
+                      <button
+                        className="complete-btn"
+                        type="button"
+                        onClick={() => handleCompleteTask(task.id)}
+                      >
+                        Complete
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        type="button"
+                        onClick={() => handleDeleteTask(task.id)}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  ) : (
+                    <span className="completed-label">Completed</span>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
 }
 
 export default Tasks;

@@ -3,12 +3,34 @@ import Login from "./pages/Login";
 import Tasks from "./pages/Task";
 import Register from "./pages/Register";
 
+function ProtectedRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/";
+    return null;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/tasks" element={<Tasks />} />
+        <Route
+          path="/tasks"
+          element={
+            <ProtectedRoute>
+              <Tasks />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
