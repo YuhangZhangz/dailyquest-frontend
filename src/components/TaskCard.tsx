@@ -30,68 +30,108 @@ type TaskCardProps = {
 
 function TaskCard({ task, onComplete, onDelete, onUpdate, onRevert }: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <article
       className={`quest-card quest-card-${task.taskType.toLowerCase()} ${
         !task.active ? "quest-card-completed" : ""
       }`}
+      onMouseLeave={() => setMenuOpen(false)}
     >
       {task.active && (
-        <button
-          className="edit-corner-btn"
-          type="button"
-          onClick={() => setIsEditing(true)}
-        >
-          Edit
-        </button>
-      )}
-
-      <h2>{task.title}</h2>
-
-      {task.description && <p>{task.description}</p>}
-
-      <p>+{task.baseXp} XP</p>
-
-      <div className="quest-buttons">
-        {task.active ? (
-          <>
-            <button
-              className="complete-btn"
-              type="button"
-              onClick={() => onComplete(task.id)}
-            >
-              Complete
-            </button>
-
-            <button
-              className="delete-btn"
-              type="button"
-              onClick={() => onDelete(task.id)}
-            >
-              Delete
-            </button>
-          </>
-        ) : (
+          <div className="task-menu">
           <button
-            className="revert-btn"
+            className="edit-corner-btn"
             type="button"
-            onClick={() => onRevert(task.id)}
+            onClick={() => setMenuOpen((prev) => !prev)}
           >
-            Undo
+            ⋯
           </button>
-        )}
-      </div>
 
-      {isEditing && (
-        <EditTaskModal
-          task={task}
-          onClose={() => setIsEditing(false)}
-          onSave={onUpdate}
-        />
+          {menuOpen && (
+            <div className="task-menu-dropdown">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsEditing(true);
+                  setMenuOpen(false);
+                }}
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                className="menu-delete-btn"
+                onClick={() => {
+                  onDelete(task.id);
+                  setMenuOpen(false);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
       )}
-    </article>
-  );
+
+            <div className="quest-card-title-row">
+              <h2>{task.title}</h2>
+
+              <span className="difficulty-pill">
+                {getDifficultyLabel(task.difficulty)} · {task.baseXp} XP
+              </span>
+            </div>
+            
+            {task.description && <p>{task.description}</p>}
+
+            <div className="quest-buttons">
+              {task.active ? (
+                <button
+                  className="complete-btn"
+                  type="button"
+                  onClick={() => onComplete(task.id)}
+                >
+                  Complete
+                </button>
+              ) : (
+                <button
+                  className="revert-btn"
+                  type="button"
+                  onClick={() => onRevert(task.id)}
+                >
+                  Undo
+                </button>
+              )}
+            </div>
+
+            {isEditing && (
+              <EditTaskModal
+                task={task}
+                onClose={() => setIsEditing(false)}
+                onSave={onUpdate}
+              />
+            )}
+          </article>
+        );
+      }
+
+function getDifficultyLabel(difficulty: string) {
+  switch (difficulty) {
+    case "T1":
+      return "🟢 Easy";
+    case "T2":
+      return "🟡 Normal";
+    case "T3":
+      return "🔵 Hard";
+    case "T4":
+      return "🔴 Elite";
+    case "BOSS":
+      return "👑 Boss";
+    default:
+      return difficulty;
+  }
 }
 
 export default TaskCard;
