@@ -147,9 +147,13 @@ function Tasks() {
               <h1>Lv. {level}</h1>
             </div>
 
-            <div className="player-stat">
-              <span>STREAK</span>
-              <h2>🔥 {streak} days</h2>
+            <div className="player-stat streak-stat">
+              <div className="streak-inline">
+                <span className="streak-icon">🔥</span>
+                <span className="streak-label">Streak</span>
+                <strong className="streak-number">{streak}</strong>
+                <span className="streak-days">days</span>
+              </div>
             </div>
 
             <div className="player-stat">

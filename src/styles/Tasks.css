@@ -4,70 +4,74 @@
 }
 
 .tasks-container {
-  max-width: 1160px;
-  margin: 32px auto;
-  padding: 0 24px 60px;
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 20px 50px;
 }
 
 .player-panel,
 .quest-board {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
 }
 
 .player-panel {
-  padding: 28px;
-  margin-bottom: 32px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
 }
 
 .player-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 .player-stat {
   border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 14px 20px;
   background: #f8fafc;
 }
 
-.player-stat span,
+.player-stat > span,
 .section-kicker {
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   color: #64748b;
+  text-transform: uppercase;
 }
 
 .player-stat h1 {
-  margin: 8px 0 0;
-  font-size: 46px;
+  margin: 7px 0 0;
+  font-size: 34px;
   line-height: 1;
 }
 
 .player-stat h2 {
-  margin: 14px 0 0;
-  font-size: 24px;
+  margin: 8px 0 0;
+  font-size: 18px;
 }
 
 .xp-progress-section {
-  margin-top: 24px;
+  margin-top: 18px;
 }
 
 .xp-row {
   display: flex;
   justify-content: space-between;
   color: #64748b;
+  font-size: 14px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .xp-bar {
-  height: 12px;
+  height: 9px;
   background: #e5e7eb;
   border-radius: 999px;
   overflow: hidden;
@@ -80,35 +84,36 @@
 }
 
 .quest-board {
-  padding: 36px 44px;
+  padding: 24px 26px;
 }
 
 .quest-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
-  margin-bottom: 28px;
+  gap: 18px;
+  margin-bottom: 22px;
 }
 
 .quest-header h1 {
-  margin: 10px 0 0;
-  font-size: 34px;
+  margin: 8px 0 0;
+  font-size: 26px;
+  line-height: 1.15;
 }
 
 .quest-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .add-task-btn {
-  padding: 14px 24px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 16px;
+  border-radius: 13px;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
 }
@@ -116,15 +121,16 @@
 .hide-completed {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   color: #64748b;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .quest-list {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 16px;
 }
 
 .quest-card {
@@ -132,12 +138,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
-  padding: 20px 28px;
+  gap: 10px;
+  padding: 15px 20px;
   min-height: auto;
   border: 1px solid #e5e7eb;
-  border-left: 6px solid #6366f1;
-  border-radius: 22px;
+  border-left: 5px solid #6366f1;
+  border-radius: 18px;
   background: #f8fafc;
 }
 
@@ -150,66 +156,80 @@
 
 .quest-main {
   display: flex;
-  gap: 18px;
+  gap: 14px;
 }
 
 .quest-dot {
-  width: 22px;
-  height: 22px;
-  margin-top: 8px;
+  width: 18px;
+  height: 18px;
+  margin-top: 6px;
   border-radius: 50%;
   background: #fde047;
   border: 2px solid #111827;
   flex-shrink: 0;
 }
 
-.quest-title-row {
+.quest-title-row,
+.quest-card-title-row {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 2px;
 }
 
-.quest-title-row h2 {
+.quest-title-row h2,
+.quest-card-title-row h2,
+.quest-card h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 18px;
+  line-height: 1.15;
+  font-weight: 700;
 }
 
 .difficulty-pill {
   display: inline-block;
   width: fit-content;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
   background: #eef2ff;
   color: #4f46e5;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
-  margin-bottom: 8px;
-  transform: translateY(-2px);
+  margin-bottom: 6px;
+  transform: translateY(-1px);
 }
 
 .quest-description {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: #64748b;
 }
 
 .quest-xp {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   color: #7c3aed;
   font-weight: 800;
+}
+
+.quest-card p {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
 }
 
 .quest-buttons {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 6px;
 }
 
 .complete-btn,
 .delete-btn {
   border: none;
   border-radius: 999px;
-  padding: 12px 22px;
+  padding: 9px 18px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
 }
@@ -217,7 +237,7 @@
 .complete-btn {
   background: white;
   color: #111827;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
 .delete-btn {
@@ -226,49 +246,30 @@
 }
 
 .empty-state {
-  padding: 36px;
-  border-radius: 18px;
+  padding: 28px;
+  border-radius: 16px;
   background: #f8fafc;
   color: #64748b;
   text-align: center;
+  font-size: 14px;
   font-weight: 700;
 }
 
-@media (max-width: 800px) {
-  .player-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .quest-header,
-  .quest-card,
-  .quest-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .quest-board {
-    padding: 28px;
-  }
-
-  .quest-buttons {
-    justify-content: flex-start;
-  }
-}
-
 .add-task-form {
-  margin-bottom: 28px;
-  padding: 24px;
-  border-radius: 18px;
+  margin-bottom: 22px;
+  padding: 18px;
+  border-radius: 16px;
   background: #eef2f7;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 13px;
 }
 
 .add-task-form label {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
+  font-size: 14px;
   font-weight: 800;
   color: #111827;
 }
@@ -276,30 +277,30 @@
 .add-task-form input,
 .add-task-form textarea,
 .add-task-form select {
-  padding: 14px 48px 14px 16px;
+  padding: 12px 42px 12px 14px;
   border: 1px solid #d1d5db;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 11px;
+  font-size: 14px;
   background: white;
   box-sizing: border-box;
 }
 
 .add-task-form textarea {
-  min-height: 90px;
+  min-height: 78px;
   resize: vertical;
 }
 
 .add-task-form-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 
 .add-task-form-actions button {
-  padding: 14px 18px;
+  padding: 12px 16px;
   border: none;
-  border-radius: 14px;
-  font-size: 16px;
+  border-radius: 13px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
   background: linear-gradient(135deg, #1e3a8a, #2563eb);
@@ -308,12 +309,12 @@
 
 .cancel-btn {
   border: none;
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: #f1f5f9;
   color: #64748b;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -324,10 +325,10 @@
 }
 
 .cancel-task-btn {
-  padding: 14px 18px;
+  padding: 12px 16px;
   border: none;
-  border-radius: 14px;
-  font-size: 16px;
+  border-radius: 13px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
   background: #94a3b8;
@@ -343,37 +344,38 @@
 }
 
 .logout-btn {
-  padding: 10px 20px;
+  padding: 9px 18px;
   border: none;
-  border-radius: 12px;
+  border-radius: 11px;
   background: #ef4444;
   color: white;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
 
 .quest-card-habit {
-  border-left: 6px solid #22c55e;
+  border-left: 5px solid #22c55e;
 }
 
 .quest-card-daily {
-  border-left: 6px solid #f59e0b;
+  border-left: 5px solid #f59e0b;
 }
 
 .quest-card-todo {
-  border-left: 6px solid #3b82f6;
+  border-left: 5px solid #3b82f6;
 }
 
 .edit-corner-btn {
   position: absolute;
-  top: 14px;
-  right: 16px;
+  top: 10px;
+  right: 12px;
 
   border: none;
   background: transparent;
   color: #64748b;
 
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   cursor: pointer;
 
@@ -394,6 +396,51 @@
   color: #111827;
 }
 
+.task-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.task-menu-dropdown {
+  position: absolute;
+  top: 34px;
+  right: 12px;
+
+  width: 90px;
+  padding: 5px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 11px;
+  background: white;
+
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.13);
+  z-index: 20;
+}
+
+.task-menu-dropdown button {
+  width: 100%;
+  border: none;
+  background: transparent;
+
+  padding: 8px 9px;
+  border-radius: 8px;
+
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #111827;
+}
+
+.task-menu-dropdown button:hover {
+  background: #f1f5f9;
+}
+
+.task-menu-dropdown .menu-delete-btn {
+  color: #ef4444;
+}
+
 .edit-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -405,15 +452,15 @@
 }
 
 .edit-task-modal {
-  width: 720px;
+  width: 620px;
   max-width: 92vw;
   background: white;
-  border-radius: 28px;
-  padding: 36px;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 26px 70px rgba(15, 23, 42, 0.24);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 18px;
 }
 
 .edit-modal-header {
@@ -424,24 +471,26 @@
 
 .edit-modal-header h2 {
   margin: 0;
-  font-size: 48px;
+  font-size: 34px;
   font-weight: 800;
   color: #111827;
 }
+
 .edit-task-modal label {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .edit-task-modal input,
 .edit-task-modal textarea,
 .edit-task-modal select {
-  padding: 14px 16px;
+  padding: 12px 14px;
   border: 1px solid #d1d5db;
-  border-radius: 14px;
-  font-size: 16px;
+  border-radius: 12px;
+  font-size: 14px;
   background: #ffffff;
   color: #111827;
   outline: none;
@@ -458,7 +507,8 @@
 .save-edit-btn {
   border: none;
   border-radius: 999px;
-  padding: 12px 20px;
+  padding: 10px 18px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
   background: #2563eb;
@@ -466,22 +516,24 @@
 }
 
 .completed-label {
-  padding: 12px 20px;
+  padding: 10px 18px;
   border-radius: 999px;
   background: #16a34a;
   color: white;
+  font-size: 14px;
   font-weight: 900;
 }
 
 .revert-btn {
   border: none;
   border-radius: 999px;
-  padding: 12px 22px;
+  padding: 9px 18px;
+  font-size: 14px;
   font-weight: 900;
   cursor: pointer;
   background: #f97316;
   color: white;
-  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.25);
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.23);
   transition: 0.2s;
 }
 
@@ -490,72 +542,78 @@
   transform: translateY(-1px);
 }
 
-.quest-card h2 {
-  font-size: 22px;
-  margin: 0 0 10px;
-  line-height: 1.1;
-  font-weight: 700;
+@media (max-width: 800px) {
+  .tasks-container {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 0 16px 40px;
+  }
+
+  .player-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quest-header,
+  .quest-card,
+  .quest-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quest-board {
+    padding: 22px;
+  }
+
+  .quest-buttons {
+    justify-content: flex-start;
+  }
 }
 
-.quest-card p {
-  color: #64748b;
-  font-size: 15px;
-  font-weight: 500;
-  margin: 0;
-}
-
-.quest-card-title-row {
+.streak-stat {
+  min-height: 72px;
   display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin-bottom: 4px;
+  align-items: center;
+  padding: 0 16px;
 }
 
-.quest-card-title-row h2 {
+.streak-inline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
   margin: 0;
-}
+  padding: 0;
 
-.task-menu {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-}
-
-.task-menu-dropdown {
-  position: absolute;
-  top: 40px;
-  right: 15px;
-
-  width: 96px;
-  padding: 6px;
-
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: white;
-
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
-  z-index: 20;
-}
-
-.task-menu-dropdown button {
-  width: 100%;
-  border: none;
-  background: transparent;
-
-  padding: 10px 10px;
-  border-radius: 8px;
-
-  text-align: left;
-  font-size: 13px;
+  color: #64748b;
+  font-size: 17px;
   font-weight: 700;
-  cursor: pointer;
-  color: #111827;
+  letter-spacing: normal;
+  line-height: 1;
 }
 
-.task-menu-dropdown button:hover {
-  background: #f1f5f9;
+.streak-icon {
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: normal;
 }
 
-.task-menu-dropdown .menu-delete-btn {
-  color: #ef4444;
+.streak-label {
+  color: #64748b;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: normal;
+}
+
+.streak-number {
+  color: #f97316;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: normal;
+}
+
+.streak-days {
+  color: #64748b;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: normal;
 }
