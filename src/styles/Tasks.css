@@ -128,6 +128,7 @@
 }
 
 .quest-card {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 24px;
@@ -448,10 +449,6 @@
 .revert-btn:hover {
   background: #ea580c;
   transform: translateY(-1px);
-}
-
-.quest-card {
-  position: relative;
 }
 
 .quest-card h2 {
