@@ -252,7 +252,7 @@ function Tasks() {
                 <button type="submit">Save Quest</button>
                 <button
                   type="button"
-                  className="cancel-btn"
+                  className="cancel-task-btn"
                   onClick={() => setShowAddForm(false)}
                 >
                   Cancel
