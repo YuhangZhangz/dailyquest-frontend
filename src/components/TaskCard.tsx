@@ -1,3 +1,6 @@
+import { useState } from "react";
+import EditTaskModal from "./EditTaskModal";
+
 type TaskType = "HABIT" | "DAILY" | "TODO";
 
 type DailyTask = {
@@ -15,40 +18,69 @@ type TaskCardProps = {
   task: DailyTask;
   onComplete: (id: number) => void;
   onDelete: (id: number) => void;
+  onUpdate: (
+    id: number,
+    title: string,
+    description: string,
+    difficulty: string,
+    taskType: TaskType
+  ) => void;
 };
 
-function TaskCard({ task, onComplete, onDelete }: TaskCardProps) {
+function TaskCard({ task, onComplete, onDelete, onUpdate }: TaskCardProps) {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
-    <article className={`quest-card ${!task.active ? "quest-card-completed" : ""}`}>
-    <h2>{task.title}</h2>
+    <article
+      className={`quest-card quest-card-${task.taskType.toLowerCase()} ${
+        !task.active ? "quest-card-completed" : ""
+      }`}
+    >
+      <h2>{task.title}</h2>
 
-    {task.description && <p>{task.description}</p>}
+      {task.description && <p>{task.description}</p>}
 
-    <p>+{task.baseXp} XP</p>
+      <p>+{task.baseXp} XP</p>
 
-    <div className="quest-buttons">
+      <div className="quest-buttons">
         {task.active ? (
-        <>
+          <>
             <button
-            className="complete-btn"
-            type="button"
-            onClick={() => onComplete(task.id)}
+              className="edit-btn"
+              type="button"
+              onClick={() => setIsEditing(true)}
             >
-            Complete
+              Edit
             </button>
 
             <button
-            className="delete-btn"
-            type="button"
-            onClick={() => onDelete(task.id)}
+              className="complete-btn"
+              type="button"
+              onClick={() => onComplete(task.id)}
             >
-            Delete
+              Complete
             </button>
-        </>
+
+            <button
+              className="delete-btn"
+              type="button"
+              onClick={() => onDelete(task.id)}
+            >
+              Delete
+            </button>
+          </>
         ) : (
-        <span className="completed-label">Completed</span>
+          <span className="completed-label">Completed</span>
         )}
-    </div>
+      </div>
+
+      {isEditing && (
+        <EditTaskModal
+          task={task}
+          onClose={() => setIsEditing(false)}
+          onSave={onUpdate}
+        />
+      )}
     </article>
   );
 }

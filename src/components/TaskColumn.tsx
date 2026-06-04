@@ -18,9 +18,22 @@ type TaskColumnProps = {
   tasks: DailyTask[];
   onComplete: (id: number) => void;
   onDelete: (id: number) => void;
+  onUpdate: (
+    id: number,
+    title: string,
+    description: string,
+    difficulty: string,
+    taskType: TaskType
+  ) => void;
 };
 
-function TaskColumn({ title, tasks, onComplete, onDelete }: TaskColumnProps) {
+function TaskColumn({
+  title,
+  tasks,
+  onComplete,
+  onDelete,
+  onUpdate,
+}: TaskColumnProps) {
   return (
     <section className="quest-column">
       <h2>{title}</h2>
@@ -31,6 +44,7 @@ function TaskColumn({ title, tasks, onComplete, onDelete }: TaskColumnProps) {
           task={task}
           onComplete={onComplete}
           onDelete={onDelete}
+          onUpdate={onUpdate}
         />
       ))}
     </section>

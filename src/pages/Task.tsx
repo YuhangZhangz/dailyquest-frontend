@@ -92,6 +92,27 @@ function Tasks() {
     }
   }
 
+  async function handleUpdateTask(
+    id: number,
+    title: string,
+    description: string,
+    difficulty: string,
+    taskType: TaskType
+  ) {
+    try {
+      await api.put(`/daily-tasks/${id}`, {
+        title,
+        description,
+        difficulty,
+        taskType,
+      });
+
+      await loadData();
+    } catch (err: any) {
+      console.log("Update task error:", err.response?.data);
+    }
+  }
+
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
@@ -237,6 +258,7 @@ function Tasks() {
               tasks={habitTasks}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
+              onUpdate={handleUpdateTask}
             />
 
             <TaskColumn
@@ -244,6 +266,7 @@ function Tasks() {
               tasks={dailyTasks}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
+              onUpdate={handleUpdateTask}
             />
 
             <TaskColumn
@@ -251,6 +274,7 @@ function Tasks() {
               tasks={todoTasks}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
+              onUpdate={handleUpdateTask}
             />
           </div>
         </section>

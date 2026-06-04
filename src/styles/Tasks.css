@@ -140,7 +140,10 @@
 
 .quest-card-completed {
   opacity: 0.55;
+  background: #f3f4f6;
+  filter: grayscale(1);
 }
+
 
 .quest-main {
   display: flex;
@@ -295,10 +298,21 @@
   color: white;
 }
 
-.add-task-form-actions .cancel-btn {
-  background: white;
-  color: #111827;
-  border: 1px solid #d1d5db;
+.cancel-btn {
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #e2e8f0;
+  transform: rotate(90deg);
 }
 
 .auth-top-bar {
@@ -313,4 +327,90 @@
   color: white;
   font-weight: 700;
   cursor: pointer;
+}
+
+.quest-card-habit {
+  border-left: 6px solid #22c55e;
+}
+
+.quest-card-daily {
+  border-left: 6px solid #f59e0b;
+}
+
+.quest-card-todo {
+  border-left: 6px solid #3b82f6;
+}
+
+.edit-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.edit-btn:hover {
+  background: #e0e7ff;
+}
+
+.edit-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.edit-task-modal {
+  width: 720px;
+  max-width: 92vw;
+  background: white;
+  border-radius: 28px;
+  padding: 36px;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.edit-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.edit-modal-header h2 {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 800;
+  color: #111827;
+}
+.edit-task-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.edit-task-modal input,
+.edit-task-modal textarea,
+.edit-task-modal select {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.save-edit-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
 }
