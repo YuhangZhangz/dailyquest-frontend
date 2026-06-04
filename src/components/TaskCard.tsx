@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
 
 type TaskType = "HABIT" | "DAILY" | "TODO";
@@ -28,23 +28,50 @@ type TaskCardProps = {
   onRevert: (id: number) => void;
 };
 
-function TaskCard({ task, onComplete, onDelete, onUpdate, onRevert }: TaskCardProps) {
+function TaskCard({
+  task,
+  onComplete,
+  onDelete,
+  onUpdate,
+  onRevert,
+}: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
 
   return (
     <article
       className={`quest-card quest-card-${task.taskType.toLowerCase()} ${
         !task.active ? "quest-card-completed" : ""
       }`}
-      onMouseLeave={() => setMenuOpen(false)}
     >
       {task.active && (
-          <div className="task-menu">
+        <div className="task-menu" ref={menuRef}>
           <button
             className="edit-corner-btn"
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Open task menu"
           >
             ⋯
           </button>
@@ -76,46 +103,46 @@ function TaskCard({ task, onComplete, onDelete, onUpdate, onRevert }: TaskCardPr
         </div>
       )}
 
-            <div className="quest-card-title-row">
-              <h2>{task.title}</h2>
+      <div className="quest-card-title-row">
+        <h2>{task.title}</h2>
 
-              <span className="difficulty-pill">
-                {getDifficultyLabel(task.difficulty)} · {task.baseXp} XP
-              </span>
-            </div>
-            
-            {task.description && <p>{task.description}</p>}
+        <span className="difficulty-pill">
+          {getDifficultyLabel(task.difficulty)} · {task.baseXp} XP
+        </span>
+      </div>
 
-            <div className="quest-buttons">
-              {task.active ? (
-                <button
-                  className="complete-btn"
-                  type="button"
-                  onClick={() => onComplete(task.id)}
-                >
-                  Complete
-                </button>
-              ) : (
-                <button
-                  className="revert-btn"
-                  type="button"
-                  onClick={() => onRevert(task.id)}
-                >
-                  Undo
-                </button>
-              )}
-            </div>
+      {task.description && <p>{task.description}</p>}
 
-            {isEditing && (
-              <EditTaskModal
-                task={task}
-                onClose={() => setIsEditing(false)}
-                onSave={onUpdate}
-              />
-            )}
-          </article>
-        );
-      }
+      <div className="quest-buttons">
+        {task.active ? (
+          <button
+            className="complete-btn"
+            type="button"
+            onClick={() => onComplete(task.id)}
+          >
+            Complete
+          </button>
+        ) : (
+          <button
+            className="revert-btn"
+            type="button"
+            onClick={() => onRevert(task.id)}
+          >
+            Undo
+          </button>
+        )}
+      </div>
+
+      {isEditing && (
+        <EditTaskModal
+          task={task}
+          onClose={() => setIsEditing(false)}
+          onSave={onUpdate}
+        />
+      )}
+    </article>
+  );
+}
 
 function getDifficultyLabel(difficulty: string) {
   switch (difficulty) {
