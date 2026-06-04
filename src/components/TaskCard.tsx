@@ -25,9 +25,10 @@ type TaskCardProps = {
     difficulty: string,
     taskType: TaskType
   ) => void;
+  onRevert: (id: number) => void;
 };
 
-function TaskCard({ task, onComplete, onDelete, onUpdate }: TaskCardProps) {
+function TaskCard({ task, onComplete, onDelete, onUpdate, onRevert }: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -36,6 +37,16 @@ function TaskCard({ task, onComplete, onDelete, onUpdate }: TaskCardProps) {
         !task.active ? "quest-card-completed" : ""
       }`}
     >
+      {task.active && (
+        <button
+          className="edit-corner-btn"
+          type="button"
+          onClick={() => setIsEditing(true)}
+        >
+          Edit
+        </button>
+      )}
+
       <h2>{task.title}</h2>
 
       {task.description && <p>{task.description}</p>}
@@ -45,14 +56,6 @@ function TaskCard({ task, onComplete, onDelete, onUpdate }: TaskCardProps) {
       <div className="quest-buttons">
         {task.active ? (
           <>
-            <button
-              className="edit-btn"
-              type="button"
-              onClick={() => setIsEditing(true)}
-            >
-              Edit
-            </button>
-
             <button
               className="complete-btn"
               type="button"
@@ -70,7 +73,13 @@ function TaskCard({ task, onComplete, onDelete, onUpdate }: TaskCardProps) {
             </button>
           </>
         ) : (
-          <span className="completed-label">Completed</span>
+          <button
+            className="revert-btn"
+            type="button"
+            onClick={() => onRevert(task.id)}
+          >
+            Undo
+          </button>
         )}
       </div>
 

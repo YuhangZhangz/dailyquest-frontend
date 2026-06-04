@@ -25,6 +25,7 @@ type TaskColumnProps = {
     difficulty: string,
     taskType: TaskType
   ) => void;
+  onRevert: (id: number) => void;
 };
 
 function TaskColumn({
@@ -33,6 +34,7 @@ function TaskColumn({
   onComplete,
   onDelete,
   onUpdate,
+  onRevert,
 }: TaskColumnProps) {
   return (
     <section className="quest-column">
@@ -45,6 +47,7 @@ function TaskColumn({
           onComplete={onComplete}
           onDelete={onDelete}
           onUpdate={onUpdate}
+          onRevert={onRevert}
         />
       ))}
     </section>

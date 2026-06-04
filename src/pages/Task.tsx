@@ -112,6 +112,15 @@ function Tasks() {
       console.log("Update task error:", err.response?.data);
     }
   }
+  
+  async function handleRevertTask(id: number) {
+    try {
+      await api.patch(`/daily-tasks/${id}/revert`);
+      await loadData();
+    } catch (err: any) {
+      console.log("Revert task error:", err.response?.data);
+    }
+  }
 
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
@@ -259,6 +268,7 @@ function Tasks() {
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
+              onRevert={handleRevertTask}
             />
 
             <TaskColumn
@@ -267,6 +277,7 @@ function Tasks() {
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
+              onRevert={handleRevertTask}
             />
 
             <TaskColumn
@@ -275,6 +286,7 @@ function Tasks() {
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
+              onRevert={handleRevertTask}
             />
           </div>
         </section>

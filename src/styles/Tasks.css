@@ -139,11 +139,11 @@
 }
 
 .quest-card-completed {
-  opacity: 0.55;
-  background: #f3f4f6;
-  filter: grayscale(1);
+  opacity: 0.9;
+  background: #fff7ed;
+  border-left-color: #f97316;
+  filter: none;
 }
-
 
 .quest-main {
   display: flex;
@@ -341,18 +341,28 @@
   border-left: 6px solid #3b82f6;
 }
 
-.edit-btn {
+.edit-corner-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+
   border: none;
   border-radius: 999px;
-  padding: 12px 24px;
-  font-weight: 700;
+  padding: 8px 16px;
+
+  background: #3b82f6;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 800;
   cursor: pointer;
-  background: #eef2ff;
-  color: #4f46e5;
+
+  transition: 0.2s;
 }
 
-.edit-btn:hover {
-  background: #e0e7ff;
+.edit-corner-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
 }
 
 .edit-modal-backdrop {
@@ -413,4 +423,50 @@
   cursor: pointer;
   background: #2563eb;
   color: white;
+}
+
+.completed-label {
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #16a34a;
+  color: white;
+  font-weight: 900;
+}
+
+.revert-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-weight: 900;
+  cursor: pointer;
+  background: #f97316;
+  color: white;
+  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.25);
+  transition: 0.2s;
+}
+
+.revert-btn:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+.quest-card {
+  position: relative;
+}
+
+.quest-card h2 {
+  font-size: 42px;
+  margin: 0 0 36px;
+  line-height: 1.1;
+}
+
+.quest-card p {
+  font-size: 22px;
+  margin: 0 0 34px;
+}
+
+.quest-card p:last-of-type {
+  font-size: 24px;
+  font-weight: 800;
+  color: #7c3aed;
 }
