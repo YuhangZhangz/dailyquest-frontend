@@ -11,31 +11,34 @@ type DailyTask = {
   baseXp: number;
   active: boolean;
   createdAt: string;
+  dueDate: string | null;
 };
 
 type EditTaskModalProps = {
   task: DailyTask;
   onClose: () => void;
-  onSave: (
+  onUpdate: (
     id: number,
     title: string,
     description: string,
     difficulty: string,
-    taskType: TaskType
+    taskType: TaskType,
+    dueDate: string | null
   ) => void;
 };
 
-function EditTaskModal({ task, onClose, onSave }: EditTaskModalProps) {
+function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [difficulty, setDifficulty] = useState(task.difficulty);
+  const [dueDate, setDueDate] = useState(task.dueDate ?? "");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!title.trim()) return;
 
-    onSave(task.id, title, description, difficulty, task.taskType);
+    onUpdate(task.id, title, description, difficulty, task.taskType, task.taskType === "TODO" ? dueDate : null);
     onClose();
   }
 
@@ -78,6 +81,17 @@ function EditTaskModal({ task, onClose, onSave }: EditTaskModalProps) {
             <option value="BOSS">👑 Boss</option>
           </select>
         </label>
+
+        {task.taskType === "TODO" && (
+          <label>
+            Due Date
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </label>
+        )}
 
         <button className="save-edit-btn" type="submit">
           Save

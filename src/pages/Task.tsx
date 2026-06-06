@@ -100,7 +100,8 @@ function Tasks() {
     title: string,
     description: string,
     difficulty: string,
-    taskType: TaskType
+    taskType: TaskType,
+    dueDate: string | null
   ) {
     try {
       await api.put(`/daily-tasks/${id}`, {
@@ -108,6 +109,7 @@ function Tasks() {
         description,
         difficulty,
         taskType,
+        dueDate,
       });
 
       await loadData();

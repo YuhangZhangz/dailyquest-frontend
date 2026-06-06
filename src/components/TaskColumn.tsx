@@ -28,7 +28,8 @@ type TaskColumnProps = {
     title: string,
     description: string,
     difficulty: string,
-    taskType: TaskType
+    taskType: TaskType,
+    dueDate: string | null
   ) => void;
   onRevert: (id: number) => void;
 };

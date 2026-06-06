@@ -26,7 +26,8 @@ type TaskCardProps = {
     title: string,
     description: string,
     difficulty: string,
-    taskType: TaskType
+    taskType: TaskType,
+    dueDate: string | null
   ) => void;
   onRevert: (id: number) => void;
 };
@@ -164,7 +165,7 @@ function TaskCard({
         <EditTaskModal
           task={task}
           onClose={() => setIsEditing(false)}
-          onSave={onUpdate}
+          onUpdate={onUpdate}
         />
       )}
     </article>
