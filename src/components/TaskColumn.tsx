@@ -44,12 +44,16 @@ function TaskColumn({
   onUpdate,
   onRevert,
 }: TaskColumnProps) {
+  const displayCount = title.includes("Todos")
+    ? tasks.filter((task) => task.active).length
+    : tasks.length;
+  
   return (
     <section className="task-column">
       <div className="task-column-header">
         <div className="task-column-title-row">
           <h2>{title}</h2>
-          <span className="task-count-pill">{tasks.length}</span>
+          <span className="task-count-pill">{displayCount}</span>
         </div>
 
         <button className="column-add-btn" type="button" onClick={onAdd}>

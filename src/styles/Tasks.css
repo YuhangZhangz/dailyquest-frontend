@@ -379,6 +379,8 @@ body,
   align-items: center;
   gap: 9px;
   margin-top: 5px;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .complete-btn,
@@ -774,10 +776,6 @@ body,
     padding: 22px;
   }
 
-  .quest-buttons {
-    justify-content: flex-start;
-  }
-
   .task-column-header h2 {
     font-size: 24px;
   }
@@ -924,4 +922,42 @@ body,
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
+}
+
+.habit-split-actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.habit-side-btn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: white;
+  color: #111827;
+
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  transition: 0.2s;
+}
+
+.habit-side-btn:hover {
+  transform: translateY(-1px);
+  background: #f1f5f9;
+}
+
+.habit-minus-btn {
+  color: #ef4444;
+}
+
+.habit-plus-btn {
+  color: #22c55e;
 }

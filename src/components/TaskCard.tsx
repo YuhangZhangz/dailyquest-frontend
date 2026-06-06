@@ -138,11 +138,37 @@ function TaskCard({
       )}
 
       <div className="quest-buttons">
-        {isDailyCompletedToday ? (
-          <button className="complete-btn" type="button" disabled>
-            Completed
-          </button>
-        ) : task.active ? (
+        {task.taskType === "HABIT" ? (
+          <div className="habit-split-actions">
+            <button
+              className="habit-side-btn habit-minus-btn"
+              type="button"
+              onClick={() => {
+                console.log("Habit plus clicked:", task.id);
+                onRevert(task.id);}}
+            >
+              −
+            </button>
+
+            <button
+              className="habit-side-btn habit-plus-btn"
+              type="button"
+              onClick={() => {
+                console.log("Habit plus clicked:", task.id);
+                onComplete(task.id);}}
+            >
+              +
+            </button>
+          </div>
+          ) : isDailyCompletedToday ? (
+            <button
+              className="revert-btn"
+              type="button"
+              onClick={() => onRevert(task.id)}
+            >
+              Undo
+            </button>
+          ) : task.active ? (
           <button
             className="complete-btn"
             type="button"
