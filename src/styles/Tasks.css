@@ -174,12 +174,6 @@ body,
   width: 100%;
 }
 
-.task-column-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
 
 .task-column-header h2 {
   margin: 0;
@@ -794,4 +788,140 @@ body,
   color: #64748b;
   font-size: 14px;
   font-weight: 600;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+}
+
+.add-task-modal {
+  width: 420px;
+  max-width: calc(100vw - 32px);
+
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 28px;
+
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.28);
+  animation: modal-pop 0.2s ease;
+}
+
+.add-task-modal h2 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  color: #0f172a;
+}
+
+.add-task-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add-task-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.add-task-modal input,
+.add-task-modal textarea,
+.add-task-modal select {
+  width: 100%;
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  padding: 12px 14px;
+
+  font-size: 14px;
+  outline: none;
+  background: #f8fafc;
+}
+
+.add-task-modal textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.add-task-modal input:focus,
+.add-task-modal textarea:focus,
+.add-task-modal select:focus {
+  border-color: #6366f1;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14);
+}
+
+.add-task-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.add-task-form-actions button {
+  flex: 1;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.add-task-form-actions button[type="submit"] {
+  background: #4f46e5;
+  color: white;
+}
+
+.cancel-task-btn {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.task-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.task-column-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.column-add-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 10px 18px;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
 }

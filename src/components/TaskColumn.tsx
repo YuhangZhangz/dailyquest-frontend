@@ -11,11 +11,16 @@ type DailyTask = {
   baseXp: number;
   active: boolean;
   createdAt: string;
+  completedCount: number;
+  lastCompletedDate: string | null;
+  dueDate: string | null;
 };
 
 type TaskColumnProps = {
   title: string;
+  addLabel: string;
   tasks: DailyTask[];
+  onAdd: () => void;
   onComplete: (id: number) => void;
   onDelete: (id: number) => void;
   onUpdate: (
@@ -30,7 +35,9 @@ type TaskColumnProps = {
 
 function TaskColumn({
   title,
+  addLabel,
   tasks,
+  onAdd,
   onComplete,
   onDelete,
   onUpdate,
@@ -39,8 +46,14 @@ function TaskColumn({
   return (
     <section className="task-column">
       <div className="task-column-header">
-        <h2>{title}</h2>
-        <span className="task-count-pill">{tasks.length}</span>
+        <div className="task-column-title-row">
+          <h2>{title}</h2>
+          <span className="task-count-pill">{tasks.length}</span>
+        </div>
+
+        <button className="column-add-btn" type="button" onClick={onAdd}>
+          + {addLabel}
+        </button>
       </div>
 
       <div className="task-column-body">

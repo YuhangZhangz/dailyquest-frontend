@@ -3,6 +3,7 @@ import api from "../api/axios";
 import TopBar from "../components/AuthTopBar";
 import "../styles/Tasks.css";
 import TaskColumn from "../components/TaskColumn";
+import AddTaskModal from "../components/AddTaskModal";
 
 type UserProfile = {
   id: number;
@@ -34,11 +35,8 @@ function Tasks() {
   const [tasks, setTasks] = useState<DailyTask[]>([]);
   const [hideCompleted, setHideCompleted] = useState(false);
 
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
-  const [newDescription, setNewDescription] = useState("");
-  const [newDifficulty, setNewDifficulty] = useState("T2");
-  const [newTaskType, setNewTaskType] = useState<TaskType>("DAILY");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [creatingType, setCreatingType] = useState<TaskType>("DAILY");
 
   async function loadData() {
     const userRes = await api.get("/auth/me");
@@ -52,25 +50,27 @@ function Tasks() {
     loadData();
   }, []);
 
-  async function handleCreateTask(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function openAddForm(taskType: TaskType) {
+    setCreatingType(taskType);
+    setShowAddModal(true);
+  }
 
-    if (!newTitle.trim()) return;
-
+  async function handleCreateTask(
+    title: string,
+    description: string,
+    difficulty: string,
+    dueDate: string | null
+  ) {
     try {
       await api.post("/daily-tasks", {
-        title: newTitle,
-        description: newDescription,
-        difficulty: newDifficulty,
-        taskType: newTaskType,
+        title,
+        description,
+        difficulty,
+        taskType: creatingType,
+        dueDate,
       });
 
-      setNewTitle("");
-      setNewDescription("");
-      setNewDifficulty("T2");
-      setShowAddForm(false);
-      setNewTaskType("DAILY");
-
+      setShowAddModal(false);
       await loadData();
     } catch (err: any) {
       console.log("Create task error:", err.response?.data);
@@ -115,7 +115,7 @@ function Tasks() {
       console.log("Update task error:", err.response?.data);
     }
   }
-  
+
   async function handleRevertTask(id: number) {
     try {
       await api.patch(`/daily-tasks/${id}/revert`);
@@ -134,10 +134,11 @@ function Tasks() {
   const visibleTasks = hideCompleted
     ? tasks.filter((task) => task.active)
     : tasks;
+
   const habitTasks = visibleTasks.filter((task) => task.taskType === "HABIT");
   const dailyTasks = visibleTasks.filter((task) => task.taskType === "DAILY");
   const todoTasks = visibleTasks.filter((task) => task.taskType === "TODO");
-  
+
   return (
     <div className="tasks-page">
       <TopBar showLogout />
@@ -190,14 +191,6 @@ function Tasks() {
             </div>
 
             <div className="quest-actions">
-              <button
-                className="add-task-btn"
-                type="button"
-                onClick={() => setShowAddForm((prev) => !prev)}
-              >
-                + Add Quest
-              </button>
-
               <label className="hide-completed">
                 <input
                   type="checkbox"
@@ -209,69 +202,20 @@ function Tasks() {
             </div>
           </div>
 
-          {showAddForm && (
-            <form className="add-task-form" onSubmit={handleCreateTask}>
-              <label>
-                Task Name
-                <input
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="Enter task name"
-                />
-              </label>
-
-              <label>
-                Description
-                <textarea
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  placeholder="Optional description"
-                />
-              </label>
-
-              <label>
-                Difficulty
-                <select
-                  value={newDifficulty}
-                  onChange={(e) => setNewDifficulty(e.target.value)}
-                >
-                  <option value="T1">🟢 T1 - Easy</option>
-                  <option value="T2">🟡 T2 - Normal</option>
-                  <option value="T3">🔵 T3 - Hard</option>
-                  <option value="T4">🔴 T4 - Elite</option>
-                  <option value="BOSS">👑 Boss</option>
-                </select>
-              </label>
-
-              <label>
-                Task Type
-                <select
-                  value={newTaskType}
-                  onChange={(e) => setNewTaskType(e.target.value as TaskType)}
-                >
-                  <option value="HABIT">🔁 Habit</option>
-                  <option value="DAILY">📅 Daily</option>
-                  <option value="TODO">✅ Todo</option>
-                </select>
-              </label>
-
-              <div className="add-task-form-actions">
-                <button type="submit">Save Quest</button>
-                <button
-                  type="button"
-                  className="cancel-task-btn"
-                  onClick={() => setShowAddForm(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+          {showAddModal && (
+            <AddTaskModal
+              taskType={creatingType}
+              onClose={() => setShowAddModal(false)}
+              onCreate={handleCreateTask}
+            />
           )}
 
           <div className="quest-columns">
             <TaskColumn
               title="💪 Habits"
+              addLabel="Add Habit"
               tasks={habitTasks}
+              onAdd={() => openAddForm("HABIT")}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
@@ -280,7 +224,9 @@ function Tasks() {
 
             <TaskColumn
               title="⚔️ Dailies"
+              addLabel="Add Daily"
               tasks={dailyTasks}
+              onAdd={() => openAddForm("DAILY")}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
@@ -289,7 +235,9 @@ function Tasks() {
 
             <TaskColumn
               title="🎯 Todos"
+              addLabel="Add Todo"
               tasks={todoTasks}
+              onAdd={() => openAddForm("TODO")}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
