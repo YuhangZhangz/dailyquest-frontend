@@ -49,60 +49,71 @@ body,
 }
 
 .player-panel {
-  padding: 20px 24px;
+  padding: 14px 18px 18px;
   margin-bottom: 28px;
+  background: #f8fafc;
+  border: 1px solid #dbe3ef;
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
 }
 
-.player-grid {
+.player-summary-row {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  grid-template-columns: 180px 220px 260px;
+  gap: 14px;
+  max-width: 700px;
 }
 
 .player-stat {
   border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 14px 20px;
+  border-radius: 14px;
   background: #f8fafc;
+  padding: 12px 16px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-height: 72px;
 }
 
-.player-stat > span,
-.section-kicker {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+.player-stat > span {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
   color: #64748b;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.player-stat h1 {
-  margin: 7px 0 0;
-  font-size: 34px;
-  line-height: 1;
+.player-stat h1{
+  margin: 6px 0 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #000000;
 }
-
 .player-stat h2 {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   font-size: 18px;
+  font-weight: 800;
+  color: #64748b;
 }
 
 .xp-progress-section {
-  margin-top: 18px;
+  margin-top: 10px;
+  padding: 0 12px;
 }
 
 .xp-row {
   display: flex;
   justify-content: space-between;
   color: #64748b;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 6px;
 }
 
 .xp-bar {
-  height: 9px;
+  height: 8px;
   background: #e5e7eb;
   border-radius: 999px;
   overflow: hidden;
@@ -111,7 +122,7 @@ body,
 .xp-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(135deg, #6366f1, #22d3ee);
+  background: linear-gradient(90deg, #6366f1, #22d3ee);
 }
 
 /* Quest Board */
@@ -468,23 +479,6 @@ body,
   resize: vertical;
 }
 
-.add-task-form-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.add-task-form-actions button {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 13px;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  background: linear-gradient(135deg, #1e3a8a, #2563eb);
-  color: white;
-}
-
 .cancel-task-btn {
   padding: 12px 16px;
   border: none;
@@ -688,14 +682,6 @@ body,
   font-weight: 900;
 }
 
-/* Streak */
-.streak-stat {
-  min-height: 72px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-}
-
 .streak-inline {
   display: flex;
   align-items: center;
@@ -709,6 +695,11 @@ body,
   font-weight: 700;
   letter-spacing: normal;
   line-height: 1;
+  white-space: nowrap;
+}
+
+.streak-stat {
+  overflow: visible;
 }
 
 .streak-icon {
@@ -745,6 +736,10 @@ body,
     max-width: none;
     margin: 20px 16px 0;
     padding: 0 0 40px;
+  }
+
+  .player-summary-row {
+    grid-template-columns: 1fr;
   }
 
   .quest-columns {
@@ -881,11 +876,6 @@ body,
   color: white;
 }
 
-.cancel-task-btn {
-  background: #e2e8f0;
-  color: #475569;
-}
-
 @keyframes modal-pop {
   from {
     opacity: 0;
@@ -954,14 +944,6 @@ body,
   background: #f1f5f9;
 }
 
-.habit-minus-btn {
-  color: #ef4444;
-}
-
-.habit-plus-btn {
-  color: #22c55e;
-}
-
 .habit-counter-actions {
   display: flex;
   align-items: center;
@@ -1001,3 +983,4 @@ body,
   font-weight: 900;
   color: #0f172a;
 }
+

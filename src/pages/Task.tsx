@@ -147,7 +147,7 @@ function Tasks() {
 
       <main className="tasks-container">
         <section className="player-panel">
-          <div className="player-grid">
+          <div className="player-summary-row">
             <div className="player-stat level-card">
               <span>PLAYER LEVEL</span>
               <h1>Lv. {level}</h1>
@@ -162,7 +162,7 @@ function Tasks() {
               </div>
             </div>
 
-            <div className="player-stat">
+            <div className="player-stat xp-stat">
               <span>CURRENT XP</span>
               <h2>
                 {currentXp}/{needNext} XP
