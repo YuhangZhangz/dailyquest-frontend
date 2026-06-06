@@ -24,7 +24,6 @@ body,
 .tasks-container {
   width: auto;
   max-width: none;
-
   margin: 24px 24px 0;
   padding: 0 0 50px;
 }
@@ -37,11 +36,11 @@ body,
   box-sizing: border-box;
 }
 
+/* Player Panel + Quest Board */
 .player-panel,
 .quest-board {
   width: 100%;
   max-width: 100%;
-
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 22px;
@@ -53,7 +52,6 @@ body,
   margin-bottom: 28px;
   background: #f8fafc;
   border: 1px solid #dbe3ef;
-  border-radius: 22px;
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
 }
 
@@ -69,12 +67,11 @@ body,
   border-radius: 14px;
   background: #f8fafc;
   padding: 12px 16px;
+  min-height: 72px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  min-height: 72px;
 }
 
 .player-stat > span {
@@ -85,12 +82,13 @@ body,
   text-transform: uppercase;
 }
 
-.player-stat h1{
+.player-stat h1 {
   margin: 6px 0 0;
   font-size: 24px;
   font-weight: 800;
   color: #000000;
 }
+
 .player-stat h2 {
   margin: 6px 0 0;
   font-size: 18px;
@@ -130,6 +128,14 @@ body,
   padding: 24px 28px;
 }
 
+.section-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .quest-header {
   display: flex;
   justify-content: space-between;
@@ -139,9 +145,10 @@ body,
 }
 
 .quest-header h1 {
-  margin: 8px 0 0;
-  font-size: 26px;
-  line-height: 1.15;
+  margin: 6px 0 0;
+  font-size: 23px;
+  font-weight: 600;
+  color: #111827;
 }
 
 .quest-actions {
@@ -150,16 +157,24 @@ body,
   gap: 14px;
 }
 
-.add-task-btn {
-  padding: 10px 18px;
+.add-task-btn,
+.column-add-btn {
   border: none;
-  border-radius: 13px;
+  border-radius: 14px;
+  padding: 10px 18px;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
   white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.add-task-btn:hover,
+.column-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.22);
 }
 
 .hide-completed {
@@ -185,6 +200,18 @@ body,
   width: 100%;
 }
 
+.task-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.task-column-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
 .task-column-header h2 {
   margin: 0;
@@ -302,25 +329,40 @@ body,
   background: #f8fafc;
 }
 
-.quest-card-completed {
-  opacity: 0.9;
-  background: #fff7ed;
-  border-left-color: #f97316;
-  filter: none;
-}
-
+/* 不同任务类型左边框 */
 .quest-card-habit {
-  border-left: 5px solid #22c55e;
+  border-left-color: #22c55e;
 }
 
 .quest-card-daily {
-  border-left: 5px solid #f59e0b;
+  border-left-color: #f59e0b;
 }
 
 .quest-card-todo {
-  border-left: 5px solid #3b82f6;
+  border-left-color: #3b82f6;
 }
 
+/* 完成后的任务卡片 */
+.quest-card-completed {
+  opacity: 1;
+  background: #f8fafc;
+  border: 1px solid #dbe3ef;
+  border-left: 5px solid #94a3b8;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.05);
+  filter: none;
+}
+
+.quest-card-completed h2,
+.quest-card-completed p {
+  color: #4b5563;
+}
+
+.quest-card-completed .difficulty-pill {
+  background: #f1f5f9;
+  color: #9ca3af;
+}
+
+/* 任务内容 */
 .quest-main {
   display: flex;
   gap: 12px;
@@ -385,6 +427,14 @@ body,
   margin: 0;
 }
 
+.task-meta {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* 按钮区 */
 .quest-buttons {
   display: flex;
   align-items: center;
@@ -395,13 +445,15 @@ body,
 }
 
 .complete-btn,
-.delete-btn {
+.delete-btn,
+.revert-btn {
   border: none;
   border-radius: 999px;
   padding: 8px 15px;
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .complete-btn {
@@ -410,27 +462,48 @@ body,
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
+.complete-btn:hover {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+}
+
+.complete-btn:active {
+  transform: translateY(0);
+}
+
 .delete-btn {
   background: #ef4444;
   color: white;
 }
 
+.delete-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
 .revert-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 8px 15px;
-  font-size: 13px;
-  font-weight: 900;
-  cursor: pointer;
   background: #f97316;
   color: white;
   box-shadow: 0 8px 20px rgba(249, 115, 22, 0.23);
-  transition: 0.2s;
 }
 
 .revert-btn:hover {
   background: #ea580c;
   transform: translateY(-1px);
+}
+
+/* 完成状态下的 Undo 按钮 */
+.quest-card-completed .revert-btn {
+  background: #ffffff;
+  color: #4b5563;
+  border: 1px solid #dbe3ef;
+  box-shadow: none;
+}
+
+.quest-card-completed .revert-btn:hover {
+  background: #f1f5f9;
+  color: #111827;
 }
 
 .empty-state {
@@ -598,7 +671,7 @@ body,
   color: #ef4444;
 }
 
-/* Edit modal */
+/* Edit Modal */
 .edit-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -682,6 +755,7 @@ body,
   font-weight: 900;
 }
 
+/* Streak */
 .streak-inline {
   display: flex;
   align-items: center;
@@ -729,60 +803,7 @@ body,
   letter-spacing: normal;
 }
 
-/* 中等屏幕：回到单列 */
-@media (max-width: 1100px) {
-  .tasks-container {
-    width: auto;
-    max-width: none;
-    margin: 20px 16px 0;
-    padding: 0 0 40px;
-  }
-
-  .player-summary-row {
-    grid-template-columns: 1fr;
-  }
-
-  .quest-columns {
-    grid-template-columns: 1fr;
-  }
-
-  .task-column-body,
-  .task-section-empty {
-    min-height: 140px;
-  }
-}
-
-/* 小屏幕 */
-@media (max-width: 800px) {
-  .tasks-container {
-    width: auto;
-    max-width: none;
-    margin: 16px 12px 0;
-    padding: 0 0 36px;
-  }
-
-  .quest-header,
-  .quest-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .quest-board {
-    padding: 22px;
-  }
-
-  .task-column-header h2 {
-    font-size: 24px;
-  }
-}
-
-.task-meta {
-  margin-top: 8px;
-  color: #64748b;
-  font-size: 14px;
-  font-weight: 600;
-}
-
+/* Add Task Modal */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -876,44 +897,7 @@ body,
   color: white;
 }
 
-@keyframes modal-pop {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.task-column-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.task-column-title-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.column-add-btn {
-  border: none;
-  border-radius: 14px;
-  padding: 10px 18px;
-
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
+/* Habit Counter */
 .habit-split-actions {
   width: 100%;
   display: flex;
@@ -984,3 +968,62 @@ body,
   color: #0f172a;
 }
 
+/* Animation */
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 中等屏幕：回到单列 */
+@media (max-width: 1100px) {
+  .tasks-container {
+    width: auto;
+    max-width: none;
+    margin: 20px 16px 0;
+    padding: 0 0 40px;
+  }
+
+  .player-summary-row {
+    grid-template-columns: 1fr;
+  }
+
+  .quest-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .task-column-body,
+  .task-section-empty {
+    min-height: 140px;
+  }
+}
+
+/* 小屏幕 */
+@media (max-width: 800px) {
+  .tasks-container {
+    width: auto;
+    max-width: none;
+    margin: 16px 12px 0;
+    padding: 0 0 36px;
+  }
+
+  .quest-header,
+  .quest-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quest-board {
+    padding: 22px;
+  }
+
+  .task-column-header h2 {
+    font-size: 24px;
+  }
+}
