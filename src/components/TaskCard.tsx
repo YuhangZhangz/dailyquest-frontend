@@ -12,6 +12,9 @@ type DailyTask = {
   baseXp: number;
   active: boolean;
   createdAt: string;
+  completedCount: number;
+  lastCompletedDate: string | null;
+  dueDate: string | null;
 };
 
 type TaskCardProps = {
@@ -58,8 +61,14 @@ function TaskCard({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuOpen]);
+  
+  // Check if the daily task has already been completed today
+  const today = new Date().toLocaleDateString("en-CA");
 
-  return (
+  const isDailyCompletedToday =
+    task.taskType === "DAILY" && task.lastCompletedDate === today;
+
+    return (
     <article
       className={`quest-card quest-card-${task.taskType.toLowerCase()} ${
         !task.active ? "quest-card-completed" : ""
@@ -113,8 +122,26 @@ function TaskCard({
 
       {task.description && <p>{task.description}</p>}
 
+      {task.taskType === "HABIT" && (
+        <p className="task-meta">Completed {task.completedCount} times</p>
+      )}
+      
+      {task.taskType === "DAILY" && (
+        <p className="task-meta">
+          Completed {task.completedCount} {task.completedCount === 1 ? "day" : "days"}
+        </p>
+      )}
+
+      {task.taskType === "TODO" && task.dueDate && (
+        <p className="task-meta">Due: {task.dueDate}</p>
+      )}
+
       <div className="quest-buttons">
-        {task.active ? (
+        {isDailyCompletedToday ? (
+          <button className="complete-btn" type="button" disabled>
+            Completed
+          </button>
+        ) : task.active ? (
           <button
             className="complete-btn"
             type="button"

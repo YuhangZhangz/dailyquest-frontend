@@ -24,6 +24,9 @@ type DailyTask = {
   baseXp: number;
   active: boolean;
   createdAt: string;
+  completedCount: number;
+  lastCompletedDate: string | null;
+  dueDate: string | null;
 };
 
 function Tasks() {

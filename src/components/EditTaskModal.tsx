@@ -29,14 +29,13 @@ function EditTaskModal({ task, onClose, onSave }: EditTaskModalProps) {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [difficulty, setDifficulty] = useState(task.difficulty);
-  const [taskType, setTaskType] = useState<TaskType>(task.taskType);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!title.trim()) return;
 
-    onSave(task.id, title, description, difficulty, taskType);
+    onSave(task.id, title, description, difficulty, task.taskType);
     onClose();
   }
 
@@ -77,18 +76,6 @@ function EditTaskModal({ task, onClose, onSave }: EditTaskModalProps) {
             <option value="T3">🔵 T3 - Hard</option>
             <option value="T4">🔴 T4 - Elite</option>
             <option value="BOSS">👑 Boss</option>
-          </select>
-        </label>
-
-        <label>
-          Task Type
-          <select
-            value={taskType}
-            onChange={(e) => setTaskType(e.target.value as TaskType)}
-          >
-            <option value="HABIT">🔁 Habit</option>
-            <option value="DAILY">📅 Daily</option>
-            <option value="TODO">✅ Todo</option>
           </select>
         </label>
 
