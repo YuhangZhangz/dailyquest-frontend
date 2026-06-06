@@ -122,10 +122,6 @@ function TaskCard({
       </div>
 
       {task.description && <p>{task.description}</p>}
-
-      {task.taskType === "HABIT" && (
-        <p className="task-meta">Completed {task.completedCount} times</p>
-      )}
       
       {task.taskType === "DAILY" && (
         <p className="task-meta">
@@ -139,23 +135,23 @@ function TaskCard({
 
       <div className="quest-buttons">
         {task.taskType === "HABIT" ? (
-          <div className="habit-split-actions">
+          <div className="habit-counter-actions">
             <button
-              className="habit-side-btn habit-minus-btn"
+              className="habit-counter-btn habit-minus-btn"
               type="button"
-              onClick={() => {
-                console.log("Habit plus clicked:", task.id);
-                onRevert(task.id);}}
+              onClick={() => onRevert(task.id)}
             >
               −
             </button>
 
+            <span className="habit-counter-number">
+              {task.completedCount ?? 0}
+            </span>
+
             <button
-              className="habit-side-btn habit-plus-btn"
+              className="habit-counter-btn habit-plus-btn"
               type="button"
-              onClick={() => {
-                console.log("Habit plus clicked:", task.id);
-                onComplete(task.id);}}
+              onClick={() => onComplete(task.id)}
             >
               +
             </button>
