@@ -48,12 +48,23 @@ function Register() {
     if (hasError) return;
     try {
       await api.post("/auth/register", {
-        username,
-        email,
+        username: username.trim(),
+        email: email.trim(),
         password,
       });
 
+      // Automatically log in after successful registration
+      const loginRes = await api.post("/auth/login", {
+        email: email.trim(),
+        password,
+      });
+
+      // Store token for authentication
+      localStorage.setItem("token", loginRes.data.token);
+
+      // Redirect to tasks page
       window.location.href = "/tasks";
+
     } catch (err: any) {
       const rawMessage = err.response?.data?.message || "Register failed";
 
