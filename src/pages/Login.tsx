@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "../styles/Auth.css";
 import { Eye, EyeOff } from "lucide-react";
@@ -12,6 +12,15 @@ function Login() {
   const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  
+  // Check if user is already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      window.location.replace("/tasks");
+    }
+  }, []);
 
   async function handleLogin(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();

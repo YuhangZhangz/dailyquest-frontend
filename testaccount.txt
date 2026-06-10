@@ -1,5 +1,0 @@
-{
-  "username": "yuhang",
-  "email": "yuhang@test.com",
-  "password": "Qx7@Lm9!Za"
-}

@@ -5,13 +5,21 @@ import "../styles/Auth.css";
 
 type AuthTopBarProps = {
   showLogout?: boolean;
+  username?: string;
 };
 
-function AuthTopBar({ showLogout = false }: AuthTopBarProps) {
+function AuthTopBar({ showLogout = false, username}: AuthTopBarProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
+  
+  // Clear token and redirect to login page for logging out
   function handleLogout() {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  }
+  
+  // Clear token and redirect to login page for switching accounts
+  function handleSwitchAccount() {
     localStorage.removeItem("token");
     window.location.href = "/";
   }
@@ -43,6 +51,12 @@ function AuthTopBar({ showLogout = false }: AuthTopBarProps) {
 
       {showLogout && (
         <div className="user-menu" ref={menuRef}>
+          {username && (
+            <span className="user-name">
+              {username}
+            </span>
+          )}
+
           <button
             className="user-avatar-btn"
             type="button"
@@ -55,7 +69,15 @@ function AuthTopBar({ showLogout = false }: AuthTopBarProps) {
           {open && (
             <div className="user-dropdown">
               <button
-                className="user-logout-btn"
+                className="user-dropdown-item"
+                type="button"
+                onClick={handleSwitchAccount}
+              >
+                Switch Account
+              </button>
+
+              <button
+                className="user-dropdown-item"
                 type="button"
                 onClick={handleLogout}
               >

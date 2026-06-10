@@ -1027,3 +1027,16 @@ body,
     font-size: 24px;
   }
 }
+
+.input-error {
+  border-color: #ef4444 !important;
+  background: #fff7f7 !important;
+}
+
+.modal-field-error {
+  margin-top: -8px;
+  margin-bottom: 14px;
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 700;
+}

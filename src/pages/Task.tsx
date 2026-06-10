@@ -39,11 +39,25 @@ function Tasks() {
   const [creatingType, setCreatingType] = useState<TaskType>("DAILY");
 
   async function loadData() {
-    const userRes = await api.get("/auth/me");
-    const taskRes = await api.get("/daily-tasks");
+    const token = localStorage.getItem("token");
 
-    setUser(userRes.data);
-    setTasks(taskRes.data);
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
+
+    try {
+      const userRes = await api.get("/auth/me");
+      const taskRes = await api.get("/daily-tasks");
+
+      setUser(userRes.data);
+      setTasks(taskRes.data);
+    } catch (err: any) {
+      console.log("Load data error:", err.response?.data || err);
+
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
   }
 
   useEffect(() => {
@@ -143,7 +157,7 @@ function Tasks() {
 
   return (
     <div className="tasks-page">
-      <TopBar showLogout />
+      <TopBar showLogout username={user?.username} />
 
       <main className="tasks-container">
         <section className="player-panel">

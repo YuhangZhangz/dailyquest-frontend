@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type TaskType = "HABIT" | "DAILY" | "TODO";
 
@@ -10,26 +10,52 @@ type AddTaskModalProps = {
     description: string,
     difficulty: string,
     dueDate: string | null
-  ) => void;
+  ) => void | Promise<void>;
 };
 
 function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [difficulty, setDifficulty] = useState("T1");
-  const [dueDate, setDueDate] = useState("");
+  // Load saved draft from localStorage
+  const draftKey = `add-task-draft-${taskType}`;
+  const savedDraft = localStorage.getItem(draftKey);
+  const parsedDraft = savedDraft    ? JSON.parse(savedDraft) : null;
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const [title, setTitle] = useState(parsedDraft?.title || "");
+  const [description, setDescription] = useState(parsedDraft?.description || "");
+  const [difficulty, setDifficulty] = useState(parsedDraft?.difficulty || "T1");
+  const [dueDate, setDueDate] = useState(parsedDraft?.dueDate || "");
+  const [titleError, setTitleError] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem(
+      draftKey,
+      JSON.stringify({
+        title,
+        description,
+        difficulty,
+        dueDate,
+      })
+    );
+  }, [draftKey, title, description, difficulty, dueDate]);
+
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!title.trim()) return;
+    setTitleError("");
 
-    onCreate(
-      title,
-      description,
+    if (!title.trim()) {
+      setTitleError("Task name is required.");
+      return;
+    }
+
+    await onCreate(
+      title.trim(),
+      description.trim(),
       difficulty,
-      taskType === "TODO" ? dueDate : null
+      taskType === "TODO" ? dueDate || null : null
     );
+
+    // Clear draft from localStorage and reset form
+    localStorage.removeItem(draftKey);
   }
 
   return (
@@ -39,13 +65,22 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
 
         <form onSubmit={handleSubmit}>
           <label>
-            Task Name
+            Task Name *
             <input
+              className={titleError ? "input-error" : ""}
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                setTitleError("");}}
               placeholder="Enter task name"
             />
           </label>
+          
+          {titleError && (
+            <div className="modal-field-error">
+              {titleError}
+            </div>
+          )}
 
           <label>
             Description
