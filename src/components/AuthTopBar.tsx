@@ -17,12 +17,6 @@ function AuthTopBar({ showLogout = false, username}: AuthTopBarProps) {
     localStorage.removeItem("token");
     window.location.href = "/";
   }
-  
-  // Clear token and redirect to login page for switching accounts
-  function handleSwitchAccount() {
-    localStorage.removeItem("token");
-    window.location.href = "/";
-  }
 
   useEffect(() => {
     if (!open) return;
@@ -68,13 +62,6 @@ function AuthTopBar({ showLogout = false, username}: AuthTopBarProps) {
 
           {open && (
             <div className="user-dropdown">
-              <button
-                className="user-dropdown-item"
-                type="button"
-                onClick={handleSwitchAccount}
-              >
-                Switch Account
-              </button>
 
               <button
                 className="user-dropdown-item"
