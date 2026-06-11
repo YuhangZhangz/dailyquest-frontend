@@ -1,3 +1,7 @@
+:root {
+  --task-list-height: 750px;
+}
+
 *,
 *::before,
 *::after {
@@ -244,17 +248,19 @@ body,
 }
 
 .task-column-body {
-  min-height: 240px;
+  min-height: var(--task-list-height);
   border-radius: 16px;
 }
 
 /* 空状态 */
 .task-section-empty {
-  min-height: 240px;
+  min-height: var(--task-list-height);
+  padding: 14px;
+  box-sizing: border-box;
 
   border: 1px dashed #d1d5db;
   border-radius: 16px;
-  background: #f8fafc;
+  background: #edf2f7;
 
   display: flex;
   flex-direction: column;
@@ -308,9 +314,17 @@ body,
 
 /* 任务列表 */
 .quest-list {
+  min-height: var(--task-list-height);
+  box-sizing: border-box;
+
   display: flex;
   flex-direction: column;
   gap: 14px;
+
+  padding: 14px;
+  border: 1px dashed #d1d5db;
+  border-radius: 16px;
+   background: #f1f5f9;
 }
 
 .quest-card {
@@ -998,9 +1012,8 @@ body,
     grid-template-columns: 1fr;
   }
 
-  .task-column-body,
-  .task-section-empty {
-    min-height: 140px;
+  :root {
+    --task-list-height: 500px;
   }
 }
 
