@@ -16,6 +16,7 @@ type DailyTask = {
   completedCount: number;
   lastCompletedDate: string | null;
   dueDate: string | null;
+  sortOrder: number;
 };
 
 type TaskColumnProps = {
@@ -73,7 +74,7 @@ function TaskColumn({
       },
 
       // Dragging is not triggered when clicking buttons, input fields, or links.
-      filter: "button, input, textarea, select, a",
+      filter: "button, input, textarea, select, a, .completed-task",
       preventOnFilter: false,
 
       // Dragging feel
@@ -91,7 +92,7 @@ function TaskColumn({
         const orderedIds = Array.from(
           listRef.current.querySelectorAll<HTMLElement>(".sortable-task-item")
         ).map((item) => Number(item.dataset.id));
-
+        
         onReorder(taskType, orderedIds);
       },
     });
@@ -99,7 +100,7 @@ function TaskColumn({
     return () => {
       sortable.destroy();
     };
-  }, [taskType, tasks.length, onReorder]);
+  }, [taskType, tasks.length]);
 
   return (
     <section className="task-column">
@@ -120,7 +121,9 @@ function TaskColumn({
             {tasks.map((task) => (
               <div
                 key={task.id}
-                className="sortable-task-item"
+                className={`sortable-task-item ${
+                  isTaskCompleted(task) ? "completed-task" : ""
+                }`}
                 data-id={task.id}
               >
                 <TaskCard
@@ -143,6 +146,18 @@ function TaskColumn({
       </div>
     </section>
   );
+}
+
+function isTaskCompleted(task: DailyTask) {
+  if (task.taskType === "DAILY") {
+    return task.lastCompletedDate !== null;
+  }
+
+  if (task.taskType === "TODO") {
+    return !task.active;
+  }
+
+  return false;
 }
 
 function getEmptyTitle(title: string) {

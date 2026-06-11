@@ -28,6 +28,7 @@ type DailyTask = {
   completedCount: number;
   lastCompletedDate: string | null;
   dueDate: string | null;
+  sortOrder: number;
 };
 
 function Tasks() {
@@ -118,7 +119,7 @@ function Tasks() {
     dueDate: string | null
   ) {
     try {
-      await api.put(`/daily-tasks/${id}`, {
+      const response = await api.put(`/daily-tasks/${id}`, {
         title,
         description,
         difficulty,
@@ -126,7 +127,13 @@ function Tasks() {
         dueDate,
       });
 
-      await loadData();
+      const updatedTask = response.data;
+
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === id ? updatedTask : task
+        )
+      );
     } catch (err: any) {
       console.log("Update task error:", err.response?.data);
     }
@@ -141,25 +148,39 @@ function Tasks() {
     }
   }
 
-  function handleReorderTasks(taskType: TaskType, orderedIds: number[]) {
-    setTasks((prevTasks) => {
-      const orderedIdSet = new Set(orderedIds);
-      const taskMap = new Map(prevTasks.map((task) => [task.id, task]));
+  async function handleReorderTasks(taskType: TaskType, orderedIds: number[]) {
+    const previousTasks = tasks;
 
-      const reorderedTasks = orderedIds
-        .map((id) => taskMap.get(id))
-        .filter((task): task is DailyTask => task !== undefined);
+    const nextTasks = tasks.map((task) => {
+      if (task.taskType !== taskType) {
+        return task;
+      }
 
-      const sameTypeUnmovedTasks = prevTasks.filter(
-        (task) => task.taskType === taskType && !orderedIdSet.has(task.id)
-      );
+      const newIndex = orderedIds.indexOf(task.id);
 
-      const otherTypeTasks = prevTasks.filter(
-        (task) => task.taskType !== taskType
-      );
+      if (newIndex === -1) {
+        return task;
+      }
 
-      return [...otherTypeTasks, ...reorderedTasks, ...sameTypeUnmovedTasks];
+      return {
+        ...task,
+        sortOrder: newIndex,
+      };
     });
+
+    setTasks(nextTasks);
+
+    try {
+      await api.patch(
+        `/daily-tasks/${taskType}/sort-order`,
+        orderedIds
+      );
+
+      await loadData();
+    } catch (err: any) {
+      console.log("Save sort order error:", err.response?.data || err);
+      setTasks(previousTasks);
+    }
   }
 
   const currentXp = user?.totalXp ?? 0;
@@ -172,9 +193,34 @@ function Tasks() {
     ? tasks.filter((task) => task.active)
     : tasks;
 
-  const habitTasks = visibleTasks.filter((task) => task.taskType === "HABIT");
-  const dailyTasks = visibleTasks.filter((task) => task.taskType === "DAILY");
-  const todoTasks = visibleTasks.filter((task) => task.taskType === "TODO");
+  const habitTasks = visibleTasks
+    .filter((task) => task.taskType === "HABIT")
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  
+    // For dailies, sort active ones first, then by sortOrder
+  const dailyTasks = visibleTasks
+    .filter((task) => task.taskType === "DAILY")
+    .sort((a, b) => {
+      const aCompleted = a.lastCompletedDate !== null;
+      const bCompleted = b.lastCompletedDate !== null;
+
+      if (aCompleted !== bCompleted) {
+        return aCompleted ? 1 : -1;
+      }
+
+      return a.sortOrder - b.sortOrder;
+    });
+  
+  // For todos, sort active ones first, then by sortOrder
+  const todoTasks = visibleTasks
+    .filter((task) => task.taskType === "TODO")
+    .sort((a, b) => {
+      if (a.active !== b.active) {
+        return a.active ? -1 : 1;
+      }
+
+      return a.sortOrder - b.sortOrder;
+    });
 
   return (
     <div className="tasks-page">
