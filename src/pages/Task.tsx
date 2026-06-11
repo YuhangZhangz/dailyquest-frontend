@@ -141,6 +141,27 @@ function Tasks() {
     }
   }
 
+  function handleReorderTasks(taskType: TaskType, orderedIds: number[]) {
+    setTasks((prevTasks) => {
+      const orderedIdSet = new Set(orderedIds);
+      const taskMap = new Map(prevTasks.map((task) => [task.id, task]));
+
+      const reorderedTasks = orderedIds
+        .map((id) => taskMap.get(id))
+        .filter((task): task is DailyTask => task !== undefined);
+
+      const sameTypeUnmovedTasks = prevTasks.filter(
+        (task) => task.taskType === taskType && !orderedIdSet.has(task.id)
+      );
+
+      const otherTypeTasks = prevTasks.filter(
+        (task) => task.taskType !== taskType
+      );
+
+      return [...otherTypeTasks, ...reorderedTasks, ...sameTypeUnmovedTasks];
+    });
+  }
+
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
@@ -230,34 +251,40 @@ function Tasks() {
             <TaskColumn
               title="💪 Habits"
               addLabel="Add Habit"
+              taskType="HABIT"
               tasks={habitTasks}
               onAdd={() => openAddForm("HABIT")}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
               onRevert={handleRevertTask}
+              onReorder={handleReorderTasks}
             />
 
             <TaskColumn
               title="⚔️ Dailies"
               addLabel="Add Daily"
+              taskType="DAILY"
               tasks={dailyTasks}
               onAdd={() => openAddForm("DAILY")}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
               onRevert={handleRevertTask}
+              onReorder={handleReorderTasks}
             />
 
             <TaskColumn
               title="🎯 Todos"
               addLabel="Add Todo"
+              taskType="TODO"
               tasks={todoTasks}
               onAdd={() => openAddForm("TODO")}
               onComplete={handleCompleteTask}
               onDelete={handleDeleteTask}
               onUpdate={handleUpdateTask}
               onRevert={handleRevertTask}
+              onReorder={handleReorderTasks}
             />
           </div>
         </section>

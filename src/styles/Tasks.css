@@ -1040,3 +1040,39 @@ body,
   font-size: 14px;
   font-weight: 700;
 }
+
+/* SortableJS task dragging */
+.sortable-task-item {
+  width: 100%;
+  cursor: grab;
+}
+
+.sortable-task-item:active {
+  cursor: grabbing;
+}
+
+.sortable-task-item .quest-card {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.sortable-task-item button,
+.sortable-task-item input,
+.sortable-task-item textarea,
+.sortable-task-item select,
+.sortable-task-item a {
+  cursor: pointer;
+}
+
+.sortable-ghost {
+  opacity: 0.35;
+}
+
+.sortable-chosen .quest-card {
+  transform: scale(1.01);
+}
+
+.sortable-drag .quest-card {
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+}

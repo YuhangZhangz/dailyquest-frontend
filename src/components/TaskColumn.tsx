@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+import Sortable from "sortablejs";
 import TaskCard from "./TaskCard";
 
 type TaskType = "HABIT" | "DAILY" | "TODO";
@@ -19,6 +21,7 @@ type DailyTask = {
 type TaskColumnProps = {
   title: string;
   addLabel: string;
+  taskType: TaskType;
   tasks: DailyTask[];
   onAdd: () => void;
   onComplete: (id: number) => void;
@@ -32,22 +35,72 @@ type TaskColumnProps = {
     dueDate: string | null
   ) => void;
   onRevert: (id: number) => void;
+  onReorder: (taskType: TaskType, orderedIds: number[]) => void;
 };
 
 function TaskColumn({
   title,
   addLabel,
+  taskType,
   tasks,
   onAdd,
   onComplete,
   onDelete,
   onUpdate,
   onRevert,
+  onReorder,
 }: TaskColumnProps) {
+  const listRef = useRef<HTMLDivElement | null>(null);
+
   const displayCount = title.includes("Todos")
     ? tasks.filter((task) => task.active).length
     : tasks.length;
-  
+
+  useEffect(() => {
+    if (!listRef.current) return;
+
+    const sortable = Sortable.create(listRef.current, {
+      animation: 150,
+
+      // Each task's outer wrapper can be dragged.
+      draggable: ".sortable-task-item",
+
+      // Dragging across columns is not allowed.
+      group: {
+        name: `task-column-${taskType}`,
+        pull: false,
+        put: false,
+      },
+
+      // Dragging is not triggered when clicking buttons, input fields, or links.
+      filter: "button, input, textarea, select, a",
+      preventOnFilter: false,
+
+      // Dragging feel
+      swapThreshold: 0.30,
+      invertSwap: false,
+      direction: "vertical",
+
+      ghostClass: "sortable-ghost",
+      chosenClass: "sortable-chosen",
+      dragClass: "sortable-drag",
+
+      onEnd: () => {
+        if (!listRef.current) return;
+
+        const orderedIds = Array.from(
+          listRef.current.querySelectorAll<HTMLElement>(".sortable-task-item")
+        ).map((item) => Number(item.dataset.id));
+
+        onReorder(taskType, orderedIds);
+      },
+    });
+
+    return () => {
+      sortable.destroy();
+    };
+  }, [taskType, tasks.length, onReorder]);
+
   return (
     <section className="task-column">
       <div className="task-column-header">
@@ -63,16 +116,21 @@ function TaskColumn({
 
       <div className="task-column-body">
         {tasks.length > 0 ? (
-          <div className="quest-list">
+          <div className="quest-list" ref={listRef}>
             {tasks.map((task) => (
-              <TaskCard
+              <div
                 key={task.id}
-                task={task}
-                onComplete={onComplete}
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-                onRevert={onRevert}
-              />
+                className="sortable-task-item"
+                data-id={task.id}
+              >
+                <TaskCard
+                  task={task}
+                  onComplete={onComplete}
+                  onDelete={onDelete}
+                  onUpdate={onUpdate}
+                  onRevert={onRevert}
+                />
+              </div>
             ))}
           </div>
         ) : (
