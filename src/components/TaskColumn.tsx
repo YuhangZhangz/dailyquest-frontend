@@ -82,6 +82,13 @@ function TaskColumn({
       invertSwap: false,
       direction: "vertical",
 
+      // Auto-scrolling when dragging near edges
+      scroll: true,
+      scrollSensitivity: 80,
+      scrollSpeed: 12,
+      bubbleScroll: true,
+      forceAutoScrollFallback: true,
+
       ghostClass: "sortable-ghost",
       chosenClass: "sortable-chosen",
       dragClass: "sortable-drag",
