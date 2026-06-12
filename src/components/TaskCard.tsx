@@ -69,10 +69,17 @@ function TaskCard({
   const isDailyCompletedToday =
     task.taskType === "DAILY" && task.lastCompletedDate === today;
 
+  const isCompleted =
+    task.taskType === "TODO"
+      ? !task.active
+      : task.taskType === "DAILY"
+      ? isDailyCompletedToday
+      : false;
+
     return (
     <article
       className={`quest-card quest-card-${task.taskType.toLowerCase()} ${
-        !task.active ? "quest-card-completed" : ""
+        isCompleted ? "quest-card-completed" : ""
       }`}
     >
       {task.active && (
