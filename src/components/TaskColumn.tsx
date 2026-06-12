@@ -156,8 +156,10 @@ function TaskColumn({
 }
 
 function isTaskCompleted(task: DailyTask) {
+  const today = new Date().toLocaleDateString("en-CA");
+
   if (task.taskType === "DAILY") {
-    return task.lastCompletedDate !== null;
+    return task.lastCompletedDate === today;
   }
 
   if (task.taskType === "TODO") {
