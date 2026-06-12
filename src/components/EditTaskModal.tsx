@@ -53,7 +53,7 @@ function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
         </div>
 
         <label>
-          Title
+          Title *
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
