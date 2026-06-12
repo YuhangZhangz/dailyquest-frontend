@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 
 type TaskType = "HABIT" | "DAILY" | "TODO";
 
@@ -38,15 +39,24 @@ function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
 
     if (!title.trim()) return;
 
-    onUpdate(task.id, title, description, difficulty, task.taskType, task.taskType === "TODO" ? dueDate : null);
+    onUpdate(
+      task.id,
+      title,
+      description,
+      difficulty,
+      task.taskType,
+      task.taskType === "TODO" ? dueDate : null
+    );
+
     onClose();
   }
 
-  return (
+  return createPortal(
     <div className="edit-modal-backdrop">
       <form className="edit-task-modal" onSubmit={handleSubmit}>
         <div className="edit-modal-header">
           <h2>Edit Quest</h2>
+
           <button className="cancel-btn" type="button" onClick={onClose}>
             ×
           </button>
@@ -54,10 +64,7 @@ function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
 
         <label>
           Title *
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <input value={title} onChange={(e) => setTitle(e.target.value)} />
         </label>
 
         <label>
@@ -97,7 +104,8 @@ function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
           Save
         </button>
       </form>
-    </div>
+    </div>,
+    document.body
   );
 }
 
