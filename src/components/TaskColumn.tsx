@@ -56,7 +56,17 @@ function TaskColumn({
   const displayCount = title.includes("Todos")
     ? tasks.filter((task) => task.active).length
     : tasks.length;
+  
+    const unfinishedTasks = tasks
+    .filter((task) => !isTaskCompleted(task))
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
+  const completedTasks = tasks
+    .filter((task) => isTaskCompleted(task))
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  const displayTasks = [...unfinishedTasks, ...completedTasks];
+  
   useEffect(() => {
     if (!listRef.current) return;
 
@@ -123,9 +133,9 @@ function TaskColumn({
       </div>
 
       <div className="task-column-body">
-        {tasks.length > 0 ? (
+        {displayTasks.length > 0 ? (
           <div className="quest-list" ref={listRef}>
-            {tasks.map((task) => (
+            {displayTasks.map((task) => (
               <div
                 key={task.id}
                 className={`sortable-task-item ${
