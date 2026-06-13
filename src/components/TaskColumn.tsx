@@ -124,7 +124,9 @@ function TaskColumn({
       <div className="task-column-header">
         <div className="task-column-title-row">
           <h2>{title}</h2>
-          <span className="task-count-pill">{displayCount}</span>
+          {displayCount > 0 && (
+            <span className="task-count-pill">{displayCount}</span>
+          )}
         </div>
 
         <button className="column-add-btn" type="button" onClick={onAdd}>

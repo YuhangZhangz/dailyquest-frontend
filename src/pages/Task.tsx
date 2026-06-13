@@ -190,7 +190,7 @@ function Tasks() {
   const xpPercent = Math.min((currentXp / needNext) * 100, 100);
 
   const visibleTasks = hideCompleted
-    ? tasks.filter((task) => task.active)
+    ? tasks.filter((task) => !isTaskCompleted(task))
     : tasks;
 
   const habitTasks = visibleTasks
@@ -201,8 +201,8 @@ function Tasks() {
   const dailyTasks = visibleTasks
     .filter((task) => task.taskType === "DAILY")
     .sort((a, b) => {
-      const aCompleted = a.lastCompletedDate !== null;
-      const bCompleted = b.lastCompletedDate !== null;
+      const aCompleted = isTaskCompleted(a);
+      const bCompleted = isTaskCompleted(b);
 
       if (aCompleted !== bCompleted) {
         return aCompleted ? 1 : -1;
@@ -337,6 +337,20 @@ function Tasks() {
       </main>
     </div>
   );
+}
+
+function isTaskCompleted(task: DailyTask) {
+  const today = new Date().toLocaleDateString("en-CA");
+
+  if (task.taskType === "DAILY") {
+    return task.lastCompletedDate === today;
+  }
+
+  if (task.taskType === "TODO") {
+    return !task.active;
+  }
+
+  return false;
 }
 
 export default Tasks;
