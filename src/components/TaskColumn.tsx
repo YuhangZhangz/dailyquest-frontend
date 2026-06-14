@@ -25,7 +25,7 @@ type TaskColumnProps = {
   taskType: TaskType;
   tasks: DailyTask[];
   onAdd: () => void;
-  onComplete: (id: number) => void;
+  onComplete: (id: number, baseXp?: number, x?: number, y?: number) => void;
   onDelete: (id: number) => void;
   onUpdate: (
     id: number,

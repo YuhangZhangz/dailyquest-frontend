@@ -38,6 +38,11 @@ function Tasks() {
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [creatingType, setCreatingType] = useState<TaskType>("DAILY");
+  const [xpPopup, setXpPopup] = useState<{
+    xp: number;
+    x: number;
+    y: number;
+  } | null>(null);
 
   async function loadData() {
     const token = localStorage.getItem("token");
@@ -92,7 +97,20 @@ function Tasks() {
     }
   }
 
-  async function handleCompleteTask(id: number) {
+  async function handleCompleteTask(
+    id: number,
+    baseXp?: number,
+    x?: number,
+    y?: number
+  ) {
+    if (baseXp !== undefined && x !== undefined && y !== undefined) {
+      setXpPopup({ xp: baseXp, x, y });
+
+      setTimeout(() => {
+        setXpPopup(null);
+      }, 800);
+    }
+
     try {
       await api.patch(`/daily-tasks/${id}/complete`);
       await loadData();
@@ -224,6 +242,19 @@ function Tasks() {
 
   return (
     <div className="tasks-page">
+
+      {xpPopup && (
+        <span
+          className="global-xp-float"
+          style={{
+            left: xpPopup.x,
+            top: xpPopup.y - 40,
+          }}
+        >
+          +{xpPopup.xp} XP
+        </span>
+      )}
+
       <TopBar showLogout username={user?.username} />
 
       <main className="tasks-container">

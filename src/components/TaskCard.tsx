@@ -19,7 +19,7 @@ type DailyTask = {
 
 type TaskCardProps = {
   task: DailyTask;
-  onComplete: (id: number) => void;
+  onComplete: (id: number, baseXp?: number, x?: number, y?: number) => void;
   onDelete: (id: number) => void;
   onUpdate: (
     id: number,
@@ -175,7 +175,9 @@ function TaskCard({
           <button
             className="complete-btn"
             type="button"
-            onClick={() => onComplete(task.id)}
+            onClick={(event) => {
+              onComplete(task.id, task.baseXp, event.clientX, event.clientY);
+            }}
           >
             Complete
           </button>

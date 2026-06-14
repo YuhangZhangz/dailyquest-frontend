@@ -1096,3 +1096,37 @@ body,
 .sortable-drag .quest-card {
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
 }
+
+/* XP 进度条动画 */
+.xp-fill {
+  transition: width 1.4s ease;
+}
+
+/* 全局 XP 浮动动画 */
+.global-xp-float {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  font-size: 15px;
+  color: #7c3aed;
+  pointer-events: none;
+  z-index: 9999;
+  animation: globalXpFloatUp 0.8s ease-out forwards;
+}
+
+@keyframes globalXpFloatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 8px) scale(0.9);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.08);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -36px) scale(1);
+  }
+}
