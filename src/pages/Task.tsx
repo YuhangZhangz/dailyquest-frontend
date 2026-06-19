@@ -215,30 +215,15 @@ function Tasks() {
     .filter((task) => task.taskType === "HABIT")
     .sort((a, b) => a.sortOrder - b.sortOrder);
   
-    // For dailies, sort active ones first, then by sortOrder
+  // Keep user's custom order
   const dailyTasks = visibleTasks
     .filter((task) => task.taskType === "DAILY")
-    .sort((a, b) => {
-      const aCompleted = isTaskCompleted(a);
-      const bCompleted = isTaskCompleted(b);
-
-      if (aCompleted !== bCompleted) {
-        return aCompleted ? 1 : -1;
-      }
-
-      return a.sortOrder - b.sortOrder;
-    });
+    .sort((a, b) => a.sortOrder - b.sortOrder);
   
-  // For todos, sort active ones first, then by sortOrder
+  // Keep user's custom order
   const todoTasks = visibleTasks
     .filter((task) => task.taskType === "TODO")
-    .sort((a, b) => {
-      if (a.active !== b.active) {
-        return a.active ? -1 : 1;
-      }
-
-      return a.sortOrder - b.sortOrder;
-    });
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
     <div className="tasks-page">

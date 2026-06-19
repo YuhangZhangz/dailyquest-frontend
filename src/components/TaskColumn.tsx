@@ -57,15 +57,7 @@ function TaskColumn({
     ? tasks.filter((task) => task.active).length
     : tasks.length;
   
-    const unfinishedTasks = tasks
-    .filter((task) => !isTaskCompleted(task))
-    .sort((a, b) => a.sortOrder - b.sortOrder);
-
-  const completedTasks = tasks
-    .filter((task) => isTaskCompleted(task))
-    .sort((a, b) => a.sortOrder - b.sortOrder);
-
-  const displayTasks = [...unfinishedTasks, ...completedTasks];
+    const displayTasks = tasks;
   
   useEffect(() => {
     if (!listRef.current) return;
