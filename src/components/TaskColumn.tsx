@@ -76,7 +76,7 @@ function TaskColumn({
       },
 
       // Dragging is not triggered when clicking buttons, input fields, or links.
-      filter: "button, input, textarea, select, a, .completed-task",
+      filter: "button, input, textarea, select, a",
       preventOnFilter: false,
 
       // Dragging feel
