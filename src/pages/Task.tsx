@@ -204,8 +204,10 @@ function Tasks() {
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
-  const needNext = level * 100;
-  const xpPercent = Math.min((currentXp / needNext) * 100, 100);
+
+  const needNext = getRequiredXpForLevel(level);
+  const currentLevelXp = currentXp - getXpRequiredToReachLevel(level);
+  const xpPercent = Math.min((currentLevelXp / needNext) * 100, 100);
 
   const visibleTasks = hideCompleted
     ? tasks.filter((task) => !isTaskCompleted(task))
@@ -262,7 +264,7 @@ function Tasks() {
             <div className="player-stat xp-stat">
               <span>CURRENT XP</span>
               <h2>
-                {currentXp}/{needNext} XP
+                {currentLevelXp}/{needNext} XP
               </h2>
             </div>
           </div>
@@ -353,6 +355,20 @@ function Tasks() {
       </main>
     </div>
   );
+}
+
+function getRequiredXpForLevel(level: number) {
+  return 100 + (level - 1) * 50;
+}
+
+function getXpRequiredToReachLevel(level: number) {
+  let total = 0;
+
+  for (let currentLevel = 1; currentLevel < level; currentLevel++) {
+    total += getRequiredXpForLevel(currentLevel);
+  }
+
+  return total;
 }
 
 function isTaskCompleted(task: DailyTask) {
