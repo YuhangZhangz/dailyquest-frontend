@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import type { DailyTask, TaskType } from "../types/task";
+import SubTaskList from "./SubTaskList";
+import { X } from "lucide-react";
 
 type EditTaskModalProps = {
   task: DailyTask;
@@ -13,9 +15,20 @@ type EditTaskModalProps = {
     taskType: TaskType,
     dueDate: string | null
   ) => void;
+
+  onAddSubTask?: (taskId: number, title: string) => void;
+  onToggleSubTask?: (taskId: number, subTaskId: number) => void;
+  onDeleteSubTask?: (taskId: number, subTaskId: number) => void;
 };
 
-function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
+function EditTaskModal({ 
+  task, 
+  onClose, 
+  onUpdate,
+  onAddSubTask,
+  onToggleSubTask,
+  onDeleteSubTask 
+}: EditTaskModalProps) {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [difficulty, setDifficulty] = useState(task.difficulty);
@@ -45,7 +58,7 @@ function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
           <h2>Edit Quest</h2>
 
           <button className="cancel-btn" type="button" onClick={onClose}>
-            ×
+            <X size={18} strokeWidth={3} />
           </button>
         </div>
 
@@ -61,6 +74,23 @@ function EditTaskModal({ task, onClose, onUpdate }: EditTaskModalProps) {
             onChange={(e) => setDescription(e.target.value)}
           />
         </label>
+
+        {task.taskType !== "HABIT" &&
+          onAddSubTask &&
+          onToggleSubTask &&
+          onDeleteSubTask && (
+            <div className="subtask-field">
+              <span className="subtask-field-label">Subtask</span>
+
+              <SubTaskList
+                taskId={task.id}
+                subTasks={task.subTasks ?? []}
+                onAddSubTask={onAddSubTask}
+                onToggleSubTask={onToggleSubTask}
+                onDeleteSubTask={onDeleteSubTask}
+              />
+            </div>
+          )}     
 
         <label>
           Difficulty

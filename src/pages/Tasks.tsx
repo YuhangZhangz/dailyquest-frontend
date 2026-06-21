@@ -176,6 +176,47 @@ function Tasks() {
     }
   }
 
+  // Create a new subtask under a parent task
+  async function handleAddSubTask(taskId: number, title: string) {
+    try {
+      await api.post(`/subtasks/task/${taskId}`, {
+        title,
+      });
+
+      await loadData();
+    } catch (err: any) {
+      console.log("Add subtask error:", err.response?.data || err);
+    }
+  }
+
+  // Toggle subtask completion status
+  async function handleToggleSubTask(
+    _taskId: number,
+    subTaskId: number
+  ) {
+    try {
+      await api.patch(`/subtasks/${subTaskId}/toggle`);
+
+      await loadData();
+    } catch (err: any) {
+      console.log("Toggle subtask error:", err.response?.data || err);
+    }
+  }
+
+  // Delete a subtask
+  async function handleDeleteSubTask(
+    _taskId: number,
+    subTaskId: number
+  ) {
+    try {
+      await api.delete(`/subtasks/${subTaskId}`);
+
+      await loadData();
+    } catch (err: any) {
+      console.log("Delete subtask error:", err.response?.data || err);
+    }
+  }
+
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
@@ -311,6 +352,9 @@ function Tasks() {
               onUpdate={handleUpdateTask}
               onRevert={handleRevertTask}
               onReorder={handleReorderTasks}
+              onAddSubTask={handleAddSubTask}
+              onToggleSubTask={handleToggleSubTask}
+              onDeleteSubTask={handleDeleteSubTask}
             />
 
             <TaskColumn
@@ -324,6 +368,9 @@ function Tasks() {
               onUpdate={handleUpdateTask}
               onRevert={handleRevertTask}
               onReorder={handleReorderTasks}
+              onAddSubTask={handleAddSubTask}
+              onToggleSubTask={handleToggleSubTask}
+              onDeleteSubTask={handleDeleteSubTask}
             />
           </div>
         </section>

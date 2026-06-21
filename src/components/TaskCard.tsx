@@ -15,6 +15,11 @@ type TaskCardProps = {
     dueDate: string | null
   ) => void;
   onRevert: (id: number) => void;
+
+  // Optional because Habits do not use subtasks
+  onAddSubTask?: (taskId: number, title: string) => void;
+  onToggleSubTask?: (taskId: number, subTaskId: number) => void;
+  onDeleteSubTask?: (taskId: number, subTaskId: number) => void;
 };
 
 function TaskCard({
@@ -23,6 +28,9 @@ function TaskCard({
   onDelete,
   onUpdate,
   onRevert,
+  onAddSubTask,
+  onDeleteSubTask,
+  onToggleSubTask
 }: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -182,6 +190,9 @@ function TaskCard({
           task={task}
           onClose={() => setIsEditing(false)}
           onUpdate={onUpdate}
+          onAddSubTask={onAddSubTask}
+          onToggleSubTask={onToggleSubTask}
+          onDeleteSubTask={onDeleteSubTask}
         />
       )}
     </article>

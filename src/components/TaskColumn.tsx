@@ -21,6 +21,11 @@ type TaskColumnProps = {
   ) => void;
   onRevert: (id: number) => void;
   onReorder: (taskType: TaskType, orderedIds: number[]) => void;
+
+  // Optional because Habits do not use subtasks
+  onAddSubTask?: (taskId: number, title: string) => void;
+  onToggleSubTask?: (taskId: number, subTaskId: number) => void;
+  onDeleteSubTask?: (taskId: number, subTaskId: number) => void;
 };
 
 function TaskColumn({
@@ -34,6 +39,9 @@ function TaskColumn({
   onUpdate,
   onRevert,
   onReorder,
+  onAddSubTask,
+  onDeleteSubTask,
+  onToggleSubTask
 }: TaskColumnProps) {
   const listRef = useRef<HTMLDivElement | null>(null);
 
@@ -127,6 +135,9 @@ function TaskColumn({
                   onDelete={onDelete}
                   onUpdate={onUpdate}
                   onRevert={onRevert}
+                  onAddSubTask={onAddSubTask}
+                  onToggleSubTask={onToggleSubTask}
+                  onDeleteSubTask={onDeleteSubTask}
                 />
               </div>
             ))}
