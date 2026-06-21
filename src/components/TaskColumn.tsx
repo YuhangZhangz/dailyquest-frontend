@@ -1,23 +1,7 @@
 import { useEffect, useRef } from "react";
 import Sortable from "sortablejs";
 import TaskCard from "./TaskCard";
-
-type TaskType = "HABIT" | "DAILY" | "TODO";
-
-type DailyTask = {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: string;
-  taskType: TaskType;
-  baseXp: number;
-  active: boolean;
-  createdAt: string;
-  completedCount: number;
-  lastCompletedDate: string | null;
-  dueDate: string | null;
-  sortOrder: number;
-};
+import type { DailyTask, TaskType } from "../types/task";
 
 type TaskColumnProps = {
   title: string;

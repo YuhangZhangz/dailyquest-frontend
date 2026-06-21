@@ -1,21 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
-
-type TaskType = "HABIT" | "DAILY" | "TODO";
-
-type DailyTask = {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: string;
-  taskType: TaskType;
-  baseXp: number;
-  active: boolean;
-  createdAt: string;
-  completedCount: number;
-  lastCompletedDate: string | null;
-  dueDate: string | null;
-};
+import type { DailyTask, TaskType } from "../types/task";
 
 type TaskCardProps = {
   task: DailyTask;

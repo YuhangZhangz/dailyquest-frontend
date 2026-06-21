@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-type TaskType = "HABIT" | "DAILY" | "TODO";
+import type { TaskType } from "../types/task";
 
 type AddTaskModalProps = {
   taskType: TaskType;

@@ -4,32 +4,7 @@ import TopBar from "../components/AuthTopBar";
 import "../styles/Tasks.css";
 import TaskColumn from "../components/TaskColumn";
 import AddTaskModal from "../components/AddTaskModal";
-
-type UserProfile = {
-  id: number;
-  username: string;
-  email: string;
-  totalXp: number;
-  level: number;
-  dailyStreak: number;
-};
-
-type TaskType = "HABIT" | "DAILY" | "TODO";
-
-type DailyTask = {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: string;
-  taskType: TaskType;
-  baseXp: number;
-  active: boolean;
-  createdAt: string;
-  completedCount: number;
-  lastCompletedDate: string | null;
-  dueDate: string | null;
-  sortOrder: number;
-};
+import type { DailyTask, TaskType, UserProfile } from "../types/task";
 
 function Tasks() {
   const [user, setUser] = useState<UserProfile | null>(null);

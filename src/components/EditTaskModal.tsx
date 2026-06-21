@@ -1,19 +1,6 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-
-type TaskType = "HABIT" | "DAILY" | "TODO";
-
-type DailyTask = {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: string;
-  taskType: TaskType;
-  baseXp: number;
-  active: boolean;
-  createdAt: string;
-  dueDate: string | null;
-};
+import type { DailyTask, TaskType } from "../types/task";
 
 type EditTaskModalProps = {
   task: DailyTask;
