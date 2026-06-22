@@ -9,7 +9,9 @@ import type { DailyTask, TaskType, UserProfile } from "../types/task";
 function Tasks() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [tasks, setTasks] = useState<DailyTask[]>([]);
-  const [hideCompleted, setHideCompleted] = useState(false);
+  const [hideCompleted, setHideCompleted] = useState(() => {
+    return localStorage.getItem("hideCompleted") === "true";
+  });
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [creatingType, setCreatingType] = useState<TaskType>("DAILY");
@@ -312,7 +314,11 @@ function Tasks() {
                 <input
                   type="checkbox"
                   checked={hideCompleted}
-                  onChange={(e) => setHideCompleted(e.target.checked)}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setHideCompleted(checked);
+                    localStorage.setItem("hideCompleted", String(checked));
+                  }}
                 />
                 Hide Completed
               </label>
