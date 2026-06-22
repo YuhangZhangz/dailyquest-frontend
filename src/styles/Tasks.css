@@ -398,7 +398,7 @@ body,
   align-items: baseline;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 
 .quest-title-row h2,
@@ -767,6 +767,17 @@ body,
   cursor: pointer;
   background: #2563eb;
   color: white;
+}
+
+.daily-streak-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #ea580c;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .completed-label {
@@ -1155,7 +1166,6 @@ body,
   border-bottom: 1px solid #e5e7eb;
 }
 
-.subtask-check,
 .subtask-delete {
   border: none;
   background: transparent;
@@ -1163,18 +1173,10 @@ body,
   font-size: 16px;
 }
 
-.subtask-check.completed {
-  color: #2563eb;
-}
-
 .subtask-title {
   flex: 1;
   font-size: 14px;
   color: #334155;
-}
-
-.subtask-title.completed {
-  opacity: 0.7;
 }
 
 .subtask-delete {
@@ -1217,4 +1219,46 @@ body,
   font-weight: 700;
   color: #000;
   margin-bottom: 8px;
+}
+
+/* 任务卡片中的子任务预览 */
+.task-subtask-preview {
+  margin: 2px 0 10px;
+  display: grid;
+  gap: 5px;
+}
+
+.task-subtask-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  color: #475569;
+  cursor: pointer;
+}
+
+.subtask-check,
+.preview-check {
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+
+  color: #94a3b8;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtask-check.completed,
+.preview-check.completed {
+  color: #2563eb;
+}
+
+.subtask-title.completed,
+.preview-title.completed {
+  color: #94a3b8;
 }

@@ -67,8 +67,9 @@ function TaskColumn({
         put: false,
       },
 
-      // Dragging is not triggered when clicking buttons, input fields, or links.
-      filter: "button, input, textarea, select, a",
+      // Dragging is not triggered when clicking buttons, input fields, links, or subtask preview
+      filter:
+        "button, input, textarea, select, a, [data-no-drag='true']",
       preventOnFilter: false,
 
       // Dragging feel

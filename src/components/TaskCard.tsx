@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
 import type { DailyTask, TaskType } from "../types/task";
+import { Square, SquareCheck } from "lucide-react";
 
 type TaskCardProps = {
   task: DailyTask;
@@ -119,14 +120,55 @@ function TaskCard({
         <span className="difficulty-pill">
           {getDifficultyLabel(task.difficulty)} · {task.baseXp} XP
         </span>
+
+        {task.taskType === "DAILY" && (
+          <span className="daily-streak-pill">
+            🔥 {task.completedCount} d
+          </span>
+        )}
       </div>
 
       {task.description && <p>{task.description}</p>}
       
-      {task.taskType === "DAILY" && (
-        <p className="task-meta">
-          Completed {task.completedCount} {task.completedCount === 1 ? "day" : "days"}
-        </p>
+      {/* Show subtasks on the task card, but only for Daily and Todo tasks */}
+      {task.taskType !== "HABIT" && task.subTasks && task.subTasks.length > 0 && (
+        <div className="task-subtask-preview">
+          {[...task.subTasks]
+            .sort((a, b) => a.id - b.id)
+            .map((subTask) => (
+              <div
+                key={subTask.id}
+                className="task-subtask-preview-item"
+                data-no-drag="true"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onToggleSubTask?.(task.id, subTask.id);
+                }}
+              >
+                {/* Show completed / incomplete icon */}
+                <span
+                  className={
+                    subTask.completed ? "preview-check completed" : "preview-check"
+                  }
+                >
+                  {subTask.completed ? (
+                    <SquareCheck size={15} strokeWidth={2.5} />
+                  ) : (
+                    <Square size={15} strokeWidth={2.5} />
+                  )}
+                </span>
+
+                {/* Show subtask title */}
+                <span
+                  className={
+                    subTask.completed ? "preview-title completed" : "preview-title"
+                  }
+                >
+                  {subTask.title}
+                </span>
+              </div>
+            ))}
+        </div>
       )}
 
       {task.taskType === "TODO" && task.dueDate && (
