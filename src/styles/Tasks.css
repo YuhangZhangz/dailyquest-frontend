@@ -52,80 +52,121 @@ body,
 }
 
 .player-panel {
-  padding: 14px 18px 18px;
+  padding: 0;
   margin-bottom: 28px;
-  background: #f8fafc;
-  border: 1px solid #dbe3ef;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-/* Player summary cards */
-.player-summary-row {
+/* 玩家状态面板 */
+.player-status-grid {
   display: grid;
-  grid-template-columns: 180px 220px 260px 180px;
-  gap: 14px;
-  max-width: 900px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
-.player-stat {
+.player-status-card {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  background: #f8fafc;
-  padding: 12px 16px;
-  min-height: 72px;
+  background: #ffffff;
+  padding: 18px;
+  min-height: 90px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.player-stat > span {
+.player-status-card > span {
   font-size: 12px;
   font-weight: 700;
   color: #64748b;
+  margin-bottom: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.player-stat h1 {
+.player-status-card strong {
   margin: 6px 0 0;
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.player-level-card strong {
+  font-size: 34px;
   color: #000000;
 }
 
-.player-stat h2 {
-  margin: 6px 0 0;
-  font-size: 18px;
-  font-weight: 800;
+.player-streak-card strong {
   color: #64748b;
 }
 
-.xp-progress-section {
-  margin-top: 10px;
-  padding: 0 12px;
+.player-streak-card em {
+  color: #f97316;
+  font-style: normal;
 }
 
-.xp-row {
+.character-progress-card {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  align-items: center;
+  gap: 24px;
+
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 18px 24px;
+  margin-top: 16px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.character-progress-label {
   display: flex;
-  justify-content: space-between;
-  color: #64748b;
-  font-size: 13px;
-  font-weight: 800;
-  margin-bottom: 6px;
+  align-items: center;
+  gap: 8px;
+  color: #25345d;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
-.xp-bar {
+.character-progress-label svg {
+  color: #64748b;
+}
+
+.xp-progress {
   height: 8px;
+  margin: 0;
+  overflow: hidden;
   background: #e5e7eb;
   border-radius: 999px;
-  overflow: hidden;
 }
 
-.xp-fill {
+.xp-progress-fill {
   height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #6366f1, #22d3ee);
+  background: linear-gradient(90deg, #6d5dfc, #22c7ee);
+  border-radius: 14px;
+}
+
+.character-progress-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #25345d;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.character-progress-meta strong {
+  color: #6d5dfc;
+  font-weight: 700;
+}
+
+.progress-dot {
+  color: #6d5dfc;
 }
 
 /* Quest Board */
@@ -547,7 +588,7 @@ body,
   flex-direction: column;
   gap: 7px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   color: #111827;
 }
 
@@ -572,7 +613,7 @@ body,
   border: none;
   border-radius: 8px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   background: #94a3b8;
   color: white;
@@ -764,7 +805,7 @@ body,
   border-radius: 999px;
   padding: 10px 18px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   background: #2563eb;
   color: white;
@@ -787,7 +828,7 @@ body,
   background: #16a34a;
   color: white;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 /* Streak */
@@ -827,7 +868,7 @@ body,
 .streak-number {
   color: #f97316;
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: normal;
 }
 
@@ -923,7 +964,7 @@ body,
   border: none;
   border-radius: 8px;
   padding: 12px 16px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -1124,7 +1165,7 @@ body,
 .global-xp-float {
   position: fixed;
   transform: translate(-50%, -50%);
-  font-weight: 900;
+  font-weight: 700;
   font-size: 15px;
   color: #7c3aed;
   pointer-events: none;

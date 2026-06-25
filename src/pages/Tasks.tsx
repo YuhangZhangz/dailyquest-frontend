@@ -4,8 +4,8 @@ import TopBar from "../components/AuthTopBar";
 import "../styles/Tasks.css";
 import TaskColumn from "../components/TaskColumn";
 import AddTaskModal from "../components/AddTaskModal";
+import PlayerStatusPanel from '../components/PlayerStatusPanel'
 import type { DailyTask, TaskType, UserProfile } from "../types/task";
-import { CircleStar } from "lucide-react";
 
 function Tasks() {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -223,11 +223,7 @@ function Tasks() {
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
-
-  const needNext = getRequiredXpForLevel(level);
-  const currentLevelXp = currentXp - getXpRequiredToReachLevel(level);
-  const xpPercent = Math.min((currentLevelXp / needNext) * 100, 100);
-
+  
   const visibleTasks = hideCompleted
     ? tasks.filter((task) => !isTaskCompleted(task))
     : tasks;
@@ -264,52 +260,12 @@ function Tasks() {
       <TopBar showLogout username={user?.username} />
 
       <main className="tasks-container">
-        <section className="player-panel">
-          <div className="player-summary-row">
-            <div className="player-stat level-card">
-              <span>PLAYER LEVEL</span>
-              <h1>Lv. {level}</h1>
-            </div>
-
-            <div className="player-stat streak-stat">
-              <div className="streak-inline">
-                <span className="streak-icon">🔥</span>
-                <span className="streak-label">Streak</span>
-                <strong className="streak-number">{streak}</strong>
-                <span className="streak-days">days</span>
-              </div>
-            </div>
-
-            <div className="player-stat xp-stat">
-              <span>CURRENT XP</span>
-              <h2>
-                {currentLevelXp}/{needNext} XP
-              </h2>
-            </div>
-            
-            {/* Display user's current coin balance */}
-            <div className="player-stat coin-stat">
-              <span>COINS</span>
-              <h2>
-                <CircleStar size={20} /> {user?.coinBalance ?? 0}
-              </h2>
-            </div>
-          </div>
-
-          <div className="xp-progress-section">
-            <div className="xp-row">
-              <span>Character Progress</span>
-              <strong>{Math.round(xpPercent)}%</strong>
-            </div>
-
-            <div className="xp-bar">
-              <div
-                className="xp-fill"
-                style={{ width: `${xpPercent}%` }}
-              />
-            </div>
-          </div>
-        </section>
+        <PlayerStatusPanel
+          level={level}
+          totalXp={currentXp}
+          dailyStreak={streak}
+          coinBalance={user?.coinBalance ?? 0}
+        />
 
         <section className="quest-board">
           <div className="quest-header">
@@ -392,20 +348,6 @@ function Tasks() {
       </main>
     </div>
   );
-}
-
-function getRequiredXpForLevel(level: number) {
-  return 100 + (level - 1) * 50;
-}
-
-function getXpRequiredToReachLevel(level: number) {
-  let total = 0;
-
-  for (let currentLevel = 1; currentLevel < level; currentLevel++) {
-    total += getRequiredXpForLevel(currentLevel);
-  }
-
-  return total;
 }
 
 function isTaskCompleted(task: DailyTask) {
