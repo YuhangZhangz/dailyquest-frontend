@@ -1,4 +1,7 @@
 import { CircleHelp, Coins } from "lucide-react";
+import levelLogo from "../assets/level_logo.png";
+import fireLogo from "../assets/fire_logo.png";
+import coinLogo from "../assets/coin_logo.png";
 import "../styles/Tasks.css";
 
 // Props type: data received from the parent component
@@ -21,6 +24,7 @@ function PlayerStatusPanel({
   // XP earned within the current level
   // totalXp is lifetime XP, so we subtract the XP required to reach this level
   const currentLevelXp = totalXp - getXpRequiredToReachLevel(level);
+  const xpRemaining = Math.max(xpToNextLevel - currentLevelXp, 0);
 
   // Current level progress percentage
   // Math.min prevents the progress from going over 100%
@@ -33,35 +37,68 @@ function PlayerStatusPanel({
       {/* Top player status cards */}
       <div className="player-status-grid">
         {/* Player level card */}
-        <article className="player-status-card">
-          <span>PLAYER LEVEL</span>
-          <strong>Lv. {level}</strong>
-        </article>
+        <article className="player-status-card player-level-card">
+          <img className="level-logo" src={levelLogo} alt="Level badge" />
 
-        {/* Daily streak card */}
-        <article className="player-status-card">
-          <span>STREAK</span>
-          <strong>
-            🔥 <em>{dailyStreak}</em> days
-          </strong>
+          <div className="level-card-content">
+            <span>LEVEL</span>
+            <strong>Lv. {level}</strong>
+            <small>Next: {xpRemaining} XP</small>
+          </div>
+
+          <div
+            className="level-progress-ring"
+            style={
+              {
+                "--level-progress": `${progressPercent}%`,
+                "--level-angle": `${progressPercent * 3.6}deg`,
+              } as React.CSSProperties
+            }
+            aria-label={`Level progress ${progressPercent}%`}
+          />
         </article>
 
         {/* Current level XP card */}
-        <article className="player-status-card">
+        <article className="player-status-card xp-status-card">
           <span>CURRENT XP</span>
-          <strong>
-            {currentLevelXp}/{xpToNextLevel} XP
+
+          <strong className="xp-card-value">
+            <span className="xp-current">{currentLevelXp}</span>
+            <span className="xp-total"> / {xpToNextLevel} XP</span>
           </strong>
+
+          <small className="xp-card-hint">
+            Lifetime: {totalXp} XP
+          </small>
+        </article>
+
+        {/* Daily streak card */}
+        <article className="player-status-card streak-card">
+          <div className="streak-logo-frame">
+            <img className="streak-logo" src={fireLogo} alt="Streak flame" />
+          </div>
+
+          <div className="streak-card-content">
+            <span className="streak-label">STREAK</span>
+              <strong className="streak-value">
+                <span className="streak-number">{dailyStreak}</span>
+                <span className="streak-unit">days</span>
+              </strong>
+            <small>Keep going!</small>
+          </div>
         </article>
 
         {/* Coin balance card */}
         <article className="player-status-card player-coins-card">
-          <span>COINS</span>
+          <img className="coin-logo" src={coinLogo} alt="Coins" />
 
-          <strong className="coin-value">
-            <Coins size={18} strokeWidth={2.2} />
-            {coinBalance}
-          </strong>
+          <div className="coin-card-content">
+            <span>COINS</span>
+
+            <strong className="coin-value">{coinBalance}</strong>
+
+            <small>Keep earning!</small>
+          </div>
         </article>
       </div>
 
