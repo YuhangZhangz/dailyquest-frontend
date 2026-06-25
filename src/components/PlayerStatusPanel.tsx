@@ -64,7 +64,7 @@ function PlayerStatusPanel({
 
           <strong className="xp-card-value">
             <span className="xp-current">{currentLevelXp}</span>
-            <span className="xp-total"> / {xpToNextLevel} XP</span>
+            <span className="xp-total">/ {xpToNextLevel} XP</span>
           </strong>
 
           <small className="xp-card-hint">
@@ -97,6 +97,13 @@ function PlayerStatusPanel({
             <strong className="coin-value">{coinBalance}</strong>
             <small>Keep earning!</small>
           </div>
+        </article>
+        {/* Weekly Score card */}
+        {/* Coming Soon */}
+        <article className="player-status-card weekly-score-card">
+          <span>WEEKLY SCORE</span>
+          <strong className="weekly-score-value">Coming Soon</strong>
+          <small className="weekly-score-hint">Weekly review</small>
         </article>
       </div>
 
