@@ -29,4 +29,5 @@ export type UserProfile = {
   totalXp: number;
   level: number;
   dailyStreak: number;
+  coinBalance: number;
 };

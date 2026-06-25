@@ -98,11 +98,11 @@ function EditTaskModal({
             value={difficulty}
             onChange={(e) => setDifficulty(e.target.value)}
           >
-            <option value="T1">🟢 T1 - Easy</option>
-            <option value="T2">🟡 T2 - Normal</option>
-            <option value="T3">🔵 T3 - Hard</option>
-            <option value="T4">🔴 T4 - Elite</option>
-            <option value="BOSS">👑 Boss</option>
+            <option value="T1">🟢 T1 - Easy (2 Coins)</option>
+            <option value="T2">🟡 T2 - Normal (5 Coins)</option>
+            <option value="T3">🔵 T3 - Hard (10 Coins)</option>
+            <option value="T4">🔴 T4 - Elite (20 Coins)</option>
+            <option value="BOSS">👑 Boss (50 Coins)</option>
           </select>
         </label>
 

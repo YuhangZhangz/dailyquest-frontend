@@ -5,6 +5,7 @@ import "../styles/Tasks.css";
 import TaskColumn from "../components/TaskColumn";
 import AddTaskModal from "../components/AddTaskModal";
 import type { DailyTask, TaskType, UserProfile } from "../types/task";
+import { CircleStar } from "lucide-react";
 
 function Tasks() {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -283,6 +284,14 @@ function Tasks() {
               <span>CURRENT XP</span>
               <h2>
                 {currentLevelXp}/{needNext} XP
+              </h2>
+            </div>
+            
+            {/* Display user's current coin balance */}
+            <div className="player-stat coin-stat">
+              <span>COINS</span>
+              <h2>
+                <CircleStar size={20} /> {user?.coinBalance ?? 0}
               </h2>
             </div>
           </div>
