@@ -94,9 +94,7 @@ function PlayerStatusPanel({
 
           <div className="coin-card-content">
             <span>COINS</span>
-
             <strong className="coin-value">{coinBalance}</strong>
-
             <small>Keep earning!</small>
           </div>
         </article>
