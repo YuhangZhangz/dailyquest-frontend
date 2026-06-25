@@ -102,7 +102,7 @@ function TaskColumn({
     return () => {
       sortable.destroy();
     };
-  }, [taskType, tasks.length]);
+  }, [taskType, tasks.length, onReorder]);
 
   return (
     <section className="task-column">

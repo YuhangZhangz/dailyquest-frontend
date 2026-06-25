@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../api/axios";
+import axios from "axios";
 import "../styles/Auth.css";
 import TopBar from "../components/AuthTopBar";
 import { Eye, EyeOff } from "lucide-react";
@@ -65,9 +66,10 @@ function Register() {
       // Redirect to tasks page
       window.location.href = "/tasks";
 
-    } catch (err: any) {
-      const rawMessage = err.response?.data?.message || "Register failed";
-
+    } catch (err: unknown) {
+      const rawMessage = axios.isAxiosError(err)
+        ? err.response?.data?.message || "Register failed"
+        : "Register failed";
       const cleanedMessage = rawMessage
         .replace(/^\[/, "")
         .replace(/\]$/, "")

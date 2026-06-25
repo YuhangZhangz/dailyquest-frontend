@@ -1,11 +1,20 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import api from "../api/axios";
 import TopBar from "../components/AuthTopBar";
 import "../styles/Tasks.css";
 import TaskColumn from "../components/TaskColumn";
 import AddTaskModal from "../components/AddTaskModal";
-import PlayerStatusPanel from '../components/PlayerStatusPanel'
+import PlayerStatusPanel from "../components/PlayerStatusPanel";
 import type { DailyTask, TaskType, UserProfile } from "../types/task";
+
+function getErrorDetails(err: unknown) {
+  if (axios.isAxiosError(err)) {
+    return err.response?.data || err.message;
+  }
+
+  return err;
+}
 
 function Tasks() {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -22,7 +31,7 @@ function Tasks() {
     y: number;
   } | null>(null);
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -36,17 +45,23 @@ function Tasks() {
 
       setUser(userRes.data);
       setTasks(taskRes.data);
-    } catch (err: any) {
-      console.log("Load data error:", err.response?.data || err);
+    } catch (err: unknown) {
+      console.log("Load data error:", getErrorDetails(err));
 
       localStorage.removeItem("token");
       window.location.href = "/";
     }
-  }
+  }, []);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    const timerId = window.setTimeout(() => {
+      void loadData();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, [loadData]);
 
   function openAddForm(taskType: TaskType) {
     setCreatingType(taskType);
@@ -70,8 +85,8 @@ function Tasks() {
 
       setShowAddModal(false);
       await loadData();
-    } catch (err: any) {
-      console.log("Create task error:", err.response?.data);
+    } catch (err: unknown) {
+      console.log("Create task error:", getErrorDetails(err));
     }
   }
 
@@ -92,8 +107,8 @@ function Tasks() {
     try {
       await api.patch(`/daily-tasks/${id}/complete`);
       await loadData();
-    } catch (err: any) {
-      console.log("Complete task error:", err.response?.data);
+    } catch (err: unknown) {
+      console.log("Complete task error:", getErrorDetails(err));
     }
   }
 
@@ -101,8 +116,8 @@ function Tasks() {
     try {
       await api.delete(`/daily-tasks/${id}`);
       await loadData();
-    } catch (err: any) {
-      console.log("Delete task error:", err.response?.data);
+    } catch (err: unknown) {
+      console.log("Delete task error:", getErrorDetails(err));
     }
   }
 
@@ -126,12 +141,10 @@ function Tasks() {
       const updatedTask = response.data;
 
       setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === id ? updatedTask : task
-        )
+        prevTasks.map((task) => (task.id === id ? updatedTask : task))
       );
-    } catch (err: any) {
-      console.log("Update task error:", err.response?.data);
+    } catch (err: unknown) {
+      console.log("Update task error:", getErrorDetails(err));
     }
   }
 
@@ -139,8 +152,8 @@ function Tasks() {
     try {
       await api.patch(`/daily-tasks/${id}/revert`);
       await loadData();
-    } catch (err: any) {
-      console.log("Revert task error:", err.response?.data);
+    } catch (err: unknown) {
+      console.log("Revert task error:", getErrorDetails(err));
     }
   }
 
@@ -167,14 +180,11 @@ function Tasks() {
     setTasks(nextTasks);
 
     try {
-      await api.patch(
-        `/daily-tasks/${taskType}/sort-order`,
-        orderedIds
-      );
+      await api.patch(`/daily-tasks/${taskType}/sort-order`, orderedIds);
 
       await loadData();
-    } catch (err: any) {
-      console.log("Save sort order error:", err.response?.data || err);
+    } catch (err: unknown) {
+      console.log("Save sort order error:", getErrorDetails(err));
       setTasks(previousTasks);
     }
   }
@@ -187,43 +197,37 @@ function Tasks() {
       });
 
       await loadData();
-    } catch (err: any) {
-      console.log("Add subtask error:", err.response?.data || err);
+    } catch (err: unknown) {
+      console.log("Add subtask error:", getErrorDetails(err));
     }
   }
 
   // Toggle subtask completion status
-  async function handleToggleSubTask(
-    _taskId: number,
-    subTaskId: number
-  ) {
+  async function handleToggleSubTask(_taskId: number, subTaskId: number) {
     try {
       await api.patch(`/subtasks/${subTaskId}/toggle`);
 
       await loadData();
-    } catch (err: any) {
-      console.log("Toggle subtask error:", err.response?.data || err);
+    } catch (err: unknown) {
+      console.log("Toggle subtask error:", getErrorDetails(err));
     }
   }
 
   // Delete a subtask
-  async function handleDeleteSubTask(
-    _taskId: number,
-    subTaskId: number
-  ) {
+  async function handleDeleteSubTask(_taskId: number, subTaskId: number) {
     try {
       await api.delete(`/subtasks/${subTaskId}`);
 
       await loadData();
-    } catch (err: any) {
-      console.log("Delete subtask error:", err.response?.data || err);
+    } catch (err: unknown) {
+      console.log("Delete subtask error:", getErrorDetails(err));
     }
   }
 
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
-  
+
   const visibleTasks = hideCompleted
     ? tasks.filter((task) => !isTaskCompleted(task))
     : tasks;
@@ -231,12 +235,12 @@ function Tasks() {
   const habitTasks = visibleTasks
     .filter((task) => task.taskType === "HABIT")
     .sort((a, b) => a.sortOrder - b.sortOrder);
-  
+
   // Keep user's custom order
   const dailyTasks = visibleTasks
     .filter((task) => task.taskType === "DAILY")
     .sort((a, b) => a.sortOrder - b.sortOrder);
-  
+
   // Keep user's custom order
   const todoTasks = visibleTasks
     .filter((task) => task.taskType === "TODO")
@@ -244,7 +248,6 @@ function Tasks() {
 
   return (
     <div className="tasks-page">
-
       {xpPopup && (
         <span
           className="global-xp-float"
