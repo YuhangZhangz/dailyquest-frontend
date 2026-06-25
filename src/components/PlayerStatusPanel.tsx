@@ -1,4 +1,4 @@
-import { CircleHelp, Coins } from "lucide-react";
+import { CircleHelp } from "lucide-react";
 import levelLogo from "../assets/level_logo.png";
 import fireLogo from "../assets/fire_logo.png";
 import coinLogo from "../assets/coin_logo.png";
