@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { SubTask } from "../types/task";
-import { Square, SquareCheck, X } from "lucide-react";
+import { Check, Square, X } from "lucide-react";
 
 // Props means the data and functions passed from parent component.
 type SubTaskListProps = {
@@ -64,7 +64,7 @@ function SubTaskList({
               onClick={() => onToggleSubTask(taskId, subTask.id)}
           >
             {subTask.completed ? (
-              <SquareCheck size={20} strokeWidth={2.5} />
+              <Check size={13} strokeWidth={3.2} />
             ) : (
               <Square size={20} strokeWidth={2.5} />
             )}

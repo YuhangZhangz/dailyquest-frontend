@@ -279,6 +279,8 @@ function Tasks() {
 
             <div className="quest-actions">
               <label className="hide-completed">
+                <span>Hide Completed</span>
+
                 <input
                   type="checkbox"
                   checked={hideCompleted}
@@ -288,7 +290,6 @@ function Tasks() {
                     localStorage.setItem("hideCompleted", String(checked));
                   }}
                 />
-                Hide Completed
               </label>
             </div>
           </div>

@@ -506,13 +506,25 @@ body,
 }
 
 .hide-completed {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 7px;
-  color: #64748b;
+  gap: 8px;
+
   font-size: 14px;
   font-weight: 700;
-  white-space: nowrap;
+  color: #64748b;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.hide-completed input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+
+  accent-color: #6366f1;
+  cursor: pointer;
 }
 
 /* 三列任务区 */
@@ -655,6 +667,7 @@ body,
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
   gap: 9px;
 
@@ -665,6 +678,55 @@ body,
   border-left: 5px solid #6366f1;
   border-radius: 8px;
   background: #f8fafc;
+}
+
+/* Daily 完成圆圈：放在任务标题前，用于完成或撤销 Daily */
+.task-complete-circle {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  flex-shrink: 0;
+
+  border: 2px solid #94a3b8;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #ffffff;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.task-complete-circle:hover {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.task-complete-circle.completed {
+  border-color: #94a3b8;
+  background: #94a3b8;
+  color: #ffffff;
+}
+
+.task-complete-circle.completed svg {
+  stroke: #ffffff;
+}
+
+.task-complete-circle.completed:hover {
+  border-color: #64748b;
+  background: #64748b;
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.16);
+}
+
+.task-complete-circle.completed:hover svg {
+  stroke: #ffffff;
+}
+
+.task-complete-circle svg {
+  display: block;
 }
 
 /* 不同任务类型左边框 */
@@ -719,7 +781,7 @@ body,
 .quest-title-row,
 .quest-card-title-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 0;
@@ -730,12 +792,13 @@ body,
 .quest-card h2 {
   margin: 0;
   font-size: 16px;
-  line-height: 1.15;
+  line-height: 1.1;
   font-weight: 700;
 }
 
 .difficulty-pill {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   width: fit-content;
   padding: 4px 9px;
   border-radius: 999px;
@@ -743,8 +806,7 @@ body,
   color: #4f46e5;
   font-size: 11px;
   font-weight: 800;
-  margin-bottom: 4px;
-  transform: translateY(-1px);
+  margin-bottom: 0;
 }
 
 .quest-description {
@@ -765,12 +827,20 @@ body,
   margin: 0;
 }
 
-.task-meta {
-  margin-top: 8px;
-  color: #64748b;
-  font-size: 14px;
-  font-weight: 600;
+/* Daily 有标题前圆圈，所以描述和子任务向右对齐标题 */
+.quest-card-daily > p,
+.quest-card-daily .task-subtask-preview {
+  margin-left: 26px;
+  margin-top: -2px;
 }
+
+.quest-card .task-meta {
+  margin-top: 8px;
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 
 /* 按钮区 */
 .quest-buttons {
@@ -808,6 +878,50 @@ body,
 
 .complete-btn:active {
   transform: translateY(0);
+}
+
+/* Todo 完成按钮：左侧带圆形对勾图标 */
+.todo-complete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #4f46e5;
+  border: 1px solid #ddd6fe;
+}
+
+.todo-complete-icon {
+  width: 18px;
+  height: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  color: #6366f1;
+}
+
+.todo-complete-icon svg {
+  display: block;
+}
+
+.todo-complete-icon.completed {
+  border-radius: 999px;
+  background: #6366f1;
+  color: #ffffff;
+}
+
+/* 已完成 Todo 的 Complete 按钮：弱化显示 */
+.todo-complete-btn-completed {
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.todo-complete-btn-completed .todo-complete-icon.completed {
+  background: #94a3b8;
+  color: #ffffff;
 }
 
 .delete-btn {
@@ -1096,12 +1210,15 @@ body,
 .daily-streak-pill {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
+
   padding: 3px 9px;
   border-radius: 999px;
-  background: #fff7ed;
   color: #ea580c;
+
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .completed-label {
@@ -1444,7 +1561,14 @@ body,
 .subtask-title {
   flex: 1;
   font-size: 14px;
+  font-weight: 600;
   color: #334155;
+}
+
+/* completed subtask title in edit modal */
+.subtask-title.completed {
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 .subtask-add-row {
@@ -1500,10 +1624,23 @@ body,
   cursor: pointer;
 }
 
+/* unfinished subtask title on task card */
+.preview-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* completed subtask title on task card */
+.preview-title.completed {
+  color: #64748b;
+  font-weight: 600;
+}
+
 .subtask-check,
 .preview-check {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border: none;
   background: transparent;
   padding: 0;
@@ -1514,14 +1651,20 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
+
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
+/* completed subtask: 紫色实心方块 + 白色 check */
 .subtask-check.completed,
 .preview-check.completed {
-  color: #2563eb;
+  border-radius: 4px;
+  background: #6366f1;
+  color: #ffffff;
 }
 
-.subtask-title.completed,
-.preview-title.completed {
-  color: #94a3b8;
+.subtask-check.completed svg,
+.preview-check.completed svg {
+  stroke: #ffffff;
 }
