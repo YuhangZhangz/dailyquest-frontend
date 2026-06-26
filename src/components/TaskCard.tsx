@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
 import type { DailyTask, TaskType } from "../types/task";
-import { Square, SquareCheck } from "lucide-react";
+import { Check, Circle, Square, } from "lucide-react";
 
 type TaskCardProps = {
   task: DailyTask;
@@ -31,7 +31,7 @@ function TaskCard({
   onRevert,
   onAddSubTask,
   onDeleteSubTask,
-  onToggleSubTask
+  onToggleSubTask,
 }: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -56,7 +56,7 @@ function TaskCard({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuOpen]);
-  
+
   // Check if the daily task has already been completed today
   const today = new Date().toLocaleDateString("en-CA");
 
@@ -70,7 +70,9 @@ function TaskCard({
       ? isDailyCompletedToday
       : false;
 
-    return (
+  const showCompleteCircle = task.taskType === "DAILY";
+
+  return (
     <article
       className={`quest-card quest-card-${task.taskType.toLowerCase()} ${
         isCompleted ? "quest-card-completed" : ""
@@ -115,6 +117,29 @@ function TaskCard({
       )}
 
       <div className="quest-card-title-row">
+        {showCompleteCircle && (
+          <button
+            type="button"
+            className={`task-complete-circle ${
+              isCompleted ? "completed" : ""
+            }`}
+            data-no-drag="true"
+            onClick={(event) => {
+              event.stopPropagation();
+
+              if (isCompleted) {
+                onRevert(task.id);
+                return;
+              }
+
+              onComplete(task.id, task.baseXp, event.clientX, event.clientY);
+            }}
+            aria-label={isCompleted ? "Undo completion" : "Complete task"}
+          >
+            {isCompleted && <Check size={14} strokeWidth={3.2} />}
+          </button>
+        )}
+
         <h2>{task.title}</h2>
 
         <span className="difficulty-pill">
@@ -123,60 +148,67 @@ function TaskCard({
 
         {task.taskType === "DAILY" && (
           <span className="daily-streak-pill">
-            🔥 {task.completedCount} d
+            <span>🔥</span>
+            <span>{task.completedCount}</span>
           </span>
         )}
       </div>
 
       {task.description && <p>{task.description}</p>}
-      
-      {/* Show subtasks on the task card, but only for Daily and Todo tasks */}
-      {task.taskType !== "HABIT" && task.subTasks && task.subTasks.length > 0 && (
-        <div className="task-subtask-preview">
-          {[...task.subTasks]
-            .sort((a, b) => a.id - b.id)
-            .map((subTask) => (
-              <div
-                key={subTask.id}
-                className="task-subtask-preview-item"
-                data-no-drag="true"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onToggleSubTask?.(task.id, subTask.id);
-                }}
-              >
-                {/* Show completed / incomplete icon */}
-                <span
-                  className={
-                    subTask.completed ? "preview-check completed" : "preview-check"
-                  }
-                >
-                  {subTask.completed ? (
-                    <SquareCheck size={15} strokeWidth={2.5} />
-                  ) : (
-                    <Square size={15} strokeWidth={2.5} />
-                  )}
-                </span>
 
-                {/* Show subtask title */}
-                <span
-                  className={
-                    subTask.completed ? "preview-title completed" : "preview-title"
-                  }
+      {/* Show subtasks on the task card, but only for Daily and Todo tasks */}
+      {task.taskType !== "HABIT" &&
+        task.subTasks &&
+        task.subTasks.length > 0 && (
+          <div className="task-subtask-preview">
+            {[...task.subTasks]
+              .sort((a, b) => a.id - b.id)
+              .map((subTask) => (
+                <div
+                  key={subTask.id}
+                  className="task-subtask-preview-item"
+                  data-no-drag="true"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onToggleSubTask?.(task.id, subTask.id);
+                  }}
                 >
-                  {subTask.title}
-                </span>
-              </div>
-            ))}
-        </div>
-      )}
+                  {/* Show completed / incomplete icon */}
+                  <span
+                    className={
+                      subTask.completed
+                        ? "preview-check completed"
+                        : "preview-check"
+                    }
+                  >
+                    {subTask.completed ? (
+                      <Check size={11} strokeWidth={3.2} />
+                    ) : (
+                      <Square size={20} strokeWidth={2.3} />
+                    )}
+                  </span>
+
+                  {/* Show subtask title */}
+                  <span
+                    className={
+                      subTask.completed
+                        ? "preview-title completed"
+                        : "preview-title"
+                    }
+                  >
+                    {subTask.title}
+                  </span>
+                </div>
+              ))}
+          </div>
+        )}
 
       {task.taskType === "TODO" && task.dueDate && (
         <p className="task-meta">Due: {task.dueDate}</p>
       )}
 
-      <div className="quest-buttons">
-        {task.taskType === "HABIT" ? (
+      {task.taskType === "HABIT" && (
+        <div className="quest-buttons">
           <div className="habit-counter-actions">
             <button
               className="habit-counter-btn habit-minus-btn"
@@ -198,34 +230,38 @@ function TaskCard({
               +
             </button>
           </div>
-          ) : isDailyCompletedToday ? (
+        </div>
+      )}
+
+      {task.taskType === "TODO" && (
+        <div className="quest-buttons">
+          {task.active ? (
             <button
-              className="revert-btn"
+              className="complete-btn todo-complete-btn"
+              type="button"
+              onClick={(event) => {
+                onComplete(task.id, task.baseXp, event.clientX, event.clientY);
+              }}
+            >
+              <span className="todo-complete-icon">
+                <Circle size={18} strokeWidth={2.4} />
+              </span>
+              Complete
+            </button>
+          ) : (
+            <button
+              className="complete-btn todo-complete-btn todo-complete-btn-completed"
               type="button"
               onClick={() => onRevert(task.id)}
             >
-              Undo
+              <span className="todo-complete-icon completed">
+                <Check size={14} strokeWidth={3.2} />
+              </span>
+              Complete
             </button>
-          ) : task.active ? (
-          <button
-            className="complete-btn"
-            type="button"
-            onClick={(event) => {
-              onComplete(task.id, task.baseXp, event.clientX, event.clientY);
-            }}
-          >
-            Complete
-          </button>
-        ) : (
-          <button
-            className="revert-btn"
-            type="button"
-            onClick={() => onRevert(task.id)}
-          >
-            Undo
-          </button>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {isEditing && (
         <EditTaskModal
