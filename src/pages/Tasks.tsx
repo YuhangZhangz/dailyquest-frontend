@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import api from "../api/axios";
-import TopBar from "../components/AuthTopBar";
+import TopBar from "../components/TopBar";
 import "../styles/Tasks.css";
 import TaskColumn from "../components/TaskColumn";
 import AddTaskModal from "../components/AddTaskModal";
 import PlayerStatusPanel from "../components/PlayerStatusPanel";
 import type { DailyTask, TaskType, UserProfile } from "../types/task";
+import Sidebar from "../components/Sidebar";
 
 function getErrorDetails(err: unknown) {
   if (axios.isAxiosError(err)) {
@@ -247,109 +248,113 @@ function Tasks() {
     .sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
-    <div className="tasks-page">
-      {xpPopup && (
-        <span
-          className="global-xp-float"
-          style={{
-            left: xpPopup.x,
-            top: xpPopup.y - 40,
-          }}
-        >
-          +{xpPopup.xp} XP
-        </span>
-      )}
+    <div className="app-shell">
+      <Sidebar dailyStreak={streak} activePage="Quests" />
 
-      <TopBar showLogout username={user?.username} />
+      <div className="tasks-page">
+        {xpPopup && (
+          <span
+            className="global-xp-float"
+            style={{
+              left: xpPopup.x,
+              top: xpPopup.y - 40,
+            }}
+          >
+            +{xpPopup.xp} XP
+          </span>
+        )}
 
-      <main className="tasks-container">
-        <PlayerStatusPanel
-          level={level}
-          totalXp={currentXp}
-          dailyStreak={streak}
-          coinBalance={user?.coinBalance ?? 0}
-        />
+        <TopBar showLogout username={user?.username} hideBrand />
 
-        <section className="quest-board">
-          <div className="quest-header">
-            <div>
-              <span className="section-kicker">QUEST BOARD</span>
-              <h1>Today's Quests</h1>
+        <main className="tasks-container">
+          <PlayerStatusPanel
+            level={level}
+            totalXp={currentXp}
+            dailyStreak={streak}
+            coinBalance={user?.coinBalance ?? 0}
+          />
+
+          <section className="quest-board">
+            <div className="quest-header">
+              <div>
+                <span className="section-kicker">QUEST BOARD</span>
+                <h1>Today's Quests</h1>
+              </div>
+
+              <div className="quest-actions">
+                <label className="hide-completed">
+                  <span>Hide Completed</span>
+
+                  <input
+                    type="checkbox"
+                    checked={hideCompleted}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      setHideCompleted(checked);
+                      localStorage.setItem("hideCompleted", String(checked));
+                    }}
+                  />
+                </label>
+              </div>
             </div>
 
-            <div className="quest-actions">
-              <label className="hide-completed">
-                <span>Hide Completed</span>
+            {showAddModal && (
+              <AddTaskModal
+                taskType={creatingType}
+                onClose={() => setShowAddModal(false)}
+                onCreate={handleCreateTask}
+              />
+            )}
 
-                <input
-                  type="checkbox"
-                  checked={hideCompleted}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    setHideCompleted(checked);
-                    localStorage.setItem("hideCompleted", String(checked));
-                  }}
-                />
-              </label>
+            <div className="quest-columns">
+              <TaskColumn
+                title="💪 Habits"
+                addLabel="Add Habit"
+                taskType="HABIT"
+                tasks={habitTasks}
+                onAdd={() => openAddForm("HABIT")}
+                onComplete={handleCompleteTask}
+                onDelete={handleDeleteTask}
+                onUpdate={handleUpdateTask}
+                onRevert={handleRevertTask}
+                onReorder={handleReorderTasks}
+              />
+
+              <TaskColumn
+                title="⚔️ Dailies"
+                addLabel="Add Daily"
+                taskType="DAILY"
+                tasks={dailyTasks}
+                onAdd={() => openAddForm("DAILY")}
+                onComplete={handleCompleteTask}
+                onDelete={handleDeleteTask}
+                onUpdate={handleUpdateTask}
+                onRevert={handleRevertTask}
+                onReorder={handleReorderTasks}
+                onAddSubTask={handleAddSubTask}
+                onToggleSubTask={handleToggleSubTask}
+                onDeleteSubTask={handleDeleteSubTask}
+              />
+
+              <TaskColumn
+                title="🎯 Todos"
+                addLabel="Add Todo"
+                taskType="TODO"
+                tasks={todoTasks}
+                onAdd={() => openAddForm("TODO")}
+                onComplete={handleCompleteTask}
+                onDelete={handleDeleteTask}
+                onUpdate={handleUpdateTask}
+                onRevert={handleRevertTask}
+                onReorder={handleReorderTasks}
+                onAddSubTask={handleAddSubTask}
+                onToggleSubTask={handleToggleSubTask}
+                onDeleteSubTask={handleDeleteSubTask}
+              />
             </div>
-          </div>
-
-          {showAddModal && (
-            <AddTaskModal
-              taskType={creatingType}
-              onClose={() => setShowAddModal(false)}
-              onCreate={handleCreateTask}
-            />
-          )}
-
-          <div className="quest-columns">
-            <TaskColumn
-              title="💪 Habits"
-              addLabel="Add Habit"
-              taskType="HABIT"
-              tasks={habitTasks}
-              onAdd={() => openAddForm("HABIT")}
-              onComplete={handleCompleteTask}
-              onDelete={handleDeleteTask}
-              onUpdate={handleUpdateTask}
-              onRevert={handleRevertTask}
-              onReorder={handleReorderTasks}
-            />
-
-            <TaskColumn
-              title="⚔️ Dailies"
-              addLabel="Add Daily"
-              taskType="DAILY"
-              tasks={dailyTasks}
-              onAdd={() => openAddForm("DAILY")}
-              onComplete={handleCompleteTask}
-              onDelete={handleDeleteTask}
-              onUpdate={handleUpdateTask}
-              onRevert={handleRevertTask}
-              onReorder={handleReorderTasks}
-              onAddSubTask={handleAddSubTask}
-              onToggleSubTask={handleToggleSubTask}
-              onDeleteSubTask={handleDeleteSubTask}
-            />
-
-            <TaskColumn
-              title="🎯 Todos"
-              addLabel="Add Todo"
-              taskType="TODO"
-              tasks={todoTasks}
-              onAdd={() => openAddForm("TODO")}
-              onComplete={handleCompleteTask}
-              onDelete={handleDeleteTask}
-              onUpdate={handleUpdateTask}
-              onRevert={handleRevertTask}
-              onReorder={handleReorderTasks}
-              onAddSubTask={handleAddSubTask}
-              onToggleSubTask={handleToggleSubTask}
-              onDeleteSubTask={handleDeleteSubTask}
-            />
-          </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

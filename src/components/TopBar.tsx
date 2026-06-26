@@ -6,9 +6,16 @@ import "../styles/Auth.css";
 type AuthTopBarProps = {
   showLogout?: boolean;
   username?: string;
+
+  // When the page has a sidebar, hide the top-left logo
+  hideBrand?: boolean;
 };
 
-function AuthTopBar({ showLogout = false, username }: AuthTopBarProps) {
+function AuthTopBar({
+  showLogout = false,
+  username,
+  hideBrand = false,
+}: AuthTopBarProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -40,10 +47,12 @@ function AuthTopBar({ showLogout = false, username }: AuthTopBarProps) {
   const avatarLetter = displayName.charAt(0).toUpperCase();
 
   return (
-    <header className="auth-top-bar">
-      <a href={showLogout ? "/tasks" : "/"} className="auth-logo">
-        <img src={logo} alt="DailyQuest Logo" />
-      </a>
+    <header className={`auth-top-bar ${hideBrand ? "brand-hidden" : ""}`}>
+      {!hideBrand && (
+        <a href={showLogout ? "/tasks" : "/"} className="auth-logo">
+          <img src={logo} alt="DailyQuest Logo" />
+        </a>
+      )}
 
       {showLogout && (
         <div className="user-menu" ref={menuRef}>

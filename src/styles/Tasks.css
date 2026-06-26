@@ -1668,3 +1668,15 @@ body,
 .preview-check.completed svg {
   stroke: #ffffff;
 }
+
+/*Sidebar*/
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  background: #f8f9ff;
+}
+
+.tasks-page {
+  flex: 1;
+  min-width: 0;
+}

@@ -270,3 +270,22 @@
 .user-dropdown-item:hover {
   background: #f5f7fb;
 }
+
+/* TopBar style when the page already has a left sidebar */
+.auth-top-bar.brand-hidden {
+  justify-content: flex-end;
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* Keep the user menu on the right side */
+.auth-top-bar.brand-hidden .user-menu {
+  margin-left: auto;
+}
+
+/* Make hover blend better with the page background */
+.auth-top-bar.brand-hidden .user-profile-btn:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
