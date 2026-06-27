@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
 import type { DailyTask, TaskType } from "../types/task";
-import { Check, Circle, Square, } from "lucide-react";
+import { Check, Circle, Square } from "lucide-react";
 
 type TaskCardProps = {
   task: DailyTask;
@@ -142,7 +142,9 @@ function TaskCard({
 
         <h2>{task.title}</h2>
 
-        <span className="difficulty-pill">
+        <span
+          className={`difficulty-pill difficulty-${task.difficulty.toLowerCase()}`}
+        >
           {getDifficultyLabel(task.difficulty)} · {task.baseXp} XP
         </span>
 
