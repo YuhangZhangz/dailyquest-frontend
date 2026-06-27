@@ -26,11 +26,14 @@ function Tasks() {
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [creatingType, setCreatingType] = useState<TaskType>("DAILY");
-  const [xpPopup, setXpPopup] = useState<{
+  const [rewardPopup, setRewardPopup] = useState<{
     xp: number;
+    coins: number;
     x: number;
     y: number;
   } | null>(null);
+
+  const [coinsPulse, setCoinsPulse] = useState(false);
 
   const loadData = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -97,17 +100,35 @@ function Tasks() {
     x?: number,
     y?: number
   ) {
-    if (baseXp !== undefined && x !== undefined && y !== undefined) {
-      setXpPopup({ xp: baseXp, x, y });
-
-      setTimeout(() => {
-        setXpPopup(null);
-      }, 800);
-    }
-
     try {
       await api.patch(`/daily-tasks/${id}/complete`);
       await loadData();
+
+      const rewardXp = baseXp ?? 0;
+
+      // Temporarily use XP as the coin reward until the backend returns earnedCoins.
+      const rewardCoins = baseXp ?? 0;
+
+      if (rewardXp > 0 && x !== undefined && y !== undefined) {
+        setRewardPopup({
+          xp: rewardXp,
+          coins: rewardCoins,
+          x,
+          y,
+        });
+
+        window.setTimeout(() => {
+          setRewardPopup(null);
+        }, 900);
+      }
+
+      if (rewardCoins > 0) {
+        setCoinsPulse(true);
+
+        window.setTimeout(() => {
+          setCoinsPulse(false);
+        }, 650);
+      }
     } catch (err: unknown) {
       console.log("Complete task error:", getErrorDetails(err));
     }
@@ -252,16 +273,16 @@ function Tasks() {
       <Sidebar dailyStreak={streak} activePage="Quests" />
 
       <div className="tasks-page">
-        {xpPopup && (
-          <span
-            className="global-xp-float"
+        {rewardPopup && (
+          <div
+            className="global-reward-popup"
             style={{
-              left: xpPopup.x,
-              top: xpPopup.y - 40,
+              left: rewardPopup.x,
+              top: rewardPopup.y - 28,
             }}
           >
-            +{xpPopup.xp} XP
-          </span>
+            <span className="global-xp-float">+{rewardPopup.xp} XP</span>
+          </div>
         )}
 
         <TopBar showLogout username={user?.username} hideBrand />
@@ -272,6 +293,7 @@ function Tasks() {
             totalXp={currentXp}
             dailyStreak={streak}
             coinBalance={user?.coinBalance ?? 0}
+            coinsPulse={coinsPulse}
           />
 
           <section className="quest-board">

@@ -1,8 +1,14 @@
 import { CircleHelp } from "lucide-react";
+import CountUpImport from "react-countup";
 import levelLogo from "../assets/level_logo.png";
 import fireLogo from "../assets/fire_logo.png";
 import coinLogo from "../assets/coin_logo.png";
 import "../styles/Tasks.css";
+
+// Make react-countup work even if the module is wrapped as { default: Component }
+const CountUp =
+  (CountUpImport as unknown as { default?: typeof CountUpImport }).default ??
+  CountUpImport;
 
 // Props type: data received from the parent component
 type PlayerStatusPanelProps = {
@@ -10,6 +16,7 @@ type PlayerStatusPanelProps = {
   totalXp: number;
   dailyStreak: number;
   coinBalance: number;
+  coinsPulse?: boolean;
 };
 
 function PlayerStatusPanel({
@@ -17,6 +24,7 @@ function PlayerStatusPanel({
   totalXp,
   dailyStreak,
   coinBalance,
+  coinsPulse = false,
 }: PlayerStatusPanelProps) {
   // XP required to move from the current level to the next level
   const xpToNextLevel = getRequiredXpForLevel(level);
@@ -32,6 +40,11 @@ function PlayerStatusPanel({
     Math.min((currentLevelXp / xpToNextLevel) * 100, 100)
   );
 
+  const ringRadius = 20;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const ringOffset =
+    ringCircumference - (progressPercent / 100) * ringCircumference;
+
   return (
     <section className="player-panel" aria-label="Player status">
       {/* Top player status cards */}
@@ -42,20 +55,38 @@ function PlayerStatusPanel({
 
           <div className="level-card-content">
             <span>LEVEL</span>
-            <strong>Lv. {level}</strong>
-            <small>Next: {xpRemaining} XP</small>
+
+            <strong className="level-value">
+              Lv.{" "}
+              <span className="animated-number">
+                <CountUp end={level} duration={0.6} preserveValue />
+              </span>
+            </strong>
+
+            <small className="level-next-text">Next: {xpRemaining} XP</small>
           </div>
 
-          <div
+          <svg
             className="level-progress-ring"
-            style={
-              {
-                "--level-progress": `${progressPercent}%`,
-                "--level-angle": `${progressPercent * 3.6}deg`,
-              } as React.CSSProperties
-            }
+            viewBox="0 0 48 48"
             aria-label={`Level progress ${progressPercent}%`}
-          />
+          >
+            <circle
+              className="level-progress-track"
+              cx="24"
+              cy="24"
+              r={ringRadius}
+            />
+
+            <circle
+              className="level-progress-fill"
+              cx="24"
+              cy="24"
+              r={ringRadius}
+              strokeDasharray={ringCircumference}
+              strokeDashoffset={ringOffset}
+            />
+          </svg>
         </article>
 
         {/* Current level XP card */}
@@ -63,13 +94,20 @@ function PlayerStatusPanel({
           <span>CURRENT XP</span>
 
           <strong className="xp-card-value">
-            <span className="xp-current">{currentLevelXp}</span>
+            <span className="xp-current">
+              <span className="animated-number">
+                <CountUp
+                  end={currentLevelXp}
+                  duration={0.6}
+                  preserveValue
+                />
+              </span>
+            </span>
+
             <span className="xp-total">/ {xpToNextLevel} XP</span>
           </strong>
 
-          <small className="xp-card-hint">
-            Lifetime: {totalXp} XP
-          </small>
+          <small className="xp-card-hint">Lifetime: {totalXp} XP</small>
         </article>
 
         {/* Daily streak card */}
@@ -80,24 +118,46 @@ function PlayerStatusPanel({
 
           <div className="streak-card-content">
             <span className="streak-label">STREAK</span>
-              <strong className="streak-value">
-                <span className="streak-number">{dailyStreak}</span>
-                <span className="streak-unit">days</span>
-              </strong>
+
+            <strong className="streak-value">
+              <span className="streak-number">
+                <span className="animated-number">
+                  <CountUp
+                    end={dailyStreak}
+                    duration={0.6}
+                    preserveValue
+                  />
+                </span>
+              </span>
+
+              <span className="streak-unit">days</span>
+            </strong>
+
             <small>Keep going!</small>
           </div>
         </article>
 
         {/* Coin balance card */}
-        <article className="player-status-card player-coins-card">
+        <article
+          className={`player-status-card player-coins-card ${
+            coinsPulse ? "coins-pulse" : ""
+          }`}
+        >
           <img className="coin-logo" src={coinLogo} alt="Coins" />
 
           <div className="coin-card-content">
             <span>COINS</span>
-            <strong className="coin-value">{coinBalance}</strong>
+
+            <strong className="coin-value">
+              <span className="animated-number">
+                <CountUp end={coinBalance} duration={0.6} preserveValue />
+              </span>
+            </strong>
+
             <small>Keep earning!</small>
           </div>
         </article>
+
         {/* Weekly Score card */}
         {/* Coming Soon */}
         <article className="player-status-card weekly-score-card">
@@ -129,7 +189,12 @@ function PlayerStatusPanel({
         </div>
 
         <div className="character-progress-meta">
-          <strong>{progressPercent}%</strong>
+          <strong>
+            <span className="animated-number">
+              <CountUp end={progressPercent} duration={0.6} preserveValue />
+            </span>
+            %
+          </strong>
         </div>
       </div>
     </section>

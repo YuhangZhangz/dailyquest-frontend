@@ -91,10 +91,15 @@ body,
 
 /* 玩家等级面板 */
 .player-level-card {
+  position: relative;
+
   display: grid;
-  grid-template-columns: 44px 1fr 44px;
+  grid-template-columns: 44px minmax(0, 1fr);
   align-items: center;
-  column-gap: 8px;
+  column-gap: 10px;
+
+  /* 给右侧等级圆环预留空间，避免文字被挤成竖排 */
+  padding-right: 72px;
 }
 
 .level-logo {
@@ -108,7 +113,7 @@ body,
   min-width: 0;
 }
 
-.level-card-content span {
+.level-card-content > span {
   display: block;
   margin: 0 0 6px;
   font-size: 12px;
@@ -117,20 +122,24 @@ body,
   color: #53657f;
 }
 
-.level-card-content strong {
+.level-card-content strong,
+.level-value {
   display: block;
   font-size: 24px;
   font-weight: 800;
   line-height: 1;
-  color: #000000;
+  color: #0f172a;
+  white-space: nowrap;
 }
 
-.level-card-content small {
+.level-card-content small,
+.level-next-text {
   display: block;
   margin-top: 10px;
   color: #64748b;
   font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 /* 玩家XP面板 */
@@ -265,7 +274,7 @@ body,
   min-width: 0;
 }
 
-.coin-card-content span {
+.coin-card-content > span {
   display: block;
   margin: 0 0 6px;
   font-size: 12px;
@@ -304,46 +313,63 @@ body,
   white-space: nowrap;
 }
 
+/* 等级圆环容器：固定在 Level 卡右侧，不参与 grid 挤压文字 */
 .level-progress-ring {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+
   width: 46px;
   height: 46px;
-  margin-left: auto;
-  border-radius: 50%;
-  position: relative;
-  justify-self: end;
   flex-shrink: 0;
 
-  background: conic-gradient(
-    #3b82f6 var(--level-progress),
-    #e5e7eb 0
-  );
+  transform: translateY(-50%) rotate(-90deg);
 }
 
-/* Blue rounded end cap */
-.level-progress-ring::before {
-  content: "";
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: #3b82f6;
-
-  top: 0;
-  left: calc(50% - 3.5px);
-
-  transform-origin: 50% 23px;
-  transform: rotate(var(--level-angle));
-  z-index: 1;
+/* 圆环底色 */
+.level-progress-track {
+  fill: none;
+  stroke: #e5e7eb;
+  stroke-width: 7;
 }
 
-/* Inner white circle */
-.level-progress-ring::after {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  border-radius: 50%;
-  background: #ffffff;
-  z-index: 2;
+/* 圆环进度 */
+.level-progress-fill {
+  fill: none;
+  stroke: #3b82f6;
+  stroke-width: 7;
+  stroke-linecap: round;
+
+  transition: stroke-dashoffset 0.65s ease;
+}
+
+/* 动画数字：继承外层字体，避免 CountUp 数字变小或换行 */
+.animated-number {
+  display: inline !important;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  white-space: nowrap;
+}
+
+/* Level 数字保持一行 */
+.level-value {
+  white-space: nowrap;
+}
+
+/* Next XP 保持一行 */
+.level-next-text {
+  white-space: nowrap;
+}
+
+/* CountUp 数字继承原来的大号样式 */
+.coin-value .animated-number,
+.xp-current .animated-number,
+.streak-number .animated-number {
+  font: inherit;
+  color: inherit;
 }
 
 /* Hide level progress ring on narrower screens */
@@ -423,10 +449,12 @@ body,
   border-radius: 999px;
 }
 
+/* 经验进度条：当 width 改变时平滑滑动 */
 .xp-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #6d5dfc, #22c7ee);
   border-radius: 14px;
+  transition: width 0.65s ease;
 }
 
 .character-progress-meta {
@@ -1549,32 +1577,44 @@ body,
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
 }
 
-/* 全局 XP 浮动动画 */
-.global-xp-float {
+/* 完成任务后的 XP 浮动容器：负责定位和动画 */
+.global-reward-popup {
   position: fixed;
   transform: translate(-50%, -50%);
-  font-weight: 700;
-  font-size: 15px;
-  color: #7c3aed;
   pointer-events: none;
   z-index: 9999;
-  animation: globalXpFloatUp 0.8s ease-out forwards;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation: globalRewardFloatUp 0.9s ease-out forwards;
 }
 
-@keyframes globalXpFloatUp {
+/* XP 奖励文字：只负责文字样式，不负责定位 */
+.global-xp-float {
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  color: #7c3aed;
+  text-shadow: 0 2px 8px rgba(124, 58, 237, 0.18);
+}
+
+/* XP 从点击位置向上漂浮并逐渐消失 */
+@keyframes globalRewardFloatUp {
   0% {
     opacity: 0;
-    transform: translate(-50%, 8px) scale(0.9);
+    transform: translate(-50%, 8px) scale(0.92);
   }
 
   20% {
     opacity: 1;
-    transform: translate(-50%, 0) scale(1.08);
+    transform: translate(-50%, 0) scale(1.06);
   }
 
   100% {
     opacity: 0;
-    transform: translate(-50%, -36px) scale(1);
+    transform: translate(-50%, -42px) scale(1);
   }
 }
 
