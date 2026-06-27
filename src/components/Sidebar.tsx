@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Home,
   ClipboardCheck,
@@ -20,6 +20,25 @@ type SidebarProps = {
 
 function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+
+  // Add a body class only while Sidebar exists.
+  // This lets the whole page make room for the fixed sidebar.
+  useEffect(() => {
+    document.body.classList.add("has-sidebar");
+
+    return () => {
+      document.body.classList.remove("has-sidebar");
+      document.documentElement.style.removeProperty("--sidebar-width");
+    };
+  }, []);
+
+  // Sync the CSS variable with sidebar state.
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--sidebar-width",
+      collapsed ? "84px" : "260px"
+    );
+  }, [collapsed]);
 
   const navItems = [
     { label: "Dashboard", icon: Home },
@@ -48,6 +67,7 @@ function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
           className="sidebar-icon-button"
           onClick={() => setCollapsed(!collapsed)}
           aria-label="Toggle sidebar"
+          type="button"
         >
           {collapsed ? <ChevronsRight size={18} /> : <ChevronsLeft size={18} />}
         </button>
@@ -62,6 +82,7 @@ function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
             <button
               key={item.label}
               className={`sidebar-nav-item ${isActive ? "active" : ""}`}
+              type="button"
             >
               <Icon size={20} />
               {!collapsed && <span>{item.label}</span>}
@@ -85,12 +106,9 @@ function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
 
           <div className="mini-calendar">
             <div className="mini-calendar-week">
-              <span>M</span>
-              <span>T</span>
-              <span>W</span>
-              <span>F</span>
-              <span>S</span>
-              <span>S</span>
+              {["M", "T", "W", "T", "F", "S", "S"].map((day, index) => (
+                <span key={`${day}-${index}`}>{day}</span>
+              ))}
             </div>
 
             <div className="mini-calendar-days">

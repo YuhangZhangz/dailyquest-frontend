@@ -1,6 +1,31 @@
-.sidebar {
-  width: 260px;
+:root {
+  --sidebar-width: 260px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* 
+  When Sidebar exists, push the whole app content to the right.
+  This fixes the overlap caused by position: fixed.
+*/
+body.has-sidebar {
+  padding-left: var(--sidebar-width);
+  overflow-x: hidden;
+  transition: padding-left 0.25s ease;
+}
+
+/* Prevent old 100vw/root width issues from forcing content under the sidebar */
+body.has-sidebar #root {
+  width: auto;
   min-height: 100vh;
+}
+
+/* Left sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  height: auto;
   padding: 28px 20px;
   background: linear-gradient(180deg, #ffffff 0%, #fbfaff 100%);
   border-right: 1px solid #eef0f6;
@@ -10,21 +35,32 @@
   flex-direction: column;
   gap: 28px;
 
-  position: sticky;
+  position: fixed;
+  left: 0;
   top: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  overflow: hidden;
   transition: width 0.25s ease, padding 0.25s ease;
 }
 
 .sidebar.collapsed {
-  width: 92px;
-  padding: 28px 16px;
+  padding: 28px 14px;
+  align-items: center;
 }
 
 .sidebar-header {
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.sidebar-header.collapsed-header {
+  justify-content: center;
 }
 
 .sidebar-brand {
@@ -70,9 +106,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.sidebar-icon-button:hover {
+  color: #6d4cff;
+  background: #f5f2ff;
+}
+
+.sidebar.collapsed .sidebar-icon-button {
+  width: 54px;
+  height: 54px;
 }
 
 .sidebar-nav {
+  width: 100%;
+
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -112,11 +162,14 @@
 }
 
 .sidebar.collapsed .sidebar-nav-item {
-  justify-content: center;
+  width: 54px;
+  height: 54px;
   padding: 0;
+  justify-content: center;
 }
 
 .sidebar-streak-card {
+  width: 100%;
   margin-top: auto;
   padding: 24px 22px;
   border-radius: 18px;
@@ -163,9 +216,11 @@
 .mini-calendar-week,
 .mini-calendar-days {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px 4px;
   text-align: center;
+  align-items: center;
+  justify-items: center;
 }
 
 .mini-calendar-week span {
@@ -175,8 +230,8 @@
 }
 
 .mini-calendar-days span {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 800;
@@ -192,6 +247,8 @@
   color: #ffffff;
 }
 
+/* Optional bottom collapse button style.
+   Keep this only if you use sidebar-collapse-bottom elsewhere. */
 .sidebar-collapse-bottom {
   height: 56px;
   border: none;
@@ -209,34 +266,8 @@
   gap: 12px;
 }
 
-.sidebar.collapsed {
-  width: 84px;
-  padding: 28px 14px;
-  align-items: center;
-}
-
-.sidebar.collapsed .sidebar-nav {
-  width: 100%;
-}
-
-.sidebar.collapsed .sidebar-nav-item {
-  width: 54px;
-  height: 54px;
-  padding: 0;
-  justify-content: center;
-}
-
 .sidebar.collapsed .sidebar-collapse-bottom {
   width: 54px;
   height: 54px;
   padding: 0;
-}
-
-.sidebar-header.collapsed-header {
-  justify-content: center;
-}
-
-.sidebar.collapsed .sidebar-icon-button {
-  width: 54px;
-  height: 54px;
 }
