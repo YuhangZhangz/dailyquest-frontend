@@ -30,6 +30,7 @@ type TaskCardProps = {
   onToggleSubTask?: (taskId: number, subTaskId: number) => void;
   onDeleteSubTask?: (taskId: number, subTaskId: number) => void;
   onReorderSubTask?: (taskId: number, orderedIds: number[]) => void;
+  onEditSubTask?: (taskId: number, subTaskId: number, title: string) => void;
 };
 
 function TaskCard({
@@ -42,6 +43,7 @@ function TaskCard({
   onDeleteSubTask,
   onToggleSubTask,
   onReorderSubTask,
+  onEditSubTask,
 }: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -331,6 +333,7 @@ function TaskCard({
           onToggleSubTask={onToggleSubTask}
           onDeleteSubTask={onDeleteSubTask}
           onReorderSubTask={onReorderSubTask}
+            onEditSubTask={onEditSubTask}
         />
       )}
     </article>

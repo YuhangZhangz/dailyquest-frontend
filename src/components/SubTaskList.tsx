@@ -9,6 +9,7 @@ type SubTaskListProps = {
   onAddSubTask: (taskId: number, title: string) => void;
   onToggleSubTask: (taskId: number, subTaskId: number) => void;
   onDeleteSubTask: (taskId: number, subTaskId: number) => void;
+  onEditSubTask?: (taskId: number, subTaskId: number, title: string) => void;
   onReorderSubTask?: (taskId: number, orderedIds: number[]) => void;
 };
 
@@ -18,9 +19,12 @@ function SubTaskList({
   onAddSubTask,
   onToggleSubTask,
   onDeleteSubTask,
+  onEditSubTask,
   onReorderSubTask,
 }: SubTaskListProps) {
   const [newTitle, setNewTitle] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState("");
   const listRef = useRef<HTMLDivElement | null>(null);
 
   const sortedSubTasks = [...subTasks].sort(
@@ -93,13 +97,49 @@ function SubTaskList({
               )}
             </button>
 
-            <span
-              className={
-                subTask.completed ? "subtask-title completed" : "subtask-title"
-              }
-            >
-              {subTask.title}
-            </span>
+            {editingId === subTask.id ? (
+              <input
+                className="subtask-edit-input"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                onBlur={() => {
+                  const trimmed = editTitle.trim();
+                  if (trimmed && onEditSubTask) {
+                    onEditSubTask(taskId, subTask.id, trimmed);
+                  }
+                  setEditingId(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    const trimmed = editTitle.trim();
+                    if (trimmed && onEditSubTask) {
+                      onEditSubTask(taskId, subTask.id, trimmed);
+                    }
+                    setEditingId(null);
+                  }
+
+                  if (e.key === "Escape") {
+                    setEditingId(null);
+                  }
+                }}
+                autoFocus
+              />
+            ) : (
+              <span
+                className={
+                  subTask.completed ? "subtask-title completed" : "subtask-title"
+                }
+                onClick={() => {
+                  // Only enable editing if an edit handler was provided
+                  if (!onEditSubTask) return;
+                  setEditingId(subTask.id);
+                  setEditTitle(subTask.title);
+                }}
+              >
+                {subTask.title}
+              </span>
+            )}
 
             <button
               type="button"

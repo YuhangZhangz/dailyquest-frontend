@@ -20,6 +20,7 @@ type EditTaskModalProps = {
   onToggleSubTask?: (taskId: number, subTaskId: number) => void;
   onDeleteSubTask?: (taskId: number, subTaskId: number) => void;
   onReorderSubTask?: (taskId: number, orderedIds: number[]) => void;
+  onEditSubTask?: (taskId: number, subTaskId: number, title: string) => void;
 };
 
 function EditTaskModal({ 
@@ -30,6 +31,8 @@ function EditTaskModal({
   onToggleSubTask,
   onDeleteSubTask,
   onReorderSubTask
+  ,
+  onEditSubTask
 }: EditTaskModalProps) {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
@@ -94,6 +97,7 @@ function EditTaskModal({
                 onToggleSubTask={onToggleSubTask}
                 onDeleteSubTask={onDeleteSubTask}
                 onReorderSubTask={onReorderSubTask}
+                onEditSubTask={onEditSubTask}
               />
             </div>
           )}     

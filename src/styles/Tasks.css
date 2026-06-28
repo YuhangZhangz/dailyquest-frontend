@@ -1749,6 +1749,50 @@ body,
   font-size: 14px;
 }
 
+.subtask-edit-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+.subtask-edit-input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Stronger, scoped override to ensure modal/global input styles don't apply */
+.subtask-list .subtask-item .subtask-edit-input,
+.subtask-list .subtask-item .subtask-edit-input:focus,
+.subtask-list .subtask-item .subtask-edit-input:focus-visible {
+  all: unset;
+  flex: 1;
+  min-width: 0;
+  display: block;
+  cursor: text;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  background: transparent;
+}
+
+/* Keep explicit focus rules to remove browser focus ring */
+.subtask-list .subtask-item .subtask-edit-input:focus,
+.subtask-list .subtask-item .subtask-edit-input:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
 .subtask-add-button {
   padding: 9px 14px;
   border: none;

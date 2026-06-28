@@ -289,6 +289,20 @@ function Tasks() {
     }
   }
 
+  // Edit a subtask's title
+  async function handleEditSubTask(_taskId: number, subTaskId: number, title: string) {
+    try {
+      const trimmed = title.trim();
+      if (!trimmed) return;
+
+      await api.patch(`/subtasks/${subTaskId}`, { title: trimmed });
+
+      await loadData();
+    } catch (err: unknown) {
+      console.log("Edit subtask error:", getErrorDetails(err));
+    }
+  }
+
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
@@ -400,6 +414,7 @@ function Tasks() {
                 onToggleSubTask={handleToggleSubTask}
                 onDeleteSubTask={handleDeleteSubTask}
                 onReorderSubTask={handleReorderSubTasks}
+                onEditSubTask={handleEditSubTask}
               />
 
               <TaskColumn
@@ -417,6 +432,7 @@ function Tasks() {
                 onToggleSubTask={handleToggleSubTask}
                 onDeleteSubTask={handleDeleteSubTask}
                 onReorderSubTask={handleReorderSubTasks}
+                onEditSubTask={handleEditSubTask}
               />
             </div>
           </section>
