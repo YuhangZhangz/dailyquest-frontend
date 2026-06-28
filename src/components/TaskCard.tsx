@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
 import type { DailyTask, TaskType } from "../types/task";
-import { Check, Circle, Square, MoreVertical } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Circle,
+  GitFork,
+  Square,
+  MoreVertical,
+} from "lucide-react";
 import fireLogo from "../assets/fire_logo.png";
 
 type TaskCardProps = {
@@ -37,6 +45,13 @@ function TaskCard({
 }: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [areSubTasksExpanded, setAreSubTasksExpanded] = useState(() => {
+    const savedValue = localStorage.getItem(
+      `task-subtasks-expanded-${task.id}`
+    );
+
+    return savedValue === null ? true : savedValue === "true";
+  });
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -72,6 +87,17 @@ function TaskCard({
 
   const hasSubTasks =
     task.taskType !== "HABIT" && task.subTasks && task.subTasks.length > 0;
+
+  function handleToggleSubTasks() {
+    if (!hasSubTasks) return;
+
+    const nextExpandedState = !areSubTasksExpanded;
+    setAreSubTasksExpanded(nextExpandedState);
+    localStorage.setItem(
+      `task-subtasks-expanded-${task.id}`,
+      String(nextExpandedState)
+    );
+  }
 
   return (
     <article
@@ -170,7 +196,36 @@ function TaskCard({
       {hasSubTasks && <div className="task-divider" />}
 
       {hasSubTasks && (
-        <div className="task-subtask-preview">
+        <button
+          className="task-subtasks-header"
+          type="button"
+          data-no-drag="true"
+          onClick={handleToggleSubTasks}
+          aria-expanded={areSubTasksExpanded}
+          aria-controls={`task-subtasks-${task.id}`}
+        >
+          <span className="task-subtasks-header-label">
+            <GitFork size={18} strokeWidth={2.4} />
+            <span>
+              Subtasks (
+              {task.subTasks.filter((subTask) => subTask.completed).length}/
+              {task.subTasks.length})
+            </span>
+          </span>
+
+          {areSubTasksExpanded ? (
+            <ChevronDown size={20} strokeWidth={2.5} />
+          ) : (
+            <ChevronRight size={20} strokeWidth={2.5} />
+          )}
+        </button>
+      )}
+
+      {hasSubTasks && areSubTasksExpanded && (
+        <div
+          id={`task-subtasks-${task.id}`}
+          className="task-subtask-preview"
+        >
           {[...(task.subTasks ?? [])]
             .sort(
               (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || a.id - b.id
