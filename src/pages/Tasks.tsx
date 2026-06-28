@@ -3,9 +3,9 @@ import axios from "axios";
 import api from "../api/axios";
 import TopBar from "../components/TopBar";
 import "../styles/Tasks.css";
-import TaskColumn from "../components/TaskColumn";
-import AddTaskModal from "../components/AddTaskModal";
-import PlayerStatusPanel from "../components/PlayerStatusPanel";
+import TaskColumn from "../components/tasks/TaskColumn";
+import AddTaskModal from "../components/tasks/AddTaskModal";
+import PlayerStatusPanel from "../components/tasks/PlayerStatusPanel";
 import type { DailyTask, TaskType, UserProfile } from "../types/task";
 import Sidebar from "../components/Sidebar";
 
@@ -327,7 +327,7 @@ function Tasks() {
 
   return (
     <div className="app-shell">
-      <Sidebar dailyStreak={streak} activePage="Quests" />
+      <Sidebar dailyStreak={user?.dailyStreak ?? 0} />
 
       <div className="tasks-page">
         {rewardPopup && (

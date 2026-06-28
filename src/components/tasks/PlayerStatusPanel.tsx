@@ -1,9 +1,9 @@
 import { CircleHelp } from "lucide-react";
 import CountUpImport from "react-countup";
-import levelLogo from "../assets/level_logo.png";
-import fireLogo from "../assets/fire_logo.png";
-import coinLogo from "../assets/coin_logo.png";
-import "../styles/Tasks.css";
+import levelLogo from "../../assets/level_logo.png";
+import fireLogo from "../../assets/fire_logo.png";
+import coinLogo from "../../assets/coin_logo.png";
+import "../../styles/Tasks.css";
 
 // Make react-countup work even if the module is wrapped as { default: Component }
 const CountUp =

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
-import type { DailyTask, TaskType } from "../types/task";
+import type { DailyTask, TaskType } from "../../types/task";
 import {
   Check,
   ChevronDown,
@@ -10,7 +10,7 @@ import {
   Square,
   MoreVertical,
 } from "lucide-react";
-import fireLogo from "../assets/fire_logo.png";
+import fireLogo from "../../assets/fire_logo.png";
 
 type TaskCardProps = {
   task: DailyTask;

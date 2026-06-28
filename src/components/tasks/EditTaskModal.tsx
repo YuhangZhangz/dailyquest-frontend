@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import type { DailyTask, TaskType } from "../types/task";
+import type { DailyTask, TaskType } from "../../types/task";
 import SubTaskList from "./SubTaskList";
 import { X } from "lucide-react";
 

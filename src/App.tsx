@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Tasks from "./pages/Tasks";
+import Rewards from "./pages/Rewards";
 import Register from "./pages/Register";
 
 function ProtectedRoute({
@@ -24,10 +25,26 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Tasks />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/tasks"
           element={
             <ProtectedRoute>
               <Tasks />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/rewards"
+          element={
+            <ProtectedRoute>
+              <Rewards />
             </ProtectedRoute>
           }
         />

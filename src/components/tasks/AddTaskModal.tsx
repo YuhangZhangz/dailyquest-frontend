@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import type { TaskType } from "../types/task";
+import type { TaskType } from "../../types/task";
 import { X } from "lucide-react";
 
 type AddTaskModalProps = {

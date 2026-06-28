@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   Home,
@@ -14,15 +15,12 @@ import logo from "../assets/logo.png";
 import "../styles/Sidebar.css";
 
 type SidebarProps = {
-  activePage?: string;
   dailyStreak: number;
 };
 
-function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
+function Sidebar({ dailyStreak }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
 
-  // Add a body class only while Sidebar exists.
-  // This lets the whole page make room for the fixed sidebar.
   useEffect(() => {
     document.body.classList.add("has-sidebar");
 
@@ -32,7 +30,6 @@ function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
     };
   }, []);
 
-  // Sync the CSS variable with sidebar state.
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--sidebar-width",
@@ -41,12 +38,12 @@ function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
   }, [collapsed]);
 
   const navItems = [
-    { label: "Dashboard", icon: Home },
-    { label: "Quests", icon: ClipboardCheck },
-    { label: "Rewards", icon: Gift },
-    { label: "Progress", icon: TrendingUp },
-    { label: "Stats", icon: BarChart3 },
-    { label: "Settings", icon: Settings },
+    { label: "Dashboard", icon: Home, path: "/dashboard" },
+    { label: "Quests", icon: ClipboardCheck, path: "/tasks" },
+    { label: "Rewards", icon: Gift, path: "/rewards" },
+    { label: "Progress", icon: TrendingUp, path: "/progress" },
+    { label: "Stats", icon: BarChart3, path: "/stats" },
+    { label: "Settings", icon: Settings, path: "/settings" },
   ];
 
   return (
@@ -76,17 +73,18 @@ function Sidebar({ activePage = "Dashboard", dailyStreak }: SidebarProps) {
       <nav className="sidebar-nav">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activePage === item.label;
 
           return (
-            <button
+            <NavLink
               key={item.label}
-              className={`sidebar-nav-item ${isActive ? "active" : ""}`}
-              type="button"
+              to={item.path}
+              className={({ isActive }) =>
+                `sidebar-nav-item${isActive ? " active" : ""}`
+              }
             >
               <Icon size={20} />
               {!collapsed && <span>{item.label}</span>}
-            </button>
+            </NavLink>
           );
         })}
       </nav>

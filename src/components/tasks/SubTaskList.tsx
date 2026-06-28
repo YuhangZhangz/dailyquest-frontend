@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Sortable from "sortablejs";
-import type { SubTask } from "../types/task";
+import type { SubTask } from "../../types/task";
 import { Check, GripVertical, Square, X } from "lucide-react";
 
 type SubTaskListProps = {

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Sortable from "sortablejs";
 import TaskCard from "./TaskCard";
-import type { DailyTask, TaskType } from "../types/task";
+import type { DailyTask, TaskType } from "../../types/task";
 
 type TaskColumnProps = {
   title: string;
