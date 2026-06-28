@@ -76,22 +76,28 @@ function Tasks() {
     title: string,
     description: string,
     difficulty: string,
-    dueDate: string | null
+    dueDate: string | null,
+    subTaskTitles: string[]
   ) {
-    try {
-      await api.post("/daily-tasks", {
-        title,
-        description,
-        difficulty,
-        taskType: creatingType,
-        dueDate,
-      });
+    if (!creatingType) return;
 
-      setShowAddModal(false);
-      await loadData();
-    } catch (err: unknown) {
-      console.log("Create task error:", getErrorDetails(err));
+    const response = await api.post("/daily-tasks", {
+      title,
+      description,
+      difficulty,
+      taskType: creatingType,
+      dueDate,
+    });
+
+    const createdTask = response.data;
+
+    for (const subTaskTitle of subTaskTitles) {
+      await api.post(`/subtasks/task/${createdTask.id}`, {
+        title: subTaskTitle,
+      });
     }
+
+    await loadData();
   }
 
   async function handleCompleteTask(
