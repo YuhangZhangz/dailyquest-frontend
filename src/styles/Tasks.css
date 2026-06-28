@@ -818,11 +818,27 @@ body,
 
 .quest-title-row,
 .quest-card-title-row {
+  width: 100%;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.task-title-group {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 0;
+  min-width: 0;
+  flex: 1;
+}
+
+.task-title-group h2 {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .quest-title-row h2,
@@ -832,20 +848,21 @@ body,
   font-size: 16px;
   line-height: 1.1;
   font-weight: 700;
+
+  flex: 1;
+  min-width: 0;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .task-inline-meta {
-  position: absolute;
-  top: 50%;
-  left: 53%;
-  transform: translateY(-50%);
-
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: nowrap;
+  gap: 8px;
   flex-shrink: 0;
-
+  white-space: nowrap;
   padding-right: 70px;
 }
 
@@ -905,8 +922,7 @@ body,
   color: #94a3b8;
   font-size: 12px;
   font-weight: 700;
-  margin-left: -3px;
-  margin-right: -3px;
+  margin: 0;
 }
 
 .task-xp-text {
@@ -917,17 +933,13 @@ body,
 }
 
 .task-coin-text {
-  position: absolute;
-  left: 145px;
-  top: 50%;
-  transform: translateY(-50%);
-
+  margin-left: 16px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 
   color: #334155;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1219,9 +1231,8 @@ body,
 
 .task-menu {
   position: absolute;
-  top: 50%;
+  top: 12px;
   right: 18px;
-  transform: translateY(-50%);
 
   width: 28px;
   height: 28px;
