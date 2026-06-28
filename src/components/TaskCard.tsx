@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
 import type { DailyTask, TaskType } from "../types/task";
-import { Check, Circle, Square } from "lucide-react";
+import { Check, Circle, Square, MoreVertical } from "lucide-react";
+import fireLogo from "../assets/fire_logo.png";
 
 type TaskCardProps = {
   task: DailyTask;
@@ -86,7 +87,7 @@ function TaskCard({
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label="Open task menu"
           >
-            ⋯
+            <MoreVertical size={18} strokeWidth={2.5} />
           </button>
 
           {menuOpen && (
@@ -142,18 +143,24 @@ function TaskCard({
 
         <h2>{task.title}</h2>
 
-        <span
-          className={`difficulty-pill difficulty-${task.difficulty.toLowerCase()}`}
-        >
-          {getDifficultyLabel(task.difficulty)} · {task.baseXp} XP
-        </span>
-
-        {task.taskType === "DAILY" && (
-          <span className="daily-streak-pill">
-            <span>🔥</span>
-            <span>{task.completedCount}</span>
+        <div className="task-inline-meta">
+          <span
+            className={`difficulty-pill difficulty-${task.difficulty.toLowerCase()}`}
+          >
+            {getDifficultyLabel(task.difficulty)}
           </span>
-        )}
+
+          <span className="meta-separator">·</span>
+
+          <span className="task-xp-text">{task.baseXp} XP</span>
+
+          {task.taskType === "DAILY" && (
+            <span className="task-coin-text">
+              <img className="task-fire-icon" src={fireLogo} alt="" />
+              <span>{task.completedCount}</span>
+            </span>
+          )}
+        </div>
       </div>
 
       {task.description && <p>{task.description}</p>}

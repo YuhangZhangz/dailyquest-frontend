@@ -695,29 +695,45 @@ body,
   flex-direction: column;
   gap: 14px;
 
-  padding: 14px;
-  border: 1px dashed #d1d5db;
-  border-radius: 8px;
-  background: #f1f5f9;
+  padding: 12px 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
 
   overflow: visible;
 }
 
+/* 单个任务 */
 .quest-card {
   position: relative;
   display: flex;
+  z-index: 1;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   gap: 9px;
 
-  padding: 14px 16px;
-  min-height: auto;
+  padding: 16px 18px;
+  min-height: 75px;
 
   border: 1px solid #e5e7eb;
-  border-left: 5px solid #6366f1;
+  border-left: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #f8fafc;
+
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.04),
+    0 10px 22px rgba(15, 23, 42, 0.06);
+
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.quest-card:hover {
+  transform: translateY(-1px);
+  z-index: 50;
+  box-shadow:
+    0 4px 10px rgba(15, 23, 42, 0.06),
+    0 14px 28px rgba(15, 23, 42, 0.08);
 }
 
 /* Daily 完成圆圈：放在任务标题前，用于完成或撤销 Daily */
@@ -769,25 +785,12 @@ body,
   display: block;
 }
 
-/* 不同任务类型左边框 */
-.quest-card-habit {
-  border-left-color: #22c55e;
-}
-
-.quest-card-daily {
-  border-left-color: #f59e0b;
-}
-
-.quest-card-todo {
-  border-left-color: #3b82f6;
-}
-
 /* 完成后的任务卡片 */
 .quest-card-completed {
   opacity: 1;
   background: #f8fafc;
   border: 1px solid #dbe3ef;
-  border-left: 5px solid #94a3b8;
+  border-left: 1px solid #dbe3ef;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.05);
   filter: none;
 }
@@ -818,7 +821,7 @@ body,
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 0;
 }
 
@@ -831,56 +834,109 @@ body,
   font-weight: 700;
 }
 
-/* 难度标签基础样式：使用 emoji 图标，背景由具体难度 class 控制 */
+.task-inline-meta {
+  position: absolute;
+  top: 50%;
+  left: 53%;
+  transform: translateY(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+
+  padding-right: 70px;
+}
+
 .difficulty-pill {
   display: inline-flex;
   align-items: center;
-  width: fit-content;
 
+  width: fit-content;
   padding: 3px 8px;
   border-radius: 999px;
 
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
-
   margin-bottom: 0;
+
+
 }
 
-/* Easy 难度：绿色浅背景 */
+/* 不要额外生成小圆点 */
+.difficulty-pill::before {
+  display: none;
+}
+
+/* Easy：绿色 */
 .difficulty-t1 {
   background: #dcfce7;
   color: #15803d;
 }
 
-/* Normal 难度：黄色浅背景 */
+/* Normal：黄色 */
 .difficulty-t2 {
   background: #fef9c3;
   color: #a16207;
 }
 
-/* Hard 难度：蓝色浅背景 */
+/* Hard：蓝色 */
 .difficulty-t3 {
   background: #dbeafe;
   color: #1d4ed8;
 }
 
-/* Elite 难度：红色浅背景 */
+/* Elite：红色 */
 .difficulty-t4 {
   background: #fee2e2;
   color: #b91c1c;
 }
 
-/* Boss 难度：金色浅背景 */
+/* Boss：金色 */
 .difficulty-boss {
   background: #fef3c7;
   color: #92400e;
 }
 
-/* 已完成任务中的难度标签弱化显示 */
-.quest-card-completed .difficulty-pill {
-  background: #f1f5f9;
-  color: #9ca3af;
+/* 任务难度颜色背景 */
+.meta-separator {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: -3px;
+  margin-right: -3px;
+}
+
+.task-xp-text {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.task-coin-text {
+  position: absolute;
+  left: 145px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.task-fire-icon {
+  width: 13px;
+  height: 14px;
+  object-fit: contain;
+  display: block;
 }
 
 .quest-description {
@@ -1127,26 +1183,28 @@ body,
   cursor: pointer;
 }
 
-/* Task card menu */
+/* 任务更多展开 */
 .edit-corner-btn {
-  position: absolute;
-  top: 10px;
-  right: 12px;
+  position: static;
+  transform: none;
+
+  width: 28px;
+  height: 28px;
+  padding: 0;
 
   border: none;
+  border-radius: 999px;
   background: transparent;
   color: #64748b;
 
-  font-size: 22px;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   cursor: pointer;
-
-  padding: 2px 6px;
-  line-height: 1;
-
   opacity: 0;
   pointer-events: none;
-  transition: 0.15s;
+  transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
 
 .quest-card:hover .edit-corner-btn {
@@ -1156,18 +1214,26 @@ body,
 
 .edit-corner-btn:hover {
   color: #111827;
+  background: #f1f5f9;
 }
 
 .task-menu {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+
+  width: 28px;
+  height: 28px;
+  z-index: 10;
 }
 
+/* 任务更多下拉菜单 */
 .task-menu-dropdown {
   position: absolute;
-  top: 34px;
-  right: 12px;
+  top: 32px;
+  right: 0;
+  z-index: 999;
 
   width: 90px;
   padding: 5px;
