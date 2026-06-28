@@ -18,10 +18,10 @@ type TaskCardProps = {
   ) => void;
   onRevert: (id: number) => void;
 
-  // Optional because Habits do not use subtasks
   onAddSubTask?: (taskId: number, title: string) => void;
   onToggleSubTask?: (taskId: number, subTaskId: number) => void;
   onDeleteSubTask?: (taskId: number, subTaskId: number) => void;
+  onReorderSubTask?: (taskId: number, orderedIds: number[]) => void;
 };
 
 function TaskCard({
@@ -33,6 +33,7 @@ function TaskCard({
   onAddSubTask,
   onDeleteSubTask,
   onToggleSubTask,
+  onReorderSubTask,
 }: TaskCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -43,10 +44,7 @@ function TaskCard({
     if (!menuOpen) return;
 
     function handleClickOutside(event: MouseEvent) {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node)
-      ) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
     }
@@ -58,7 +56,6 @@ function TaskCard({
     };
   }, [menuOpen]);
 
-  // Check if the daily task has already been completed today
   const today = new Date().toLocaleDateString("en-CA");
 
   const isDailyCompletedToday =
@@ -72,6 +69,9 @@ function TaskCard({
       : false;
 
   const showCompleteCircle = task.taskType === "DAILY";
+
+  const hasSubTasks =
+    task.taskType !== "HABIT" && task.subTasks && task.subTasks.length > 0;
 
   return (
     <article
@@ -121,9 +121,7 @@ function TaskCard({
         {showCompleteCircle && (
           <button
             type="button"
-            className={`task-complete-circle ${
-              isCompleted ? "completed" : ""
-            }`}
+            className={`task-complete-circle ${isCompleted ? "completed" : ""}`}
             data-no-drag="true"
             onClick={(event) => {
               event.stopPropagation();
@@ -165,55 +163,52 @@ function TaskCard({
 
       {task.description && <p>{task.description}</p>}
 
-      {/* Show subtasks on the task card, but only for Daily and Todo tasks */}
-      {task.taskType !== "HABIT" &&
-        task.subTasks &&
-        task.subTasks.length > 0 && (
-          <div className="task-subtask-preview">
-            {[...task.subTasks]
-              .sort((a, b) => a.id - b.id)
-              .map((subTask) => (
-                <div
-                  key={subTask.id}
-                  className="task-subtask-preview-item"
-                  data-no-drag="true"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onToggleSubTask?.(task.id, subTask.id);
-                  }}
-                >
-                  {/* Show completed / incomplete icon */}
-                  <span
-                    className={
-                      subTask.completed
-                        ? "preview-check completed"
-                        : "preview-check"
-                    }
-                  >
-                    {subTask.completed ? (
-                      <Check size={11} strokeWidth={3.2} />
-                    ) : (
-                      <Square size={20} strokeWidth={2.3} />
-                    )}
-                  </span>
-
-                  {/* Show subtask title */}
-                  <span
-                    className={
-                      subTask.completed
-                        ? "preview-title completed"
-                        : "preview-title"
-                    }
-                  >
-                    {subTask.title}
-                  </span>
-                </div>
-              ))}
-          </div>
-        )}
-
       {task.taskType === "TODO" && task.dueDate && (
         <p className="task-meta">Due: {task.dueDate}</p>
+      )}
+
+      {hasSubTasks && <div className="task-divider" />}
+
+      {hasSubTasks && (
+        <div className="task-subtask-preview">
+          {[...(task.subTasks ?? [])]
+            .sort(
+              (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || a.id - b.id
+            )
+            .map((subTask) => (
+              <div
+                key={subTask.id}
+                className="task-subtask-preview-item"
+                data-no-drag="true"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onToggleSubTask?.(task.id, subTask.id);
+                }}
+              >
+                <span
+                  className={
+                    subTask.completed ? "preview-check completed" : "preview-check"
+                  }
+                >
+                  {subTask.completed ? (
+                    <Check size={11} strokeWidth={3.2} />
+                  ) : (
+                    <Square size={20} strokeWidth={2.3} />
+                  )}
+                </span>
+
+                <span
+                  className={
+                    subTask.completed
+                      ? "preview-title completed"
+                      : "preview-title"
+                  }
+                >
+                  {subTask.title}
+                </span>
+              </div>
+            ))}
+        </div>
       )}
 
       {task.taskType === "HABIT" && (
@@ -280,6 +275,7 @@ function TaskCard({
           onAddSubTask={onAddSubTask}
           onToggleSubTask={onToggleSubTask}
           onDeleteSubTask={onDeleteSubTask}
+          onReorderSubTask={onReorderSubTask}
         />
       )}
     </article>

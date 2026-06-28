@@ -26,6 +26,7 @@ type TaskColumnProps = {
   onAddSubTask?: (taskId: number, title: string) => void;
   onToggleSubTask?: (taskId: number, subTaskId: number) => void;
   onDeleteSubTask?: (taskId: number, subTaskId: number) => void;
+  onReorderSubTask?: (taskId: number, orderedIds: number[]) => void;
 };
 
 function TaskColumn({
@@ -41,7 +42,8 @@ function TaskColumn({
   onReorder,
   onAddSubTask,
   onDeleteSubTask,
-  onToggleSubTask
+  onToggleSubTask,
+  onReorderSubTask,
 }: TaskColumnProps) {
   const listRef = useRef<HTMLDivElement | null>(null);
 
@@ -139,6 +141,7 @@ function TaskColumn({
                   onAddSubTask={onAddSubTask}
                   onToggleSubTask={onToggleSubTask}
                   onDeleteSubTask={onDeleteSubTask}
+                  onReorderSubTask={onReorderSubTask}
                 />
               </div>
             ))}

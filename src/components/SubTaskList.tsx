@@ -1,23 +1,15 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Sortable from "sortablejs";
 import type { SubTask } from "../types/task";
-import { Check, Square, X } from "lucide-react";
+import { Check, GripVertical, Square, X } from "lucide-react";
 
-// Props means the data and functions passed from parent component.
 type SubTaskListProps = {
-  // Parent task id, used when adding/toggling/deleting subtasks
   taskId: number;
-
-  // Subtasks that belong to this task
   subTasks: SubTask[];
-
-  // Add a new subtask to this task
   onAddSubTask: (taskId: number, title: string) => void;
-
-  // Toggle subtask completed status
   onToggleSubTask: (taskId: number, subTaskId: number) => void;
-
-  // Delete a subtask from this task
   onDeleteSubTask: (taskId: number, subTaskId: number) => void;
+  onReorderSubTask?: (taskId: number, orderedIds: number[]) => void;
 };
 
 function SubTaskList({
@@ -26,71 +18,100 @@ function SubTaskList({
   onAddSubTask,
   onToggleSubTask,
   onDeleteSubTask,
+  onReorderSubTask,
 }: SubTaskListProps) {
-  // Store the input value for the new subtask title
   const [newTitle, setNewTitle] = useState("");
+  const listRef = useRef<HTMLDivElement | null>(null);
+
+  const sortedSubTasks = [...subTasks].sort(
+    (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || a.id - b.id
+  );
+
+  useEffect(() => {
+    if (!listRef.current) return;
+
+    const sortable = Sortable.create(listRef.current, {
+      animation: 150,
+      draggable: ".subtask-item",
+      handle: ".subtask-drag-handle",
+      group: {
+        name: `subtask-list-${taskId}`,
+        pull: false,
+        put: false,
+      },
+      filter: "button, input, textarea, select, a",
+      preventOnFilter: false,
+      ghostClass: "sortable-ghost",
+      chosenClass: "sortable-chosen",
+      dragClass: "sortable-drag",
+      onEnd: () => {
+        if (!listRef.current) return;
+
+        const orderedIds = Array.from(
+          listRef.current.querySelectorAll<HTMLElement>(".subtask-item")
+        ).map((item) => Number(item.dataset.id));
+
+        if (orderedIds.length === 0) return;
+
+        onReorderSubTask?.(taskId, orderedIds);
+      },
+    });
+
+    return () => {
+      sortable.destroy();
+    };
+  }, [onReorderSubTask, taskId]);
 
   function handleAdd() {
-    // Remove extra spaces before and after the title
     const trimmedTitle = newTitle.trim();
+    if (!trimmedTitle) return;
 
-    // Do not allow empty subtask titles
-    if (!trimmedTitle) {
-      return;
-    }
-
-    // Ask parent component to create the subtask
     onAddSubTask(taskId, trimmedTitle);
-
-    // Clear input after adding
     setNewTitle("");
   }
 
   return (
     <div className="subtask-list">
-      {/* Render each subtask */}
-      {[...subTasks]
-      .sort((a, b) => a.id - b.id)
-      .map((subTask) => (
-          <div key={subTask.id} className="subtask-item">
-          {/* Toggle completed / not completed */}
-          <button
+      <div ref={listRef} className="subtask-list-items">
+        {sortedSubTasks.map((subTask) => (
+          <div key={subTask.id} className="subtask-item" data-id={subTask.id}>
+            <span className="subtask-drag-handle" aria-label="Reorder subtask">
+              <GripVertical size={14} strokeWidth={2.2} />
+            </span>
+
+            <button
               type="button"
               className={
-                subTask.completed
-                  ? "subtask-check completed"
-                  : "subtask-check"
+                subTask.completed ? "subtask-check completed" : "subtask-check"
               }
               onClick={() => onToggleSubTask(taskId, subTask.id)}
-          >
-            {subTask.completed ? (
-              <Check size={13} strokeWidth={3.2} />
-            ) : (
-              <Square size={20} strokeWidth={2.5} />
-            )}
-          </button>
+            >
+              {subTask.completed ? (
+                <Check size={13} strokeWidth={3.2} />
+              ) : (
+                <Square size={20} strokeWidth={2.5} />
+              )}
+            </button>
 
-          {/* Show subtask title */}
-          <span
+            <span
               className={
-              subTask.completed ? "subtask-title completed" : "subtask-title"
+                subTask.completed ? "subtask-title completed" : "subtask-title"
               }
-          >
+            >
               {subTask.title}
-          </span>
+            </span>
 
-          {/* Delete subtask */}
-          <button
+            <button
               type="button"
               className="subtask-delete"
               onClick={() => onDeleteSubTask(taskId, subTask.id)}
-          >
+            >
               <X size={18} strokeWidth={3} />
-          </button>
+            </button>
           </div>
-      ))}
+        ))}
+      </div>
 
-      {/* Add new subtask */}
       <div className="subtask-add-row">
         <input
           value={newTitle}

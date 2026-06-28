@@ -4,6 +4,7 @@ export type SubTask = {
   id: number;
   title: string;
   completed: boolean;
+  sortOrder: number;
 };
 
 export type DailyTask = {

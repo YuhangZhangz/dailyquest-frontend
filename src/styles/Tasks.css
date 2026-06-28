@@ -1849,3 +1849,23 @@ body,
   font-weight: 800;
   margin-left: -1px;
 }
+
+.subtask-drag-handle {
+  cursor: grab;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.subtask-drag-handle:active {
+  cursor: grabbing;
+}
+
+/* 任务卡片中的分割线 */
+.task-divider {
+  width: 100%;
+  height: 1px;
+  margin: 4px 0 2px;
+  background: rgba(148, 163, 184, 0.28);
+}

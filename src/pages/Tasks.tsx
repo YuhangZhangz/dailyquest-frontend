@@ -246,6 +246,43 @@ function Tasks() {
     }
   }
 
+  async function handleReorderSubTasks(taskId: number, orderedIds: number[]) {
+    const previousTasks = tasks;
+
+    const nextTasks = tasks.map((task) => {
+      if (task.id !== taskId) {
+        return task;
+      }
+
+      const subTasks = [...(task.subTasks ?? [])];
+      const orderedSubTasks = orderedIds
+        .map((id) => subTasks.find((subTask) => subTask.id === id))
+        .filter(
+          (subTask): subTask is (typeof subTasks)[number] => Boolean(subTask)
+        )
+        .map((subTask, index) => ({ ...subTask, sortOrder: index }));
+
+      const remainingSubTasks = subTasks.filter(
+        (subTask) => !orderedIds.includes(subTask.id)
+      );
+
+      return {
+        ...task,
+        subTasks: [...orderedSubTasks, ...remainingSubTasks],
+      };
+    });
+
+    setTasks(nextTasks);
+
+    try {
+      await api.patch(`/subtasks/task/${taskId}/sort-order`, orderedIds);
+      await loadData();
+    } catch (err: unknown) {
+      console.log("Save subtask sort order error:", getErrorDetails(err));
+      setTasks(previousTasks);
+    }
+  }
+
   const currentXp = user?.totalXp ?? 0;
   const level = user?.level ?? 1;
   const streak = user?.dailyStreak ?? 0;
@@ -356,6 +393,7 @@ function Tasks() {
                 onAddSubTask={handleAddSubTask}
                 onToggleSubTask={handleToggleSubTask}
                 onDeleteSubTask={handleDeleteSubTask}
+                onReorderSubTask={handleReorderSubTasks}
               />
 
               <TaskColumn
@@ -372,6 +410,7 @@ function Tasks() {
                 onAddSubTask={handleAddSubTask}
                 onToggleSubTask={handleToggleSubTask}
                 onDeleteSubTask={handleDeleteSubTask}
+                onReorderSubTask={handleReorderSubTasks}
               />
             </div>
           </section>
