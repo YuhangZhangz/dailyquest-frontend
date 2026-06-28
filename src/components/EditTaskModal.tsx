@@ -63,7 +63,10 @@ function EditTaskModal({
         </div>
 
         <label>
-          Title *
+          <span>
+            Title <span className="required-star">*</span>
+          </span>
+
           <input value={title} onChange={(e) => setTitle(e.target.value)} />
         </label>
 

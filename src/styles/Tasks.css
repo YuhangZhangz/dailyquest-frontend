@@ -1832,3 +1832,9 @@ body,
   flex: 1;
   min-width: 0;
 }
+
+.required-star {
+  color: #ef4444;
+  font-weight: 800;
+  margin-left: -1px;
+}
