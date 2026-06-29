@@ -127,25 +127,6 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
             <span className="subtask-field-label">Subtask</span>
 
             <div className="subtask-list">
-              {subTaskTitles.length > 0 &&
-                subTaskTitles.map((subTaskTitle, index) => (
-                  <div
-                    key={`${subTaskTitle}-${index}`}
-                    className="subtask-item"
-                  >
-                    <span className="subtask-title">{subTaskTitle}</span>
-
-                    <button
-                      type="button"
-                      className="subtask-delete"
-                      onClick={() => handleDeleteSubTask(index)}
-                      aria-label="Delete subtask"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-
               <div className="subtask-add-row">
                 <input
                   className="subtask-input"
@@ -168,6 +149,22 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
                   Add
                 </button>
               </div>
+
+              {subTaskTitles.length > 0 &&
+                subTaskTitles.map((subTaskTitle, index) => (
+                  <div key={`${subTaskTitle}-${index}`} className="subtask-item">
+                    <span className="subtask-title">{subTaskTitle}</span>
+
+                    <button
+                      type="button"
+                      className="subtask-delete"
+                      onClick={() => handleDeleteSubTask(index)}
+                      aria-label="Delete subtask"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
             </div>
           </div>
         )}

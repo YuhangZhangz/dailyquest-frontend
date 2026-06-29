@@ -103,6 +103,30 @@ function SubTaskList({
 
   return (
     <div className="subtask-list">
+      <div className="subtask-add-row">
+        <input
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleAdd();
+            }
+
+            if (e.key === "Escape") {
+              e.preventDefault();
+              setNewTitle("");
+            }
+          }}
+          placeholder="Add subtask"
+          className="subtask-input"
+        />
+
+        <button type="button" onClick={handleAdd} className="subtask-add-button">
+          Add
+        </button>
+      </div>
+
       <div ref={listRef} className="subtask-list-items">
         {sortedSubTasks.map((subTask) => {
           const isEditing = editingId === subTask.id;
@@ -142,7 +166,7 @@ function SubTaskList({
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
                   onBlur={() => {
-                    // Blur only cancels editing. It should not save or PATCH.
+                    // Blur only cancels editing.
                     cancelEditSubTask();
                   }}
                   onKeyDown={(e) => {
@@ -175,7 +199,7 @@ function SubTaskList({
                 type="button"
                 className="subtask-delete"
                 onMouseDown={(e) => {
-                  // Prevent input blur before the cancel click runs.
+                  // Prevent blur before cancel click.
                   if (isEditing) {
                     e.preventDefault();
                   }
@@ -194,30 +218,6 @@ function SubTaskList({
             </div>
           );
         })}
-      </div>
-
-      <div className="subtask-add-row">
-        <input
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleAdd();
-            }
-
-            if (e.key === "Escape") {
-              e.preventDefault();
-              setNewTitle("");
-            }
-          }}
-          placeholder="Add subtask"
-          className="subtask-input"
-        />
-
-        <button type="button" onClick={handleAdd} className="subtask-add-button">
-          Add
-        </button>
       </div>
     </div>
   );
