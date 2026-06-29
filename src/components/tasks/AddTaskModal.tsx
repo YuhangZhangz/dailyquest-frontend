@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { TaskType } from "../../types/task";
 import { X } from "lucide-react";
+import  SubTaskInputList from "./SubTaskInputList";
 
 type AddTaskModalProps = {
   taskType: TaskType;
@@ -126,46 +127,13 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
           <div className="subtask-field">
             <span className="subtask-field-label">Subtask</span>
 
-            <div className="subtask-list">
-              <div className="subtask-add-row">
-                <input
-                  className="subtask-input"
-                  value={subTaskInput}
-                  onChange={(e) => setSubTaskInput(e.target.value)}
-                  placeholder="Add subtask"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddSubTask();
-                    }
-                  }}
-                />
-
-                <button
-                  type="button"
-                  className="subtask-add-button"
-                  onClick={handleAddSubTask}
-                >
-                  Add
-                </button>
-              </div>
-
-              {subTaskTitles.length > 0 &&
-                subTaskTitles.map((subTaskTitle, index) => (
-                  <div key={`${subTaskTitle}-${index}`} className="subtask-item">
-                    <span className="subtask-title">{subTaskTitle}</span>
-
-                    <button
-                      type="button"
-                      className="subtask-delete"
-                      onClick={() => handleDeleteSubTask(index)}
-                      aria-label="Delete subtask"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-            </div>
+            < SubTaskInputList
+              subTaskInput={subTaskInput}
+              subTaskTitles={subTaskTitles}
+              onInputChange={setSubTaskInput}
+              onAdd={handleAddSubTask}
+              onDelete={handleDeleteSubTask}
+            />
           </div>
         )}
 
