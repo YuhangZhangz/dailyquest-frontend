@@ -15,39 +15,31 @@
 
 .rewards-container {
   width: min(1440px, calc(100% - 48px));
-  margin: 24px auto 40px;
-  padding: 0 0 20px;
+  max-width: 1440px;
+  margin: 24px auto 0;
+  padding: 0 0 50px;
 }
 
 .rewards-hero {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 28px;
+  margin-bottom: 18px;
 }
 
-.rewards-hero > div {
+.rewards-hero > div,
+.rewards-hero-content {
   max-width: 760px;
 }
 
-.rewards-hero .section-kicker {
-  display: inline-flex;
-  align-items: center;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 800;
-  color: #6366f1;
-  margin-bottom: 12px;
-}
-
 .rewards-hero h1 {
-  margin: 0 0 10px;
-  font-size: 44px;
-  line-height: 1.05;
+  margin: 0 0 8px;
+  font-size: 38px;
+  line-height: 1.1;
   font-weight: 800;
-  color: #111827;
+  color: #0f172a;
+  letter-spacing: -0.04em;
 }
 
 .rewards-hero p {
@@ -55,53 +47,76 @@
   max-width: 720px;
   color: #475569;
   font-size: 16px;
-  line-height: 1.75;
+  line-height: 1.6;
 }
 
+/* 顶部统计卡片区域 */
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
-  margin-bottom: 28px;
+  margin-bottom: 11px;
 }
 
+/* 单个统计卡片 */
 .summary-card {
   background: var(--reward-bg);
   border: 1px solid var(--reward-border);
-  border-radius: 24px;
-  padding: 28px;
+  border-radius: 8px;
+  padding: 24px 28px;
   box-shadow: var(--reward-soft-shadow);
-  display: grid;
-  gap: 16px;
-}
-
-.summary-card-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  color: #64748b;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  gap: 22px;
 }
 
-.summary-card strong {
+/* 统计卡片图标容器 */
+.summary-icon-shell {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  color: #7c3aed;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+/* 统计卡片中的图片图标 */
+.summary-icon-shell img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.summary-card-content {
+  display: grid;
+  gap: 6px;
+}
+
+.summary-card-content span {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.summary-card-content strong {
   margin: 0;
-  font-size: 48px;
+  font-size: 25px;
   line-height: 1;
   font-weight: 800;
   color: #0f172a;
 }
 
-.summary-card p {
+.summary-card-content p {
   margin: 0;
   color: #64748b;
   font-size: 14px;
 }
 
 .section-block {
-  margin-bottom: 28px;
+  margin-bottom: 11px;
 }
 
 .section-header {
@@ -119,33 +134,69 @@
   color: #111827;
 }
 
-.reward-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
 .rewards-empty-state,
 .card,
 .suggestion-card {
   background: var(--reward-bg);
   border: 1px solid var(--reward-border);
-  border-radius: 24px;
+  border-radius: 8px;
   box-shadow: var(--reward-soft-shadow);
 }
 
+/* My Rewards 外层卡片 */
+.rewards-collection-card {
+  background: var(--reward-bg);
+  border: 1px solid var(--reward-border);
+  border-radius: 8px;
+  box-shadow: var(--reward-soft-shadow);
+  padding: 24px;
+}
+
+/* My Rewards 标题区域 */
+.rewards-collection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.rewards-collection-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* My Rewards 右上角创建按钮 */
+.rewards-collection-header .primary-button {
+  flex-shrink: 0;
+  padding: 10px 18px;
+  font-size: 14px;
+}
+
+.rewards-collection-header p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* My Rewards 空状态 */
 .rewards-empty-state {
   display: grid;
   place-items: center;
-  padding: 64px 32px;
+  padding: 48px 32px;
   text-align: center;
-  gap: 18px;
+  gap: 14px;
+  border: 1px dashed #dbe3ef;
+  box-shadow: none;
 }
 
 .rewards-empty-icon {
   width: 76px;
   height: 76px;
-  border-radius: 24px;
+  border-radius: 8px;
   background: rgba(124, 58, 237, 0.08);
   display: grid;
   place-items: center;
@@ -154,118 +205,339 @@
 
 .rewards-empty-state h3 {
   margin: 0;
-  font-size: 28px;
+  font-size: 20px;
   color: #111827;
 }
 
 .rewards-empty-state p {
   margin: 0;
   max-width: 500px;
+  font-size: 13px;
   color: #64748b;
   line-height: 1.75;
 }
 
-.suggestion-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
+/* 空状态创建按钮 */
+.reward-empty-button {
+  margin-top: 18px;
+  min-height: 42px;
+  padding: 0 22px;
+  border: 1.5px solid #8b5cf6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #7c3aed;
+  font-size: 15px;
+  font-weight: 700;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 150ms ease, border-color 150ms ease,
+    transform 150ms ease;
 }
 
-.suggestion-card {
-  padding: 22px;
-  display: grid;
-  gap: 18px;
+/* 空状态按钮里的紫色加号圆点 */
+.reward-empty-plus {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #7c3aed;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.suggestion-icon-shell,
+.reward-empty-plus::before,
+.reward-empty-plus::after {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+}
+
+.reward-empty-plus::before {
+  width: 10px;
+  height: 2px;
+}
+
+.reward-empty-plus::after {
+  width: 2px;
+  height: 10px;
+}
+
+.reward-empty-button:hover {
+  background: #f7f2ff;
+  border-color: #6d28d9;
+  transform: translateY(-1px);
+}
+
+/* My Rewards 横向列表 */
+.reward-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+/* Reward 横向卡片 */
+.reward-card {
+  min-height: 112px;
+  padding: 26px 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.reward-card-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
 .reward-icon-shell {
-  width: 52px;
-  height: 52px;
-  border-radius: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
   display: grid;
   place-items: center;
   background: rgba(124, 58, 237, 0.08);
   color: #7c3aed;
-}
-
-.suggestion-content h4,
-.reward-card-title h4 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  color: #111827;
-}
-
-.suggestion-content p,
-.reward-card-title p {
-  margin: 8px 0 0;
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.suggestion-footer,
-.reward-card-meta,
-.reward-card-footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.suggestion-footer {
-  justify-content: space-between;
-}
-
-.suggestion-footer span,
-.reward-cost {
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.reward-card {
-  padding: 24px;
-  display: grid;
-  gap: 20px;
-}
-
-.reward-card-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  flex: 0 0 auto;
 }
 
 .reward-card-title {
   min-width: 0;
 }
 
-.reward-card-title p {
-  margin: 10px 0 0;
+.reward-card-title h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
 }
 
-.reward-card-meta {
-  justify-content: space-between;
+.reward-card-title p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.reward-cost {
+  justify-self: center;
+  display: inline-flex;
   align-items: center;
-  gap: 16px;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.reward-cost img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .reward-card-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
 }
 
-.reward-card-footer {
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.reward-card-actions .secondary-button,
+.reward-card-actions .danger-button,
+.reward-card-actions .primary-button {
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.reward-card-actions .secondary-button {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.reward-card-actions .danger-button {
+  background: #fce7f3;
+  color: #be185d;
+}
+
+.reward-card-actions .primary-button {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+  color: #ffffff;
 }
 
 .reward-need-text {
   color: #7c3aed;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
+/* 推荐奖励外层白色卡片 */
+.suggested-rewards-card {
+  background: #ffffff;
+  border: 1px solid var(--reward-border);
+  border-radius: 8px;
+  box-shadow: var(--reward-soft-shadow);
+  padding: 24px;
+}
+
+/* 推荐奖励顶部标题区域 */
+.suggested-rewards-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+/* 左侧标题和提示文字 */
+.suggested-rewards-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* 推荐奖励标题 */
+.suggested-rewards-title-row h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* 推荐奖励提示文字 */
+.suggested-rewards-title-row p,
+.suggested-rewards-note {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* 推荐奖励四列布局 */
+.suggestion-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* 单个推荐奖励卡片 */
+.suggestion-card {
+  min-height: 150px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 卡片上半部分：图标 + 标题描述 */
+.suggestion-card-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* 推荐奖励图标容器 */
+.suggestion-icon-shell {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  background: rgba(124, 58, 237, 0.08);
+  color: #7c3aed;
+}
+
+/* 推荐奖励图标大小 */
+.suggestion-icon-shell svg,
+.suggestion-icon-shell img {
+  width: 24px;
+  height: 24px;
+}
+
+/* 标题描述区域 */
+.suggestion-content {
+  min-width: 0;
+}
+
+/* 推荐奖励名称 */
+.suggestion-content h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* 推荐奖励描述 */
+.suggestion-content p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* 卡片底部：金币价格 + 使用按钮 */
+.suggestion-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #e5e7eb;
+  justify-content: space-between;
+}
+
+/* Suggested Rewards 金币 */
+.suggestion-cost {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.suggestion-cost img {
+  width: 20px;
+  height: 20px;
+}
+
+.cost-number {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.cost-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #687281;
+  line-height: 1;
+}
+
+/* Use Idea 按钮 */
+.suggestion-footer .secondary-button {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #ddd6fe;
+  color: #5b35ff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* 通用按钮 */
 .primary-button,
 .secondary-button,
 .danger-button {
@@ -279,9 +551,20 @@
   gap: 8px;
 }
 
+/* 默认主按钮 */
 .primary-button {
   background: #7c3aed;
   color: #ffffff;
+}
+
+/* My Rewards 右上角创建按钮 */
+.reward-create-button {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 8px;
+  padding: 10px 18px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
 }
 
 .secondary-button {
@@ -301,11 +584,12 @@
   cursor: not-allowed;
 }
 
+/* 奖励弹窗 */
 .reward-modal {
   width: 540px;
   max-width: calc(100vw - 40px);
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 8px;
   padding: 28px;
   box-shadow: 0 26px 60px rgba(15, 23, 42, 0.18);
   display: grid;
@@ -331,7 +615,7 @@
 .reward-modal select {
   width: 100%;
   border: 1px solid #dbe3ef;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 14px 16px;
   font-size: 14px;
   background: #f8fafc;
@@ -361,6 +645,7 @@
   cursor: pointer;
 }
 
+/* 中屏响应式 */
 @media (max-width: 1100px) {
   .rewards-hero,
   .summary-grid,
@@ -377,8 +662,25 @@
   .rewards-hero > div {
     max-width: none;
   }
+
+  .suggested-rewards-header,
+  .suggested-rewards-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reward-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .reward-card-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
 }
 
+/* 小屏响应式 */
 @media (max-width: 800px) {
   .rewards-container {
     margin: 16px 12px 32px;
@@ -390,11 +692,20 @@
     padding: 22px;
   }
 
-  .reward-card-footer,
-  .reward-card-meta,
   .suggestion-footer {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .reward-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .reward-card-actions .secondary-button,
+  .reward-card-actions .danger-button,
+  .reward-card-actions .primary-button {
+    justify-content: center;
   }
 
   .rewards-empty-state {

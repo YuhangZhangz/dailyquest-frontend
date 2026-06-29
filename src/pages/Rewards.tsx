@@ -12,6 +12,8 @@ import { suggestionRewards } from "../constants/rewardSuggestions";
 import { rewardIconMap } from "../constants/rewardIcons";
 import type { Reward, RewardPayload, RewardSummary, Suggestion } from "../types/reward";
 import "../styles/Rewards.css";
+import coinLogo from "../assets/coin_logo.png";
+import giftLogo from "../assets/gift_logo.png";
 
 function Rewards() {
   const [summary, setSummary] = useState<RewardSummary>({
@@ -211,7 +213,13 @@ function Rewards() {
             You haven't created any rewards. Add your first reward and start
             working towards something you love!
           </p>
-          <button className="primary-button" type="button" onClick={openCreateModal}>
+
+          <button
+            className="reward-empty-button"
+            type="button"
+            onClick={openCreateModal}
+          >
+            <span className="reward-empty-plus" aria-hidden="true" />
             Create Your First Reward
           </button>
         </div>
@@ -243,16 +251,12 @@ function Rewards() {
         <TopBar showLogout username={username} hideBrand />
 
         <main className="rewards-container">
-          <section className="rewards-hero">
-            <div>
-              <span className="section-kicker">Rewards</span>
+          {/* <section className="rewards-hero">
+            <div className="rewards-hero-content">
               <h1>Rewards</h1>
               <p>Create rewards and spend your coins on things you enjoy.</p>
             </div>
-            <button className="primary-button" type="button" onClick={openCreateModal}>
-              Create Reward
-            </button>
-          </section>
+          </section> */}
 
           <section className="summary-grid">
             <RewardSummaryCard
@@ -260,32 +264,45 @@ function Rewards() {
               value={summary.availableCoins}
               description="Keep earning!"
               Icon={Sparkles}
+              imageSrc={coinLogo}
             />
+
             <RewardSummaryCard
               label="REWARDS UNLOCKED"
               value={summary.rewardsUnlocked}
               description="Start creating your rewards!"
               Icon={Gift}
+              imageSrc={giftLogo}
+              imageAlt="Gift"
             />
           </section>
 
-          <section className="section-block">
-            <div className="section-header">
-              <div>
-                <span className="section-kicker">My Rewards</span>
-                <h2>Your reward collection</h2>
-              </div>
+          <section className="section-block rewards-collection-card">
+            <div className="rewards-collection-header">
+              <h2>My Rewards</h2>
+              
+              <button
+                className="primary-button reward-create-button"
+                type="button"
+                onClick={openCreateModal}
+              >
+                + Add Reward
+              </button>
             </div>
 
             {rewardsSection}
           </section>
 
-          <section className="section-block">
-            <div className="section-header">
-              <div>
-                <span className="section-kicker">Suggested Rewards</span>
-                <h2>Need inspiration? Try these ideas to get started.</h2>
+          <section className="section-block suggested-rewards-card">
+            <div className="suggested-rewards-header">
+              <div className="suggested-rewards-title-row">
+                <h2>Suggested Rewards</h2>
+                <p>Need inspiration? Try these ideas to get started.</p>
               </div>
+
+              <p className="suggested-rewards-note">
+                Turn your coins into meaningful breaks and treats.
+              </p>
             </div>
 
             <div className="suggestion-grid">

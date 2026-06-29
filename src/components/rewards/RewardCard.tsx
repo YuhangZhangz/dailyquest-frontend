@@ -1,6 +1,6 @@
 import { Edit3, Trash2, ChevronRight } from "lucide-react";
-import type { Reward } from "../../types/reward";
-import type { RewardIconMap } from "../../types/reward";
+import type { Reward, RewardIconMap } from "../../types/reward";
+import coinLogo from "../../assets/coin_logo.png";
 
 type RewardCardProps = {
   reward: Reward;
@@ -25,37 +25,40 @@ function RewardCard({
 
   return (
     <article className="reward-card card">
-      <div className="reward-card-top">
+      <div className="reward-card-left">
         <div className="reward-icon-shell">
           <Icon size={22} />
         </div>
+
         <div className="reward-card-title">
           <h4>{reward.title}</h4>
           <p>{reward.description}</p>
         </div>
       </div>
 
-      <div className="reward-card-meta">
-        <span className="reward-cost">{reward.cost} coins</span>
-        <div className="reward-card-actions">
-          <button
-            className="secondary-button"
-            type="button"
-            onClick={() => onEdit(reward)}
-          >
-            <Edit3 size={16} /> Edit
-          </button>
-          <button
-            className="danger-button"
-            type="button"
-            onClick={() => onDelete(reward.id)}
-          >
-            <Trash2 size={16} /> Delete
-          </button>
-        </div>
-      </div>
+      <span className="reward-cost">
+        <img src={coinLogo} alt="Coins" />
+        <span className="cost-number">{reward.cost}</span>
+        <span className="cost-label">Coins</span>
+      </span>
 
-      <div className="reward-card-footer">
+      <div className="reward-card-actions">
+        <button
+          className="secondary-button"
+          type="button"
+          onClick={() => onEdit(reward)}
+        >
+          <Edit3 size={16} /> Edit
+        </button>
+
+        <button
+          className="danger-button"
+          type="button"
+          onClick={() => onDelete(reward.id)}
+        >
+          <Trash2 size={16} /> Delete
+        </button>
+
         <button
           type="button"
           className="primary-button"
@@ -65,6 +68,7 @@ function RewardCard({
           Redeem
           <ChevronRight size={16} />
         </button>
+
         {!affordable && (
           <span className="reward-need-text">
             Need {missingCoins} more coins
