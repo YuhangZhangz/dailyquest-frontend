@@ -475,7 +475,7 @@ body,
    任务看板布局
 ========================= */
 .quest-board {
-  padding: 24px 28px;
+  padding: 15px 28px;
   background: #ffffff;
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 14px;
@@ -538,10 +538,93 @@ body,
 
 .quest-columns {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 3fr) minmax(360px, 2fr);
   gap: 22px;
   margin-top: 24px;
   align-items: stretch;
+}
+
+/* =========================
+   Habit Growth
+========================= */
+.habit-growth-panel {
+  width: 100%;
+  margin-top: 18px;
+  padding: 24px 28px 28px;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.habit-growth-header h2 {
+  margin: 6px 0 0;
+  color: #111827;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.habit-growth-header p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.habit-growth-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.habit-growth-card {
+  min-width: 0;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.habit-growth-card-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.habit-growth-card h3 {
+  min-width: 0;
+  margin: 0;
+  color: #1e293b;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.habit-growth-card strong {
+  flex-shrink: 0;
+  color: #6d5dfc;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.habit-growth-track {
+  height: 7px;
+  margin-top: 13px;
+  overflow: hidden;
+  background: #ede9fe;
+  border-radius: 999px;
+}
+
+.habit-growth-track span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  border-radius: inherit;
 }
 
 .task-column {
@@ -1812,6 +1895,10 @@ body,
     grid-template-columns: 1fr;
   }
 
+  .habit-growth-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   :root {
     --task-list-height: 500px;
   }
@@ -1835,8 +1922,18 @@ body,
     padding: 22px;
   }
 
+  .habit-growth-panel {
+    padding: 22px;
+  }
+
   .task-column-header h2 {
     font-size: 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .habit-growth-grid {
+    grid-template-columns: 1fr;
   }
 }
 

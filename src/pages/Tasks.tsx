@@ -6,6 +6,7 @@ import "../styles/Tasks.css";
 import TaskColumn from "../components/tasks/TaskColumn";
 import AddTaskModal from "../components/tasks/AddTaskModal";
 import PlayerStatusPanel from "../components/tasks/PlayerStatusPanel";
+import HabitGrowthPanel from "../components/tasks/HabitGrowthPanel";
 import type { DailyTask, TaskType, UserProfile } from "../types/task";
 import Sidebar from "../components/layout/Sidebar";
 
@@ -311,10 +312,6 @@ function Tasks() {
     ? tasks.filter((task) => !isTaskCompleted(task))
     : tasks;
 
-  const habitTasks = visibleTasks
-    .filter((task) => task.taskType === "HABIT")
-    .sort((a, b) => a.sortOrder - b.sortOrder);
-
   // Keep user's custom order
   const dailyTasks = visibleTasks
     .filter((task) => task.taskType === "DAILY")
@@ -387,19 +384,6 @@ function Tasks() {
 
             <div className="quest-columns">
               <TaskColumn
-                title="💪 Habits"
-                addLabel="Add Habit"
-                taskType="HABIT"
-                tasks={habitTasks}
-                onAdd={() => openAddForm("HABIT")}
-                onComplete={handleCompleteTask}
-                onDelete={handleDeleteTask}
-                onUpdate={handleUpdateTask}
-                onRevert={handleRevertTask}
-                onReorder={handleReorderTasks}
-              />
-
-              <TaskColumn
                 title="⚔️ Dailies"
                 addLabel="Add Daily"
                 taskType="DAILY"
@@ -436,6 +420,8 @@ function Tasks() {
               />
             </div>
           </section>
+
+          <HabitGrowthPanel />
         </main>
       </div>
     </div>
