@@ -2,7 +2,7 @@ import { useState } from "react";
 import api from "../api/axios";
 import axios from "axios";
 import "../styles/Auth.css";
-import TopBar from "../components/TopBar";
+import TopBar from "../components/layout/TopBar";
 import { Eye, EyeOff } from "lucide-react";
 
 function Register() {

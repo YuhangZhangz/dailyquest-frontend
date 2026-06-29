@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import api from "../api/axios";
-import TopBar from "../components/TopBar";
+import TopBar from "../components/layout/TopBar";
 import "../styles/Tasks.css";
 import TaskColumn from "../components/tasks/TaskColumn";
 import AddTaskModal from "../components/tasks/AddTaskModal";
 import PlayerStatusPanel from "../components/tasks/PlayerStatusPanel";
 import type { DailyTask, TaskType, UserProfile } from "../types/task";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/layout/Sidebar";
 
 function getErrorDetails(err: unknown) {
   if (axios.isAxiosError(err)) {

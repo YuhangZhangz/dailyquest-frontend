@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import logo from "../assets/logo.png";
-import "../styles/Auth.css";
+import logo from "../../assets/logo.png";
+import "../../styles/Auth.css";
 
 type AuthTopBarProps = {
   showLogout?: boolean;

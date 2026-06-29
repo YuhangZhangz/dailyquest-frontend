@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "../styles/Auth.css";
 import { Eye, EyeOff } from "lucide-react";
-import AuthTopBar from "../components/TopBar";
+import AuthTopBar from "../components/layout/TopBar";
 
 function Login() {
   const [email, setEmail] = useState("");

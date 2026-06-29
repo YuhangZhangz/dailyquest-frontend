@@ -11,8 +11,8 @@ import {
   ChevronsRight,
   Flame,
 } from "lucide-react";
-import logo from "../assets/logo.png";
-import "../styles/Sidebar.css";
+import logo from "../../assets/logo.png";
+import "../../styles/Sidebar.css";
 
 type SidebarProps = {
   dailyStreak: number;
