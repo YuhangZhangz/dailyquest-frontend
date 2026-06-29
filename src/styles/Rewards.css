@@ -1,3 +1,6 @@
+/* =========================
+   1. 全局变量与页面布局
+========================= */
 :root {
   --reward-bg: #ffffff;
   --reward-border: #e5e7f0;
@@ -20,6 +23,9 @@
   padding: 0 0 50px;
 }
 
+/* =========================
+   2. Rewards 顶部 Hero 区域
+========================= */
 .rewards-hero {
   display: flex;
   align-items: center;
@@ -50,7 +56,9 @@
   line-height: 1.6;
 }
 
-/* 顶部统计卡片区域 */
+/* =========================
+   3. 顶部统计卡片区域
+========================= */
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -58,7 +66,6 @@
   margin-bottom: 11px;
 }
 
-/* 单个统计卡片 */
 .summary-card {
   background: var(--reward-bg);
   border: 1px solid var(--reward-border);
@@ -70,7 +77,6 @@
   gap: 22px;
 }
 
-/* 统计卡片图标容器 */
 .summary-icon-shell {
   width: 64px;
   height: 64px;
@@ -81,7 +87,6 @@
   flex: 0 0 auto;
 }
 
-/* 统计卡片中的图片图标 */
 .summary-icon-shell img {
   width: 55px;
   height: 55px;
@@ -115,6 +120,9 @@
   font-size: 14px;
 }
 
+/* =========================
+   4. 通用区块与通用卡片
+========================= */
 .section-block {
   margin-bottom: 11px;
 }
@@ -143,7 +151,9 @@
   box-shadow: var(--reward-soft-shadow);
 }
 
-/* My Rewards 外层卡片 */
+/* =========================
+   5. My Rewards 区域
+========================= */
 .rewards-collection-card {
   background: var(--reward-bg);
   border: 1px solid var(--reward-border);
@@ -152,7 +162,6 @@
   padding: 24px;
 }
 
-/* My Rewards 标题区域 */
 .rewards-collection-header {
   display: flex;
   align-items: center;
@@ -168,7 +177,6 @@
   color: #0f172a;
 }
 
-/* My Rewards 右上角创建按钮 */
 .rewards-collection-header .primary-button {
   flex-shrink: 0;
   padding: 10px 18px;
@@ -182,107 +190,12 @@
   font-weight: 600;
 }
 
-/* My Rewards 空状态 */
-.rewards-empty-state {
-  display: grid;
-  place-items: center;
-  padding: 48px 32px;
-  text-align: center;
-  gap: 14px;
-  border: 1px dashed #dbe3ef;
-  box-shadow: none;
-}
-
-.rewards-empty-icon {
-  width: 76px;
-  height: 76px;
-  border-radius: 8px;
-  background: rgba(124, 58, 237, 0.08);
-  display: grid;
-  place-items: center;
-  color: #7c3aed;
-}
-
-.rewards-empty-state h3 {
-  margin: 0;
-  font-size: 20px;
-  color: #111827;
-}
-
-.rewards-empty-state p {
-  margin: 0;
-  max-width: 500px;
-  font-size: 13px;
-  color: #64748b;
-  line-height: 1.75;
-}
-
-/* 空状态创建按钮 */
-.reward-empty-button {
-  margin-top: 18px;
-  min-height: 42px;
-  padding: 0 22px;
-  border: 1.5px solid #8b5cf6;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #7c3aed;
-  font-size: 15px;
-  font-weight: 700;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  cursor: pointer;
-  box-shadow: none;
-  transition: background-color 150ms ease, border-color 150ms ease,
-    transform 150ms ease;
-}
-
-/* 空状态按钮里的紫色加号圆点 */
-.reward-empty-plus {
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  background: #7c3aed;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.reward-empty-plus::before,
-.reward-empty-plus::after {
-  content: "";
-  position: absolute;
-  background: #ffffff;
-}
-
-.reward-empty-plus::before {
-  width: 10px;
-  height: 2px;
-}
-
-.reward-empty-plus::after {
-  width: 2px;
-  height: 10px;
-}
-
-.reward-empty-button:hover {
-  background: #f7f2ff;
-  border-color: #6d28d9;
-  transform: translateY(-1px);
-}
-
-/* My Rewards 横向列表 */
 .reward-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
 }
 
-/* Reward 横向卡片 */
 .reward-card {
   min-height: 112px;
   padding: 26px 28px;
@@ -381,7 +294,102 @@
   white-space: nowrap;
 }
 
-/* 推荐奖励外层白色卡片 */
+/* =========================
+   6. My Rewards 空状态
+========================= */
+.rewards-empty-state {
+  display: grid;
+  place-items: center;
+  padding: 48px 32px;
+  text-align: center;
+  gap: 14px;
+  border: 1px dashed #dbe3ef;
+  box-shadow: none;
+}
+
+.rewards-empty-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 8px;
+  background: rgba(124, 58, 237, 0.08);
+  display: grid;
+  place-items: center;
+  color: #7c3aed;
+}
+
+.rewards-empty-state h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #111827;
+}
+
+.rewards-empty-state p {
+  margin: 0;
+  max-width: 500px;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.75;
+}
+
+.reward-empty-button {
+  margin-top: 18px;
+  min-height: 42px;
+  padding: 0 22px;
+  border: 1.5px solid #8b5cf6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #7c3aed;
+  font-size: 15px;
+  font-weight: 700;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 150ms ease, border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.reward-empty-plus {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #7c3aed;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reward-empty-plus::before,
+.reward-empty-plus::after {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+}
+
+.reward-empty-plus::before {
+  width: 10px;
+  height: 2px;
+}
+
+.reward-empty-plus::after {
+  width: 2px;
+  height: 10px;
+}
+
+.reward-empty-button:hover {
+  background: #f7f2ff;
+  border-color: #6d28d9;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   7. Suggested Rewards 区域
+========================= */
 .suggested-rewards-card {
   background: #ffffff;
   border: 1px solid var(--reward-border);
@@ -390,7 +398,6 @@
   padding: 24px;
 }
 
-/* 推荐奖励顶部标题区域 */
 .suggested-rewards-header {
   display: flex;
   align-items: center;
@@ -399,7 +406,6 @@
   margin-bottom: 18px;
 }
 
-/* 左侧标题和提示文字 */
 .suggested-rewards-title-row {
   display: flex;
   align-items: baseline;
@@ -407,7 +413,6 @@
   min-width: 0;
 }
 
-/* 推荐奖励标题 */
 .suggested-rewards-title-row h2 {
   margin: 0;
   font-size: 20px;
@@ -415,7 +420,6 @@
   color: #0f172a;
 }
 
-/* 推荐奖励提示文字 */
 .suggested-rewards-title-row p,
 .suggested-rewards-note {
   margin: 0;
@@ -424,14 +428,12 @@
   font-weight: 600;
 }
 
-/* 推荐奖励四列布局 */
 .suggestion-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
-/* 单个推荐奖励卡片 */
 .suggestion-card {
   min-height: 150px;
   padding: 18px;
@@ -440,7 +442,6 @@
   gap: 14px;
 }
 
-/* 卡片上半部分：图标 + 标题描述 */
 .suggestion-card-main {
   display: flex;
   align-items: flex-start;
@@ -448,7 +449,6 @@
   min-width: 0;
 }
 
-/* 推荐奖励图标容器 */
 .suggestion-icon-shell {
   width: 44px;
   height: 44px;
@@ -460,19 +460,16 @@
   color: #7c3aed;
 }
 
-/* 推荐奖励图标大小 */
 .suggestion-icon-shell svg,
 .suggestion-icon-shell img {
   width: 24px;
   height: 24px;
 }
 
-/* 标题描述区域 */
 .suggestion-content {
   min-width: 0;
 }
 
-/* 推荐奖励名称 */
 .suggestion-content h4 {
   margin: 0;
   font-size: 16px;
@@ -480,7 +477,6 @@
   color: #111827;
 }
 
-/* 推荐奖励描述 */
 .suggestion-content p {
   margin: 6px 0 0;
   color: #64748b;
@@ -488,7 +484,6 @@
   line-height: 1.45;
 }
 
-/* 卡片底部：金币价格 + 使用按钮 */
 .suggestion-footer {
   display: flex;
   align-items: center;
@@ -499,7 +494,6 @@
   justify-content: space-between;
 }
 
-/* Suggested Rewards 金币 */
 .suggestion-cost {
   display: flex;
   align-items: center;
@@ -525,7 +519,6 @@
   line-height: 1;
 }
 
-/* Use Idea 按钮 */
 .suggestion-footer .secondary-button {
   height: 38px;
   padding: 0 18px;
@@ -537,7 +530,9 @@
   font-weight: 800;
 }
 
-/* 通用按钮 */
+/* =========================
+   8. 通用按钮样式
+========================= */
 .primary-button,
 .secondary-button,
 .danger-button {
@@ -551,13 +546,11 @@
   gap: 8px;
 }
 
-/* 默认主按钮 */
 .primary-button {
   background: #7c3aed;
   color: #ffffff;
 }
 
-/* My Rewards 右上角创建按钮 */
 .reward-create-button {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border-radius: 8px;
@@ -584,7 +577,9 @@
   cursor: not-allowed;
 }
 
-/* 奖励弹窗 */
+/* =========================
+   9. Reward 弹窗样式
+========================= */
 .reward-modal {
   width: 540px;
   max-width: calc(100vw - 40px);
@@ -645,7 +640,9 @@
   cursor: pointer;
 }
 
-/* 中屏响应式 */
+/* =========================
+   10. 响应式布局
+========================= */
 @media (max-width: 1100px) {
   .rewards-hero,
   .summary-grid,
@@ -680,7 +677,6 @@
   }
 }
 
-/* 小屏响应式 */
 @media (max-width: 800px) {
   .rewards-container {
     margin: 16px 12px 32px;

@@ -1,3 +1,6 @@
+/* =========================
+   1. 顶部 AuthTopBar 基础样式
+========================= */
 .auth-top-bar {
   height: 60px;
   display: flex;
@@ -27,6 +30,9 @@
   transform: translateX(-40px);
 }
 
+/* =========================
+   2. 登录页面布局
+========================= */
 .login-page {
   min-height: 100vh;
   background: #f4f6f8;
@@ -94,6 +100,31 @@
   cursor: pointer;
 }
 
+/* =========================
+   3. 登录表单输入状态
+========================= */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-error {
+  margin-top: -4px;
+  margin-bottom: 6px;
+  color: red;
+  font-size: 14px;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* =========================
+   4. 密码输入框
+========================= */
 .password-wrapper {
   position: relative;
   width: 100%;
@@ -120,6 +151,9 @@
   justify-content: center;
 }
 
+/* =========================
+   5. Floating Label 输入框
+========================= */
 .floating-field {
   position: relative;
 }
@@ -150,25 +184,9 @@
   color: #3b82f6;
 }
 
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field-error {
-  margin-top: -4px;
-  margin-bottom: 6px;
-  color: red;
-  font-size: 14px;
-}
-
-.login-card input:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-}
-
+/* =========================
+   6. 旧版顶部栏 / 返回入口
+========================= */
 .top-bar {
   height: 64px;
   display: flex;
@@ -189,7 +207,9 @@
   font-weight: 600;
 }
 
-/* 用户菜单 */
+/* =========================
+   7. 用户菜单
+========================= */
 .user-menu {
   position: relative;
   display: flex;
@@ -271,7 +291,9 @@
   background: #f5f7fb;
 }
 
-/* TopBar style when the page already has a left sidebar */
+/* =========================
+   8. Sidebar 页面下的 AuthTopBar 变体
+========================= */
 .auth-top-bar.brand-hidden {
   justify-content: flex-end;
   background: transparent;
@@ -280,12 +302,10 @@
   backdrop-filter: none;
 }
 
-/* Keep the user menu on the right side */
 .auth-top-bar.brand-hidden .user-menu {
   margin-left: auto;
 }
 
-/* Make hover blend better with the page background */
 .auth-top-bar.brand-hidden .user-profile-btn:hover {
   background: rgba(255, 255, 255, 0.75);
 }

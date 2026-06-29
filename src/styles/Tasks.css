@@ -1,3 +1,6 @@
+/* =========================
+   全局布局基础
+========================= */
 :root {
   --task-list-height: 750px;
 }
@@ -32,6 +35,17 @@ body,
   padding: 0 0 50px;
 }
 
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  background: #f8f9ff;
+}
+
+.tasks-page {
+  flex: 1;
+  min-width: 0;
+}
+
 /* 防止 AuthTopBar 撑出横向滚动 */
 .auth-top-bar {
   width: 100%;
@@ -40,7 +54,9 @@ body,
   box-sizing: border-box;
 }
 
-/* Player Panel + Quest Board */
+/* =========================
+   玩家状态面板
+========================= */
 .player-panel,
 .quest-board {
   width: 100%;
@@ -55,7 +71,6 @@ body,
   box-shadow: none;
 }
 
-/* 玩家状态面板 */
 .player-status-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -372,22 +387,6 @@ body,
   color: inherit;
 }
 
-/* Hide level progress ring on narrower screens */
-@media (max-width: 1300px) {
-  .player-level-card {
-    grid-template-columns: 44px 1fr;
-  }
-
-  .level-progress-ring {
-    display: none;
-  }
-
-  .level-card-content strong,
-  .level-card-content small {
-    white-space: nowrap;
-  }
-}
-
 .player-status-card > span {
   font-size: 12px;
   font-weight: 700;
@@ -472,7 +471,9 @@ body,
   font-weight: 700;
 }
 
-/* Quest Board */
+/* =========================
+   任务看板布局
+========================= */
 .quest-board {
   padding: 24px 28px;
   background: #ffffff;
@@ -513,26 +514,6 @@ body,
   gap: 14px;
 }
 
-.add-task-btn,
-.column-add-btn {
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: 0.2s ease;
-}
-
-.add-task-btn:hover,
-.column-add-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.22);
-}
-
 .hide-completed {
   display: inline-flex;
   align-items: center;
@@ -555,7 +536,6 @@ body,
   cursor: pointer;
 }
 
-/* 三列任务区 */
 .quest-columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -622,7 +602,6 @@ body,
   display: flex;
 }
 
-/* 空状态 */
 .task-section-empty {
   width: 100%;
   min-height: var(--task-list-height);
@@ -684,7 +663,6 @@ body,
   color: #94a3b8;
 }
 
-/* 任务列表 */
 .quest-list {
   width: 100%;
   min-height: var(--task-list-height);
@@ -703,7 +681,19 @@ body,
   overflow: visible;
 }
 
-/* 单个任务 */
+.empty-state {
+  padding: 28px;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #64748b;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* =========================
+   任务卡片样式
+========================= */
 .quest-card {
   position: relative;
   display: flex;
@@ -736,7 +726,6 @@ body,
     0 14px 28px rgba(15, 23, 42, 0.08);
 }
 
-/* Daily 完成圆圈：放在任务标题前，用于完成或撤销 Daily */
 .task-complete-circle {
   width: 18px;
   height: 18px;
@@ -785,7 +774,6 @@ body,
   display: block;
 }
 
-/* 完成后的任务卡片 */
 .quest-card-completed {
   opacity: 1;
   background: #f8fafc;
@@ -800,7 +788,6 @@ body,
   color: #4b5563;
 }
 
-/* 任务内容 */
 .quest-main {
   display: flex;
   gap: 12px;
@@ -857,6 +844,37 @@ body,
   text-overflow: ellipsis;
 }
 
+.quest-description {
+  margin: 7px 0 0;
+  color: #64748b;
+}
+
+.quest-xp {
+  margin: 7px 0 0;
+  color: #7c3aed;
+  font-weight: 800;
+}
+
+.quest-card p {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.quest-card-daily > p,
+.quest-card-daily .task-subtask-preview {
+  margin-left: 26px;
+  margin-top: -2px;
+}
+
+.quest-card .task-meta {
+  margin-top: 8px;
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .task-inline-meta {
   display: inline-flex;
   align-items: center;
@@ -878,46 +896,37 @@ body,
   font-weight: 700;
   line-height: 1;
   margin-bottom: 0;
-
-
 }
 
-/* 不要额外生成小圆点 */
 .difficulty-pill::before {
   display: none;
 }
 
-/* Easy：绿色 */
 .difficulty-t1 {
   background: #dcfce7;
   color: #15803d;
 }
 
-/* Normal：黄色 */
 .difficulty-t2 {
   background: #fef9c3;
   color: #a16207;
 }
 
-/* Hard：蓝色 */
 .difficulty-t3 {
   background: #dbeafe;
   color: #1d4ed8;
 }
 
-/* Elite：红色 */
 .difficulty-t4 {
   background: #fee2e2;
   color: #b91c1c;
 }
 
-/* Boss：金色 */
 .difficulty-boss {
   background: #fef3c7;
   color: #92400e;
 }
 
-/* 任务难度颜色背景 */
 .meta-separator {
   color: #94a3b8;
   font-size: 12px;
@@ -951,40 +960,16 @@ body,
   display: block;
 }
 
-.quest-description {
-  margin: 7px 0 0;
-  color: #64748b;
+.task-divider {
+  width: 100%;
+  height: 1px;
+  margin: 4px 0 2px;
+  background: rgba(148, 163, 184, 0.28);
 }
 
-.quest-xp {
-  margin: 7px 0 0;
-  color: #7c3aed;
-  font-weight: 800;
-}
-
-.quest-card p {
-  color: #64748b;
-  font-size: 13px;
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Daily 有标题前圆圈，所以描述和子任务向右对齐标题 */
-.quest-card-daily > p,
-.quest-card-daily .task-subtask-preview {
-  margin-left: 26px;
-  margin-top: -2px;
-}
-
-.quest-card .task-meta {
-  margin-top: 8px;
-  color: #4f46e5;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-
-/* 按钮区 */
+/* =========================
+   任务操作按钮
+========================= */
 .quest-buttons {
   display: flex;
   align-items: center;
@@ -1022,7 +1007,6 @@ body,
   transform: translateY(0);
 }
 
-/* Todo 完成按钮：左侧带圆形对勾图标 */
 .todo-complete-btn {
   display: inline-flex;
   align-items: center;
@@ -1053,7 +1037,6 @@ body,
   color: #ffffff;
 }
 
-/* 已完成 Todo 的 Complete 按钮：弱化显示 */
 .todo-complete-btn-completed {
   color: #64748b;
   border: 1px solid #e2e8f0;
@@ -1087,7 +1070,6 @@ body,
   transform: translateY(-1px);
 }
 
-/* 完成状态下的 Undo 按钮 */
 .quest-card-completed .revert-btn {
   background: #ffffff;
   color: #4b5563;
@@ -1100,67 +1082,25 @@ body,
   color: #111827;
 }
 
-.empty-state {
-  padding: 28px;
-  border-radius: 8px;
-  background: #f8fafc;
-  color: #64748b;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-/* Add Task Form */
-.add-task-form {
-  margin-bottom: 22px;
-  padding: 18px;
-  border-radius: 8px;
-  background: #eef2f7;
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-}
-
-.add-task-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #111827;
-}
-
-.add-task-form input,
-.add-task-form textarea,
-.add-task-form select {
-  padding: 12px 42px 12px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  background: white;
-  box-sizing: border-box;
-}
-
-.add-task-form textarea {
-  min-height: 78px;
-  resize: vertical;
-}
-
-.cancel-task-btn {
-  padding: 12px 16px;
+.add-task-btn,
+.column-add-btn {
   border: none;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  background: #94a3b8;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s ease;
 }
 
-.cancel-task-btn:hover {
-  background: #64748b;
+.add-task-btn:hover,
+.column-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.22);
 }
-
 
 .logout-btn {
   padding: 9px 18px;
@@ -1173,226 +1113,6 @@ body,
   cursor: pointer;
 }
 
-/* 任务更多展开 */
-.edit-corner-btn {
-  position: static;
-  transform: none;
-
-  width: 28px;
-  height: 28px;
-  padding: 0;
-
-  border: none;
-  border-radius: 999px;
-  background: transparent;
-  color: #64748b;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease;
-}
-
-.quest-card:hover .edit-corner-btn {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.edit-corner-btn:hover {
-  color: #111827;
-  background: #f1f5f9;
-}
-
-.task-menu {
-  position: absolute;
-  top: 12px;
-  right: 18px;
-
-  width: 28px;
-  height: 28px;
-  z-index: 10;
-}
-
-/* 任务更多下拉菜单 */
-.task-menu-dropdown {
-  position: absolute;
-  top: 32px;
-  right: 0;
-  z-index: 999;
-
-  width: 90px;
-  padding: 5px;
-
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: white;
-
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.13);
-  z-index: 20;
-}
-
-.task-menu-dropdown button {
-  width: 100%;
-  border: none;
-  background: transparent;
-
-  padding: 8px 9px;
-  border-radius: 8px;
-
-  text-align: left;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  color: #111827;
-}
-
-.task-menu-dropdown button:hover {
-  background: #f1f5f9;
-}
-
-.task-menu-dropdown .menu-delete-btn {
-  color: #ef4444;
-}
-
-/* 编辑网页 */
-.edit-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  pointer-events: auto;
-}
-
-.edit-task-modal {
-  width: min(560px, calc(100vw - 40px));
-  max-height: calc(100vh - 72px);
-  overflow-y: auto;
-
-  padding: 32px 34px;
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22);
-
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.edit-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.edit-modal-header h2 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  color: #111827;
-}
-
-.cancel-btn {
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 12px;
-  background: transparent;
-  color: #64748b;
-
-
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-}
-
-.cancel-btn:hover {
-  background: #f4f3ff;
-  color: #5b4bff;
-}
-
-.required-star {
-  color: #ef4444;
-  font-weight: 800;
-  margin-left: -1px;
-}
-
-.save-edit-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #ffffff;
-  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.24);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-
-.save-edit-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 32px rgba(99, 102, 241, 0.3);
-}
-
-.edit-task-modal label {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.edit-task-modal input,
-.edit-task-modal textarea,
-.edit-task-modal select {
-  padding: 12px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #ffffff;
-  color: #111827;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.edit-task-modal input:focus,
-.edit-task-modal textarea:focus,
-.edit-task-modal select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
-}
-
-/* 获取焦点时隐藏占位符 */
-.edit-task-modal input:focus::placeholder,
-.edit-task-modal textarea:focus::placeholder {
-  color: transparent;
-}
-/* 编辑网页结束 */
-
-.daily-streak-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 3px 9px;
-  border-radius: 999px;
-  color: #ea580c;
-
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1;
-}
-
 .completed-label {
   padding: 10px 18px;
   border-radius: 999px;
@@ -1402,7 +1122,6 @@ body,
   font-weight: 700;
 }
 
-/* Habit Counter */
 .habit-split-actions {
   width: 100%;
   display: flex;
@@ -1473,59 +1192,209 @@ body,
   color: #0f172a;
 }
 
-/* Animation */
-@keyframes modal-pop {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.96);
-  }
+/* =========================
+   任务更多菜单
+========================= */
+.edit-corner-btn {
+  position: static;
+  transform: none;
 
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  width: 28px;
+  height: 28px;
+  padding: 0;
+
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #64748b;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
 
-/* 中等屏幕：回到单列 */
-@media (max-width: 1100px) {
-  .tasks-container {
-    width: auto;
-    max-width: none;
-    margin: 20px 16px 0;
-    padding: 0 0 40px;
-  }
-
-  .quest-columns {
-    grid-template-columns: 1fr;
-  }
-
-  :root {
-    --task-list-height: 500px;
-  }
+.quest-card:hover .edit-corner-btn {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* 小屏幕 */
-@media (max-width: 800px) {
-  .tasks-container {
-    width: auto;
-    max-width: none;
-    margin: 16px 12px 0;
-    padding: 0 0 36px;
-  }
+.edit-corner-btn:hover {
+  color: #111827;
+  background: #f1f5f9;
+}
 
-  .quest-header,
-  .quest-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.task-menu {
+  position: absolute;
+  top: 12px;
+  right: 18px;
 
-  .quest-board {
-    padding: 22px;
-  }
+  width: 28px;
+  height: 28px;
+  z-index: 10;
+}
 
-  .task-column-header h2 {
-    font-size: 24px;
-  }
+.task-menu-dropdown {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  z-index: 999;
+
+  width: 90px;
+  padding: 5px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.13);
+  z-index: 20;
+}
+
+.task-menu-dropdown button {
+  width: 100%;
+  border: none;
+  background: transparent;
+
+  padding: 8px 9px;
+  border-radius: 8px;
+
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #111827;
+}
+
+.task-menu-dropdown button:hover {
+  background: #f1f5f9;
+}
+
+.task-menu-dropdown .menu-delete-btn {
+  color: #ef4444;
+}
+
+/* =========================
+   任务弹窗通用样式
+========================= */
+.edit-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.edit-task-modal {
+  width: min(560px, calc(100vw - 40px));
+  max-height: calc(100vh - 72px);
+  overflow-y: auto;
+
+  padding: 32px 34px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22);
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.edit-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.edit-modal-header h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #111827;
+}
+
+.cancel-btn {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #64748b;
+
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #f4f3ff;
+  color: #5b4bff;
+}
+
+.required-star {
+  color: #ef4444;
+  font-weight: 800;
+  margin-left: -1px;
+}
+
+.save-edit-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.save-edit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(99, 102, 241, 0.3);
+}
+
+.edit-task-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.edit-task-modal input,
+.edit-task-modal textarea,
+.edit-task-modal select {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #111827;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.edit-task-modal input:focus,
+.edit-task-modal textarea:focus,
+.edit-task-modal select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.edit-task-modal input:focus::placeholder,
+.edit-task-modal textarea:focus::placeholder {
+  color: transparent;
 }
 
 .input-error {
@@ -1541,7 +1410,291 @@ body,
   font-weight: 700;
 }
 
-/* SortableJS task dragging */
+.add-task-form {
+  margin-bottom: 22px;
+  padding: 18px;
+  border-radius: 8px;
+  background: #eef2f7;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.add-task-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.add-task-form input,
+.add-task-form textarea,
+.add-task-form select {
+  padding: 12px 42px 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.add-task-form textarea {
+  min-height: 78px;
+  resize: vertical;
+}
+
+.cancel-task-btn {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #94a3b8;
+  color: white;
+}
+
+.cancel-task-btn:hover {
+  background: #64748b;
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================
+   子任务区域样式
+========================= */
+.subtask-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.subtask-field-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.subtask-list {
+  margin: 2px 0 4px;
+  padding: 12px 10px 2px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.subtask-add-row {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+.subtask-input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.subtask-add-button {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(99, 102, 241, 0.22);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.subtask-add-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.28);
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 0;
+}
+
+.subtask-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.subtask-title.completed {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.subtask-delete {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.subtask-drag-handle {
+  cursor: grab;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.subtask-drag-handle:active {
+  cursor: grabbing;
+}
+
+.subtask-check,
+.preview-check {
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+
+  color: #94a3b8;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.subtask-check.completed,
+.preview-check.completed {
+  border-radius: 4px;
+  background: #6366f1;
+  color: #ffffff;
+}
+
+.subtask-check.completed svg,
+.preview-check.completed svg {
+  stroke: #ffffff;
+}
+
+.subtask-edit-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+.subtask-edit-input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.subtask-list .subtask-item .subtask-edit-input,
+.subtask-list .subtask-item .subtask-edit-input:focus,
+.subtask-list .subtask-item .subtask-edit-input:focus-visible {
+  all: unset;
+  flex: 1;
+  min-width: 0;
+  display: block;
+  cursor: text;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  background: transparent;
+}
+
+.subtask-list .subtask-item .subtask-edit-input:focus,
+.subtask-list .subtask-item .subtask-edit-input:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* =========================
+   任务卡片子任务预览
+========================= */
+.task-subtask-preview {
+  margin: 2px 0 10px;
+  display: grid;
+  gap: 5px;
+}
+
+.task-subtask-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  color: #475569;
+  cursor: pointer;
+}
+
+.preview-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.preview-title.completed {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.task-subtasks-header {
+  width: 100%;
+  padding: 10px 2px 7px;
+  border: 0;
+  background: transparent;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.task-subtasks-header-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================
+   拖拽排序样式
+========================= */
 .sortable-task-item {
   width: 100%;
   cursor: grab;
@@ -1581,7 +1734,9 @@ body,
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
 }
 
-/* 完成任务后的 XP 浮动容器：负责定位和动画 */
+/* =========================
+   XP 浮动奖励动画
+========================= */
 .global-reward-popup {
   position: fixed;
   transform: translate(-50%, -50%);
@@ -1595,7 +1750,6 @@ body,
   animation: globalRewardFloatUp 0.9s ease-out forwards;
 }
 
-/* XP 奖励文字：只负责文字样式，不负责定位 */
 .global-xp-float {
   font-weight: 800;
   font-size: 15px;
@@ -1604,7 +1758,6 @@ body,
   text-shadow: 0 2px 8px rgba(124, 58, 237, 0.18);
 }
 
-/* XP 从点击位置向上漂浮并逐渐消失 */
 @keyframes globalRewardFloatUp {
   0% {
     opacity: 0;
@@ -1622,244 +1775,77 @@ body,
   }
 }
 
-/* 编辑任务弹窗中的子任务区域 */
-.subtask-list {
-  margin: 2px 0 4px;
-  padding: 12px 10px 2px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #f8fafc;
+/* =========================
+   响应式布局
+========================= */
+@media (max-width: 1300px) {
+  .player-level-card {
+    grid-template-columns: 44px 1fr;
+  }
+
+  .level-progress-ring {
+    display: none;
+  }
+
+  .level-card-content strong,
+  .level-card-content small {
+    white-space: nowrap;
+  }
 }
 
-.subtask-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0;
-  border-top: 1px solid #e5e7eb;
-  border-bottom: 0;
+@media (max-width: 1100px) {
+  .tasks-container {
+    width: auto;
+    max-width: none;
+    margin: 20px 16px 0;
+    padding: 0 0 40px;
+  }
+
+  .quest-columns {
+    grid-template-columns: 1fr;
+  }
+
+  :root {
+    --task-list-height: 500px;
+  }
 }
 
-.subtask-add-row {
-  display: flex;
-  gap: 8px;
-  margin: 0 0 10px;
+@media (max-width: 800px) {
+  .tasks-container {
+    width: auto;
+    max-width: none;
+    margin: 16px 12px 0;
+    padding: 0 0 36px;
+  }
+
+  .quest-header,
+  .quest-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quest-board {
+    padding: 22px;
+  }
+
+  .task-column-header h2 {
+    font-size: 24px;
+  }
 }
 
-.subtask-delete {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 16px;
-  color: #ef4444;
-  font-weight: 700;
-}
-
-.subtask-title {
-  flex: 1;
-  font-size: 14px;
-  font-weight: 600;
-  color: #334155;
-}
-
-/* completed subtask title in edit modal */
-.subtask-title.completed {
-  color: #94a3b8;
-  font-weight: 600;
-}
-
-.subtask-input {
-  flex: 1;
-  min-width: 0;
-  padding: 9px 11px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.subtask-edit-input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  outline: none;
-  box-shadow: none;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  line-height: inherit;
-}
-
-.subtask-edit-input:focus {
-  border: none;
-  outline: none;
-  box-shadow: none;
-}
-
-/* Stronger, scoped override to ensure modal/global input styles don't apply */
-.subtask-list .subtask-item .subtask-edit-input,
-.subtask-list .subtask-item .subtask-edit-input:focus,
-.subtask-list .subtask-item .subtask-edit-input:focus-visible {
-  all: unset;
-  flex: 1;
-  min-width: 0;
-  display: block;
-  cursor: text;
-  font: inherit;
-  color: inherit;
-  line-height: inherit;
-  font-weight: inherit;
-  background: transparent;
-}
-
-/* Keep explicit focus rules to remove browser focus ring */
-.subtask-list .subtask-item .subtask-edit-input:focus,
-.subtask-list .subtask-item .subtask-edit-input:focus-visible {
-  outline: none;
-  border: none;
-  box-shadow: none;
-}
-
-.subtask-add-button {
-  padding: 9px 16px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #ffffff;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 10px 22px rgba(99, 102, 241, 0.22);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.subtask-add-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.28);
-}
-
-.subtask-field {
-  display: flex;
-  flex-direction: column;
-}
-
-.subtask-field-label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #000;
-  margin-bottom: 8px;
-}
-
-/* 任务卡片中的子任务预览 */
-.task-subtask-preview {
-  margin: 2px 0 10px;
-  display: grid;
-  gap: 5px;
-}
-
-.task-subtask-preview-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 16px;
-  color: #475569;
-  cursor: pointer;
-}
-
-/* unfinished subtask title on task card */
-.preview-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #334155;
-}
-
-/* completed subtask title on task card */
-.preview-title.completed {
-  color: #64748b;
-  font-weight: 600;
-}
-
-.subtask-check,
-.preview-check {
-  width: 16px;
-  height: 16px;
-  border: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-
-  color: #94a3b8;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-  box-sizing: border-box;
-}
-
-/* completed subtask: 紫色实心方块 + 白色 check */
-.subtask-check.completed,
-.preview-check.completed {
-  border-radius: 4px;
-  background: #6366f1;
-  color: #ffffff;
-}
-
-.subtask-check.completed svg,
-.preview-check.completed svg {
-  stroke: #ffffff;
-}
-
-/*Sidebar*/
-.app-shell {
-  min-height: 100vh;
-  display: flex;
-  background: #f8f9ff;
-}
-
-.tasks-page {
-  flex: 1;
-  min-width: 0;
-}
-
-.subtask-drag-handle {
-  cursor: grab;
-  color: #94a3b8;
-  display: inline-flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.subtask-drag-handle:active {
-  cursor: grabbing;
-}
-
-/* 任务卡片中的分割线 */
-.task-divider {
-  width: 100%;
-  height: 1px;
-  margin: 4px 0 2px;
-  background: rgba(148, 163, 184, 0.28);
-}
-
-.task-subtasks-header {
-  width: 100%;
-  padding: 10px 2px 7px;
-  border: 0;
-  background: transparent;
-  color: #1e293b;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font: inherit;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.task-subtasks-header-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
+/* =========================
+   潜在未使用/遗留选择器（保留，不删除）
+========================= */
+/*
+.daily-streak-pill
+.completed-label
+.quest-dot
+.add-task-form
+.cancel-task-btn
+.logout-btn
+.habit-split-actions
+.habit-side-btn
+.habit-counter-actions
+.habit-counter-btn
+.habit-counter-number
+*/

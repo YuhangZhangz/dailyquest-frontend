@@ -1,3 +1,6 @@
+/* =========================
+   全局 Sidebar 布局基础
+========================= */
 :root {
   --sidebar-width: 260px;
 }
@@ -22,7 +25,9 @@ body.has-sidebar #root {
   min-height: 100vh;
 }
 
-/* Left sidebar */
+/* =========================
+   Sidebar 外层容器
+========================= */
 .sidebar {
   width: var(--sidebar-width);
   height: auto;
@@ -50,6 +55,9 @@ body.has-sidebar #root {
   align-items: center;
 }
 
+/* =========================
+   Sidebar 顶部品牌区
+========================= */
 .sidebar-header {
   width: 100%;
 
@@ -93,6 +101,9 @@ body.has-sidebar #root {
   color: #101828;
 }
 
+/* =========================
+   Sidebar 折叠按钮
+========================= */
 .sidebar-icon-button {
   width: 38px;
   height: 38px;
@@ -120,6 +131,9 @@ body.has-sidebar #root {
   height: 54px;
 }
 
+/* =========================
+   Sidebar 导航菜单
+========================= */
 .sidebar-nav {
   width: 100%;
 
@@ -177,6 +191,9 @@ body.has-sidebar #root {
   justify-content: center;
 }
 
+/* =========================
+   Sidebar Streak 卡片
+========================= */
 .sidebar-streak-card {
   width: 100%;
   margin-top: auto;
@@ -216,6 +233,9 @@ body.has-sidebar #root {
   color: #98a2b3;
 }
 
+/* =========================
+   Sidebar 迷你日历
+========================= */
 .mini-calendar {
   display: flex;
   flex-direction: column;
@@ -256,8 +276,9 @@ body.has-sidebar #root {
   color: #ffffff;
 }
 
-/* Optional bottom collapse button style.
-   Keep this only if you use sidebar-collapse-bottom elsewhere. */
+/* =========================
+   Sidebar 底部折叠按钮
+========================= */
 .sidebar-collapse-bottom {
   height: 56px;
   border: none;
