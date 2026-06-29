@@ -19,7 +19,14 @@ type SidebarProps = {
 };
 
 function Sidebar({ dailyStreak }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    const storedCollapsed = window.sessionStorage.getItem("sidebar-collapsed");
+    return storedCollapsed === "true";
+  });
 
   useEffect(() => {
     document.body.classList.add("has-sidebar");
@@ -35,6 +42,7 @@ function Sidebar({ dailyStreak }: SidebarProps) {
       "--sidebar-width",
       collapsed ? "84px" : "260px"
     );
+    window.sessionStorage.setItem("sidebar-collapsed", String(collapsed));
   }, [collapsed]);
 
   const navItems = [
