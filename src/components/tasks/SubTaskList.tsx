@@ -74,88 +74,143 @@ function SubTaskList({
     setNewTitle("");
   }
 
+  function startEditSubTask(subTask: SubTask) {
+    if (!onEditSubTask) return;
+
+    setEditingId(subTask.id);
+    setEditTitle(subTask.title);
+  }
+
+  function cancelEditSubTask() {
+    setEditingId(null);
+    setEditTitle("");
+  }
+
+  function saveEditSubTask(subTask: SubTask) {
+    const trimmedTitle = editTitle.trim();
+
+    if (!trimmedTitle) {
+      cancelEditSubTask();
+      return;
+    }
+
+    if (trimmedTitle !== subTask.title && onEditSubTask) {
+      onEditSubTask(taskId, subTask.id, trimmedTitle);
+    }
+
+    cancelEditSubTask();
+  }
+
   return (
     <div className="subtask-list">
       <div ref={listRef} className="subtask-list-items">
-        {sortedSubTasks.map((subTask) => (
-          <div key={subTask.id} className="subtask-item" data-id={subTask.id}>
-            <span className="subtask-drag-handle" aria-label="Reorder subtask">
-              <GripVertical size={14} strokeWidth={2.2} />
-            </span>
+        {sortedSubTasks.map((subTask) => {
+          const isEditing = editingId === subTask.id;
 
-            <button
-              type="button"
-              className={
-                subTask.completed ? "subtask-check completed" : "subtask-check"
-              }
-              onClick={() => onToggleSubTask(taskId, subTask.id)}
+          return (
+            <div
+              key={subTask.id}
+              className="subtask-item"
+              data-id={subTask.id}
             >
-              {subTask.completed ? (
-                <Check size={13} strokeWidth={3.2} />
-              ) : (
-                <Square size={20} strokeWidth={2.5} />
-              )}
-            </button>
-
-            {editingId === subTask.id ? (
-              <input
-                className="subtask-edit-input"
-                value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
-                onBlur={() => {
-                  const trimmed = editTitle.trim();
-                  if (trimmed && onEditSubTask) {
-                    onEditSubTask(taskId, subTask.id, trimmed);
-                  }
-                  setEditingId(null);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    const trimmed = editTitle.trim();
-                    if (trimmed && onEditSubTask) {
-                      onEditSubTask(taskId, subTask.id, trimmed);
-                    }
-                    setEditingId(null);
-                  }
-
-                  if (e.key === "Escape") {
-                    setEditingId(null);
-                  }
-                }}
-                autoFocus
-              />
-            ) : (
               <span
+                className="subtask-drag-handle"
+                aria-label="Reorder subtask"
+              >
+                <GripVertical size={14} strokeWidth={2.2} />
+              </span>
+
+              <button
+                type="button"
                 className={
-                  subTask.completed ? "subtask-title completed" : "subtask-title"
+                  subTask.completed
+                    ? "subtask-check completed"
+                    : "subtask-check"
                 }
+                onClick={() => onToggleSubTask(taskId, subTask.id)}
+              >
+                {subTask.completed ? (
+                  <Check size={13} strokeWidth={3.2} />
+                ) : (
+                  <Square size={20} strokeWidth={2.5} />
+                )}
+              </button>
+
+              {isEditing ? (
+                <input
+                  className="subtask-edit-input"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  onBlur={() => {
+                    // Blur only cancels editing. It should not save or PATCH.
+                    cancelEditSubTask();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      saveEditSubTask(subTask);
+                    }
+
+                    if (e.key === "Escape") {
+                      e.preventDefault();
+                      cancelEditSubTask();
+                    }
+                  }}
+                  autoFocus
+                />
+              ) : (
+                <span
+                  className={
+                    subTask.completed
+                      ? "subtask-title completed"
+                      : "subtask-title"
+                  }
+                  onClick={() => startEditSubTask(subTask)}
+                >
+                  {subTask.title}
+                </span>
+              )}
+
+              <button
+                type="button"
+                className="subtask-delete"
+                onMouseDown={(e) => {
+                  // Prevent input blur before the cancel click runs.
+                  if (isEditing) {
+                    e.preventDefault();
+                  }
+                }}
                 onClick={() => {
-                  // Only enable editing if an edit handler was provided
-                  if (!onEditSubTask) return;
-                  setEditingId(subTask.id);
-                  setEditTitle(subTask.title);
+                  if (isEditing) {
+                    cancelEditSubTask();
+                    return;
+                  }
+
+                  onDeleteSubTask(taskId, subTask.id);
                 }}
               >
-                {subTask.title}
-              </span>
-            )}
-
-            <button
-              type="button"
-              className="subtask-delete"
-              onClick={() => onDeleteSubTask(taskId, subTask.id)}
-            >
-              <X size={18} strokeWidth={3} />
-            </button>
-          </div>
-        ))}
+                <X size={18} strokeWidth={3} />
+              </button>
+            </div>
+          );
+        })}
       </div>
 
       <div className="subtask-add-row">
         <input
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleAdd();
+            }
+
+            if (e.key === "Escape") {
+              e.preventDefault();
+              setNewTitle("");
+            }
+          }}
           placeholder="Add subtask"
           className="subtask-input"
         />
