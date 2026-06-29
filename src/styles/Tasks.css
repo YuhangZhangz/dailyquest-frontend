@@ -1397,6 +1397,13 @@ body,
   color: transparent;
 }
 
+.description-character-count {
+  align-self: flex-end;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 .input-error {
   border-color: #ef4444 !important;
   background: #fff7f7 !important;

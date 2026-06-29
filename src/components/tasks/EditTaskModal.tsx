@@ -4,6 +4,8 @@ import type { DailyTask, TaskType } from "../../types/task";
 import SubTaskList from "./SubTaskList";
 import { X } from "lucide-react";
 
+const DESCRIPTION_MAX_LENGTH = 1000;
+
 type EditTaskModalProps = {
   task: DailyTask;
   onClose: () => void;
@@ -35,7 +37,9 @@ function EditTaskModal({
   onEditSubTask
 }: EditTaskModalProps) {
   const [title, setTitle] = useState(task.title);
-  const [description, setDescription] = useState(task.description);
+  const [description, setDescription] = useState(
+    (task.description ?? "").slice(0, DESCRIPTION_MAX_LENGTH)
+  );
   const [difficulty, setDifficulty] = useState(task.difficulty);
   const [dueDate, setDueDate] = useState(task.dueDate ?? "");
 
@@ -80,7 +84,11 @@ function EditTaskModal({
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            maxLength={DESCRIPTION_MAX_LENGTH}
           />
+          <span className="description-character-count">
+            {description.length}/{DESCRIPTION_MAX_LENGTH}
+          </span>
         </label>
 
         {task.taskType !== "HABIT" &&

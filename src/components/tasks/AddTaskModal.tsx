@@ -4,6 +4,8 @@ import type { TaskType } from "../../types/task";
 import { X } from "lucide-react";
 import  SubTaskInputList from "./SubTaskInputList";
 
+const DESCRIPTION_MAX_LENGTH = 1000;
+
 type AddTaskModalProps = {
   taskType: TaskType;
   onClose: () => void;
@@ -23,7 +25,9 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
   const parsedDraft = savedDraft ? JSON.parse(savedDraft) : null;
 
   const [title, setTitle] = useState(parsedDraft?.title || "");
-  const [description, setDescription] = useState(parsedDraft?.description || "");
+  const [description, setDescription] = useState(
+    (parsedDraft?.description || "").slice(0, DESCRIPTION_MAX_LENGTH)
+  );
   const [difficulty, setDifficulty] = useState(parsedDraft?.difficulty || "T1");
   const [dueDate, setDueDate] = useState(parsedDraft?.dueDate || "");
   const [titleError, setTitleError] = useState("");
@@ -120,7 +124,11 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Optional description"
+            maxLength={DESCRIPTION_MAX_LENGTH}
           />
+          <span className="description-character-count">
+            {description.length}/{DESCRIPTION_MAX_LENGTH}
+          </span>
         </label>
 
         {taskType !== "HABIT" && (
