@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Sortable from "sortablejs";
 import TaskCard from "./TaskCard";
-import type { DailyTask, TaskType } from "../../types/task";
+import type { DailyTask, GrowthCategory, TaskType } from "../../types/task";
 
 type TaskColumnProps = {
   title: string;
@@ -17,7 +17,8 @@ type TaskColumnProps = {
     description: string,
     difficulty: string,
     taskType: TaskType,
-    dueDate: string | null
+    dueDate: string | null,
+    growthCategory: GrowthCategory
   ) => void;
   onRevert: (id: number) => void;
   onReorder: (taskType: TaskType, orderedIds: number[]) => void;

@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./EditTaskModal";
-import type { DailyTask, TaskType } from "../../types/task";
+import {
+  GROWTH_CATEGORY_OPTIONS,
+  type DailyTask,
+  type GrowthCategory,
+  type TaskType,
+} from "../../types/task";
 import {
   Check,
   ChevronDown,
@@ -22,7 +27,8 @@ type TaskCardProps = {
     description: string,
     difficulty: string,
     taskType: TaskType,
-    dueDate: string | null
+    dueDate: string | null,
+    growthCategory: GrowthCategory
   ) => void;
   onRevert: (id: number) => void;
 
@@ -168,6 +174,12 @@ function TaskCard({
         )}
 
         <h2>{task.title}</h2>
+
+        {task.taskType === "DAILY" && task.growthCategory !== "NONE" && (
+          <span className="growth-category-hint">
+            🌱 {getGrowthCategoryLabel(task.growthCategory)}
+          </span>
+        )}
 
         <div className="task-inline-meta">
           <span
@@ -355,6 +367,14 @@ function getDifficultyLabel(difficulty: string) {
     default:
       return difficulty;
   }
+}
+
+function getGrowthCategoryLabel(growthCategory: GrowthCategory) {
+  return (
+    GROWTH_CATEGORY_OPTIONS.find(
+      (option) => option.value === growthCategory
+    )?.label ?? growthCategory
+  );
 }
 
 export default TaskCard;

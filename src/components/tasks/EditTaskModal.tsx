@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import type { DailyTask, TaskType } from "../../types/task";
+import {
+  toGrowthCategory,
+  type DailyTask,
+  type GrowthCategory,
+  type TaskType,
+} from "../../types/task";
 import SubTaskList from "./SubTaskList";
 import { X } from "lucide-react";
+import GrowthCategorySelector from "./GrowthCategorySelector";
 
 const DESCRIPTION_MAX_LENGTH = 1000;
 
@@ -15,7 +21,8 @@ type EditTaskModalProps = {
     description: string,
     difficulty: string,
     taskType: TaskType,
-    dueDate: string | null
+    dueDate: string | null,
+    growthCategory: GrowthCategory
   ) => void;
 
   onAddSubTask?: (taskId: number, title: string) => void;
@@ -42,6 +49,9 @@ function EditTaskModal({
   );
   const [difficulty, setDifficulty] = useState(task.difficulty);
   const [dueDate, setDueDate] = useState(task.dueDate ?? "");
+  const [growthCategory, setGrowthCategory] = useState<string>(
+    task.growthCategory ?? "NONE"
+  );
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -54,7 +64,8 @@ function EditTaskModal({
       description,
       difficulty,
       task.taskType,
-      task.taskType === "TODO" ? dueDate : null
+      task.taskType === "TODO" ? dueDate : null,
+      task.taskType === "DAILY" ? toGrowthCategory(growthCategory) : "NONE"
     );
 
     onClose();
@@ -123,6 +134,13 @@ function EditTaskModal({
             <option value="BOSS">👑 Boss (50 Coins)</option>
           </select>
         </label>
+
+        {task.taskType === "DAILY" && (
+          <GrowthCategorySelector
+            value={growthCategory}
+            onChange={setGrowthCategory}
+          />
+        )}
 
         {task.taskType === "TODO" && (
           <label>

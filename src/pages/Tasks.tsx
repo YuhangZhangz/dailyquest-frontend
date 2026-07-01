@@ -6,8 +6,14 @@ import "../styles/Tasks.css";
 import TaskColumn from "../components/tasks/TaskColumn";
 import AddTaskModal from "../components/tasks/AddTaskModal";
 import PlayerStatusPanel from "../components/tasks/PlayerStatusPanel";
-import HabitGrowthPanel from "../components/tasks/HabitGrowthPanel";
-import type { DailyTask, TaskType, UserProfile } from "../types/task";
+import type {
+  DailyTask,
+  DailyTaskResponse,
+  GrowthCategory,
+  TaskType,
+  UserProfile,
+} from "../types/task";
+import { toGrowthCategory } from "../types/task";
 import Sidebar from "../components/layout/Sidebar";
 
 function getErrorDetails(err: unknown) {
@@ -16,6 +22,13 @@ function getErrorDetails(err: unknown) {
   }
 
   return err;
+}
+
+function normalizeTask(task: DailyTaskResponse): DailyTask {
+  return {
+    ...task,
+    growthCategory: task.growthCategory ?? "NONE",
+  };
 }
 
 function Tasks() {
@@ -49,7 +62,7 @@ function Tasks() {
       const taskRes = await api.get("/daily-tasks");
 
       setUser(userRes.data);
-      setTasks(taskRes.data);
+      setTasks((taskRes.data as DailyTaskResponse[]).map(normalizeTask));
     } catch (err: unknown) {
       console.log("Load data error:", getErrorDetails(err));
 
@@ -78,7 +91,8 @@ function Tasks() {
     description: string,
     difficulty: string,
     dueDate: string | null,
-    subTaskTitles: string[]
+    subTaskTitles: string[],
+    growthCategory: GrowthCategory
   ) {
     if (!creatingType) return;
 
@@ -88,6 +102,8 @@ function Tasks() {
       difficulty,
       taskType: creatingType,
       dueDate,
+      growthCategory:
+        creatingType === "DAILY" ? toGrowthCategory(growthCategory) : "NONE",
     });
 
     const createdTask = response.data;
@@ -156,7 +172,8 @@ function Tasks() {
     description: string,
     difficulty: string,
     taskType: TaskType,
-    dueDate: string | null
+    dueDate: string | null,
+    growthCategory: GrowthCategory
   ) {
     try {
       const response = await api.put(`/daily-tasks/${id}`, {
@@ -165,9 +182,11 @@ function Tasks() {
         difficulty,
         taskType,
         dueDate,
+        growthCategory:
+          taskType === "DAILY" ? toGrowthCategory(growthCategory) : "NONE",
       });
 
-      const updatedTask = response.data;
+      const updatedTask = normalizeTask(response.data as DailyTaskResponse);
 
       setTasks((prevTasks) =>
         prevTasks.map((task) => (task.id === id ? updatedTask : task))
@@ -420,8 +439,6 @@ function Tasks() {
               />
             </div>
           </section>
-
-          <HabitGrowthPanel />
         </main>
       </div>
     </div>

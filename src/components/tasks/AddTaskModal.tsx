@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import type { TaskType } from "../../types/task";
+import {
+  toGrowthCategory,
+  type GrowthCategory,
+  type TaskType,
+} from "../../types/task";
 import { X } from "lucide-react";
 import  SubTaskInputList from "./SubTaskInputList";
+import GrowthCategorySelector from "./GrowthCategorySelector";
 
 const DESCRIPTION_MAX_LENGTH = 1000;
 
@@ -14,7 +19,8 @@ type AddTaskModalProps = {
     description: string,
     difficulty: string,
     dueDate: string | null,
-    subTaskTitles: string[]
+    subTaskTitles: string[],
+    growthCategory: GrowthCategory
   ) => void | Promise<void>;
 };
 
@@ -30,6 +36,9 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
   );
   const [difficulty, setDifficulty] = useState(parsedDraft?.difficulty || "T1");
   const [dueDate, setDueDate] = useState(parsedDraft?.dueDate || "");
+  const [growthCategory, setGrowthCategory] = useState<string>(
+    parsedDraft?.growthCategory || "NONE"
+  );
   const [titleError, setTitleError] = useState("");
 
   // Add modal does not have a task id yet, so subtasks are kept locally first.
@@ -46,10 +55,19 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
         description,
         difficulty,
         dueDate,
+        growthCategory,
         subTaskTitles,
       })
     );
-  }, [draftKey, title, description, difficulty, dueDate, subTaskTitles]);
+  }, [
+    draftKey,
+    title,
+    description,
+    difficulty,
+    dueDate,
+    growthCategory,
+    subTaskTitles,
+  ]);
 
   function handleAddSubTask() {
     const trimmedTitle = subTaskInput.trim();
@@ -81,7 +99,8 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
       description.trim(),
       difficulty,
       taskType === "TODO" ? dueDate || null : null,
-      taskType === "HABIT" ? [] : subTaskTitles
+      taskType === "HABIT" ? [] : subTaskTitles,
+      taskType === "DAILY" ? toGrowthCategory(growthCategory) : "NONE"
     );
 
     // Clear draft from localStorage and close modal after creating the task.
@@ -158,6 +177,13 @@ function AddTaskModal({ taskType, onClose, onCreate }: AddTaskModalProps) {
             <option value="BOSS">👑 Boss (50 Coins)</option>
           </select>
         </label>
+
+        {taskType === "DAILY" && (
+          <GrowthCategorySelector
+            value={growthCategory}
+            onChange={setGrowthCategory}
+          />
+        )}
 
         {taskType === "TODO" && (
           <label>

@@ -612,19 +612,37 @@ body,
   white-space: nowrap;
 }
 
-.habit-growth-track {
-  height: 7px;
+.habit-growth-status {
+  width: fit-content;
   margin-top: 13px;
-  overflow: hidden;
+  padding: 5px 9px;
   background: #ede9fe;
   border-radius: 999px;
+  color: #6d28d9;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.habit-growth-track span {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, #6366f1, #8b5cf6);
-  border-radius: inherit;
+.habit-growth-empty {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px dashed #d8d5fc;
+  border-radius: 12px;
+  background: #fafaff;
+}
+
+.habit-growth-empty h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.habit-growth-empty p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .task-column {
@@ -965,6 +983,15 @@ body,
   flex-shrink: 0;
   white-space: nowrap;
   padding-right: 70px;
+}
+
+.growth-category-hint {
+  flex-shrink: 0;
+  color: #6d28d9;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .difficulty-pill {
@@ -1482,6 +1509,100 @@ body,
 
 .description-character-count {
   align-self: flex-end;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.growth-category-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.growth-category-label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.growth-category-search-row {
+  display: flex;
+  gap: 8px;
+}
+
+.growth-category-search-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.growth-category-add-btn,
+.growth-category-chip {
+  border: 1px solid #c7d2fe;
+  color: #4338ca;
+  background: #eef2ff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.growth-category-add-btn {
+  padding: 0 16px;
+  border-radius: 8px;
+}
+
+.growth-category-add-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.growth-category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.growth-category-chip-wrapper {
+  position: relative;
+}
+
+.growth-category-chip {
+  padding: 7px 12px;
+  border-radius: 999px;
+}
+
+.growth-category-chip.selected {
+  border-color: #4f46e5;
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.growth-category-delete-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 17px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.growth-category-chip-wrapper:hover .growth-category-delete-btn,
+.growth-category-delete-btn:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.growth-category-empty,
+.growth-category-note {
   color: #6b7280;
   font-size: 12px;
   font-weight: 500;
